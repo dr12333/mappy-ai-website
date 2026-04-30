@@ -48,6 +48,40 @@ function isoDate(d) {
   return new Date(d).toISOString();
 }
 
+// Post-process: wrap FAQ section in semantic markup
+function postProcessFaq(html) {
+  const faqHeading = "<h2>FAQ</h2>";
+  const idx = html.indexOf(faqHeading);
+  if (idx === -1) return html;
+
+  const before = html.slice(0, idx);
+  const after = html.slice(idx + faqHeading.length);
+
+  // FAQ ends at next <h2>, <hr>, or end of content
+  const endMatch = after.match(/<h2>|<hr>/);
+  const faqContent = endMatch ? after.slice(0, endMatch.index) : after;
+  const rest = endMatch ? after.slice(endMatch.index) : "";
+
+  // Parse Q/A pairs: <p><strong>Q</strong>\nA</p>
+  const items = [];
+  const itemRegex = /<p><strong>([\s\S]*?)<\/strong>\s*([\s\S]*?)<\/p>/g;
+  let m;
+  while ((m = itemRegex.exec(faqContent)) !== null) {
+    items.push({ q: m[1], a: m[2].trim() });
+  }
+
+  if (items.length === 0) return html;
+
+  const faqHtml = items
+    .map(
+      (item) =>
+        `<div class="faq-item"><p class="faq-q">${item.q}</p><p class="faq-a">${item.a}</p></div>`
+    )
+    .join("\n");
+
+  return `${before}<div class="faq"><h2>FAQ</h2>\n${faqHtml}</div>\n${rest}`;
+}
+
 // Read all posts
 function loadPosts() {
   const files = fs
@@ -59,7 +93,7 @@ function loadPosts() {
   return files.map((file) => {
     const raw = fs.readFileSync(path.join(POSTS_DIR, file), "utf8");
     const { data, content } = matter(raw);
-    const html = marked(content);
+    const html = postProcessFaq(marked(content));
     return { ...data, content: html, file };
   });
 }

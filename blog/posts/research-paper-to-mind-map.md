@@ -93,7 +93,3 @@ You can create individual maps per paper and compare them visually. Some tools a
 
 **Is the map editable after generation?**
 Yes. You can drag branches, rename nodes, add notes, and restructure the hierarchy. The point is to start from a strong first draft and refine from there.
-
----
-
-Mappy AI is built for exactly this kind of work — turning dense source material into structured, source-grounded mind maps you can trust. If you want to try the workflow described above, start with a free account and upload your first paper.

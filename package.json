@@ -1,0 +1,12 @@
+{
+  "name": "mappy-ai-website",
+  "private": true,
+  "scripts": {
+    "blog:build": "node blog/build.js",
+    "serve": "npx serve . -p 3456"
+  },
+  "devDependencies": {
+    "marked": "^15.0.0",
+    "gray-matter": "^4.0.3"
+  }
+}

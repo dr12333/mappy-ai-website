@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mappy AI | AI Mind Maps from Files, Links, and Notes</title>
+    <meta
+      name="description"
+      content="Turn files, links, and study notes into clear AI-powered mind maps. Mappy AI helps students and teams generate, refine, and export grounded maps fast."
+    />
+    <link rel="canonical" href="https://mappy-ai.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mappy AI | AI Mind Maps from Files, Links, and Notes" />
+    <meta property="og:description" content="Turn files, links, and study notes into clear AI-powered mind maps. Mappy AI helps students and teams generate, refine, and export grounded maps fast." />
+    <meta property="og:url" content="https://mappy-ai.com/" />
+    <meta property="og:image" content="https://mappy-ai.com/assets/mindmap_builder.svg" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Mappy AI | AI Mind Maps from Files, Links, and Notes" />
+    <meta name="twitter:description" content="Turn files, links, and study notes into clear AI-powered mind maps. Mappy AI helps students and teams generate, refine, and export grounded maps fast." />
+    <meta name="twitter:image" content="https://mappy-ai.com/assets/mindmap_builder.svg" />
+    <link rel="icon" type="image/svg+xml" href="assets/mindmap_builder.svg" />
+    <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon_48x48.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon_32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon_16x16.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="https://metrics.mappy-ai.com/script.js" data-website-id="82477cf9-ac03-4d35-9e62-6d16cd0c3d6b"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Mappy AI",
+        "url": "https://mappy-ai.com/",
+        "description": "Turn files, links, and study notes into clear AI-powered mind maps. Mappy AI helps students and teams generate, refine, and export grounded maps fast.",
+        "applicationCategory": "ProductivityApplication",
+        "operatingSystem": "Web",
+        "image": "https://mappy-ai.com/assets/mindmap_builder.svg",
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Free",
+            "price": "0",
+            "priceCurrency": "USD",
+            "description": "Up to 3 mindmaps and 5 AI generations total."
+          },
+          {
+            "@type": "Offer",
+            "name": "Pro",
+            "price": "4.50",
+            "priceCurrency": "USD",
+            "description": "Unlimited mindmaps and 40 AI generations per month, billed yearly ($6/month billed monthly)."
+          },
+          {
+            "@type": "Offer",
+            "name": "Max",
+            "price": "11.25",
+            "priceCurrency": "USD",
+            "description": "Everything in Pro plus collaborative mindmapping and 300 AI generations per month, billed yearly ($15/month billed monthly)."
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <header class="nav">
+      <a class="brand" href="#top">
+        <img src="assets/mindmap_builder.svg" alt="Mappy AI logo" />
+        <span>Mappy AI</span>
+      </a>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="navMenu"
+        aria-label="Open menu"
+        data-label-open="Open menu"
+        data-label-close="Close menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-menu" id="navMenu">
+        <nav class="nav-links">
+          <a href="#why">Why</a>
+          <a href="#who">Who</a>
+          <a href="#different">Our edge</a>
+          <a href="#features">Features</a>
+          <a href="#comparison">vs Others</a>
+          <a href="#workflow">Use cases</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <div class="nav-cta">
+          <a class="ghost" href="https://app.mappy-ai.com/login.html">Sign in</a>
+          <a class="btn primary" href="#pricing">Try Mappy AI free</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="audience-switch" aria-label="Audience switch">
+      <div class="audience-switch-links">
+        <a class="is-active" href="index.html">Mappy AI</a>
+        <a href="schools/index.html">Mappy AI for Schools</a>
+      </div>
+    </section>
+
+    <main>
+      <section class="hero" id="top">
+        <div class="hero-copy reveal">
+          <h1>Turn any source into a visual mindmap.</h1>
+          <p>
+            Drop in PDFs, paste YouTube links, or record a lecture. Mappy AI structures the content, embeds the
+            relevant images, and keeps every node grounded in your sources.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#pricing">Try Mappy AI free</a>
+          <a class="btn outline" href="#pricing">See plans</a>
+          </div>
+            <div class="hero-visual reveal">
+              <div class="hero-video-frame">
+                <video
+                  class="hero-video"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                >
+                <source src="assets/hero_vid1.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="why-section" id="why">
+        <div class="why-head reveal">
+          <h2>Why use Mappy AI</h2>
+          <p>See the structure instantly, keep context clear, and deepen what matters without the clutter.</p>
+        </div>
+        <div class="why-grid">
+          <div class="why-card reveal">
+            <div class="audience-card-icon audience-card-icon-notes" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="8" y1="13" x2="16" y2="13"/>
+                <line x1="8" y1="17" x2="16" y2="17"/>
+                <line x1="8" y1="9" x2="10" y2="9"/>
+              </svg>
+            </div>
+            <h3>Traditional notes</h3>
+            <ul>
+              <li>Linear lists hide how ideas connect.</li>
+              <li>Hard to see the big picture at a glance.</li>
+              <li>Adding depth turns notes into a wall of text.</li>
+              <li>Reviewing means rereading from top to bottom.</li>
+            </ul>
+          </div>
+          <div class="why-card highlight reveal">
+            <div class="audience-card-icon audience-card-icon-mappy" aria-hidden="true">
+              <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M70 70C70 53.3333 75 41.6667 85 35" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                <path d="M70 70C86.6667 70 100 65 110 55" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                <path d="M70 70C80 80 90 90 100 100" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                <path d="M70 70C60 80 50 90 40 100" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                <path d="M70 70C53.3333 63.3333 38.3333 56.6667 25 50" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                <path d="M70 84C77.732 84 84 77.732 84 70C84 62.268 77.732 56 70 56C62.268 56 56 62.268 56 70C56 77.732 62.268 84 70 84Z" fill="#fff"/>
+                <path d="M85 40C90.5228 40 95 35.5228 95 30C95 24.4772 90.5228 20 85 20C79.4772 20 75 24.4772 75 30C75 35.5228 79.4772 40 85 40Z" fill="#fff"/>
+                <path d="M112 64C118.627 64 124 58.6274 124 52C124 45.3726 118.627 40 112 40C105.373 40 100 45.3726 100 52C100 58.6274 105.373 64 112 64Z" fill="#fff"/>
+                <path d="M102 111C106.971 111 111 106.971 111 102C111 97.0294 106.971 93 102 93C97.0294 93 93 97.0294 93 102C93 106.971 97.0294 111 102 111Z" fill="#fff"/>
+                <path d="M38 113C44.0751 113 49 108.075 49 102C49 95.9249 44.0751 91 38 91C31.9249 91 27 95.9249 27 102C27 108.075 31.9249 113 38 113Z" fill="#fff"/>
+                <path d="M22 58C27.5228 58 32 53.5228 32 48C32 42.4772 27.5228 38 22 38C16.4772 38 12 42.4772 12 48C12 53.5228 16.4772 58 22 58Z" fill="#fff"/>
+              </svg>
+            </div>
+            <h3>Mappy AI mindmaps</h3>
+            <ul>
+              <li>Visual structure shows how ideas relate.</li>
+              <li>The whole topic fits on one screen.</li>
+              <li>Expand any branch without crowding the rest.</li>
+              <li>Skim the shape first, then dive only where you need to.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="audience-section" id="who">
+        <div class="audience-header reveal">
+          <h2>Who Mappy AI is for</h2>
+          <p>Built for anyone who needs to turn complex material into something clear and memorable.</p>
+        </div>
+        <div class="audience-grid">
+          <div class="audience-card reveal">
+            <div class="audience-card-icon audience-card-icon-students" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/>
+                <polyline points="6 11.5 6 17.5 12 21 18 17.5 18 11.5"/>
+                <line x1="22" y1="8.5" x2="22" y2="15"/>
+              </svg>
+            </div>
+            <h3>Students</h3>
+            <p>
+              Drop in a textbook chapter or record the lecture. Get a structured map with figure snapshots embedded —
+              revision-ready in minutes.
+            </p>
+          </div>
+          <div class="audience-card reveal">
+            <div class="audience-card-icon audience-card-icon-researchers" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <line x1="11" y1="8" x2="11" y2="14"/>
+                <line x1="8" y1="11" x2="14" y2="11"/>
+              </svg>
+            </div>
+            <h3>Researchers</h3>
+            <p>
+              Upload a paper or paste the URL. Get a map of methodology, results, and references — each node linked
+              back to the exact source page.
+            </p>
+          </div>
+          <div class="audience-card reveal">
+            <div class="audience-card-icon audience-card-icon-teams" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3>Teams</h3>
+            <p>
+              Build strategy maps together, invite teammates as editors or viewers, and export to PDF when you need
+              to present. No more emailing files back and forth.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="audience-section" id="different">
+        <div class="audience-header reveal">
+          <h2>What makes Mappy AI different</h2>
+          <p>Things you won't find in another mindmap tool.</p>
+        </div>
+        <div class="audience-grid audience-grid-2x2">
+          <div class="audience-card reveal">
+            <div class="audience-card-media audience-card-media-1" aria-hidden="true">
+              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
+                <source src="assets/realimages_vid.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <h3>Real images, not AI illustrations</h3>
+            <p>
+              Most mindmap tools don't embed images at all. The ones that include them rely on generic AI
+              illustrations. Mappy AI pulls the actual figures from your PDF — or real photos from the web for
+              abstract topics. Real visuals tied to real sources.
+            </p>
+          </div>
+          <div class="audience-card reveal">
+            <div class="audience-card-media audience-card-media-2" aria-hidden="true">
+              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
+                <source src="assets/sourceembeded_video.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <h3>Sources embedded, not footnoted</h3>
+            <p>
+              In Visual mode, nodes that reference a diagram or figure carry a snapshot of the source PDF page.
+              Click any node, choose "View source page" from its menu, and the original PDF opens at the exact
+              page that informed it. Sources stay one click away — not buried behind a citation.
+            </p>
+          </div>
+          <div class="audience-card reveal">
+            <div class="audience-card-media audience-card-media-3" aria-hidden="true">
+              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
+                <source src="assets/aiscoped_vid.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <h3>AI scoped to a branch</h3>
+            <p>
+              Click any node to open its menu, then choose an AI action — the AI works on just that branch, not
+              the whole map. Faster, more accurate, and less prone to hallucination than the chat-sidebar pattern
+              other tools use.
+            </p>
+          </div>
+          <div class="audience-card reveal">
+            <div class="audience-card-media audience-card-media-4" aria-hidden="true">
+              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
+                <source src="assets/@mention_vid.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <h3>@mention any node by name</h3>
+            <p>
+              Type @ in chat to reference any node precisely. No more "the third bullet under chemistry" — Mappy
+              AI knows exactly which node you mean.
+            </p>
+          </div>
+          <div class="audience-card reveal">
+            <div class="audience-card-media audience-card-media-5" aria-hidden="true">
+              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
+                <source src="assets/airespect_vid.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <h3>AI that respects your edits</h3>
+            <p>
+              When the AI updates your map, it plans the steps first, then runs each one through a scoped tool —
+              add a child here, rename a label there. Your manual edits survive instead of getting wiped by a
+              regeneration.
+            </p>
+          </div>
+          <div class="audience-card reveal">
+            <div class="audience-card-media audience-card-media-6" aria-hidden="true">
+              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
+                <source src="assets/audio_vid.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <h3>From audio to mindmap in one step</h3>
+            <p>
+              Drop in a lecture recording, voice memo, or any audio file. Mappy AI transcribes it, structures the
+              content into topics, and adds related images. A 60-minute lecture becomes a 2-minute scan.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="features-section" id="features">
+        <h2 class="section-title reveal">Features</h2>
+        <div class="features">
+            <div class="feature-card reveal">
+              <div class="feature-media">
+              <video
+                class="feature-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              >
+                <source src="assets/hero_vid1.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              </div>
+            <div class="feature-copy">
+              <h3>Visual mindmaps from any source</h3>
+              <p>
+                Drop in a PDF, paste a YouTube link, record a lecture, or share any URL. Mappy structures the content
+                into a clean hierarchy AND embeds the actual images — page snapshots from your PDFs, topic images
+                from the web. Mindmaps that look like a textbook, not a wall of bullets.
+              </p>
+            </div>
+          </div>
+          <div class="feature-card reveal reverse">
+            <div class="feature-media">
+              <video
+                class="feature-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              >
+                <source src="assets/@mention_vid.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="feature-copy">
+              <h3>Ask Mappy AI</h3>
+              <p>
+                Click any node for an explanation tied to your sources. Use @nodename to reference any node by name in
+                chat. Select any branch to scope AI options to just that part of the map.
+              </p>
+            </div>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-media">
+              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
+                <source src="assets/aiscoped_vid.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="feature-copy">
+              <h3>Expand any branch</h3>
+              <p>
+                Tell Mappy where you want more depth and it adds sub-nodes, examples, and follow-ups — without
+                touching the rest of the map.
+              </p>
+            </div>
+          </div>
+          <div class="feature-card reveal reverse">
+            <div class="feature-media">
+              <video
+                class="feature-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              >
+                <source src="assets/video_8_schoolwebsite.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="feature-copy">
+              <h3>Share with editors and viewers</h3>
+              <p>
+                Invite collaborators as editors or viewers. Edits sync across devices in real time. Export the map to
+                PDF when you need it offline.
+              </p>
+            </div>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-media">
+              <video
+                class="feature-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              >
+                <source src="assets/sourceembeded_video.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="feature-copy">
+              <h3>Click any node, see the source page</h3>
+              <p>
+                Visual-mode PDF nodes carry a reference to the page that informed them. Click a node and choose "View source
+                page" to open the original PDF at that exact page in an inline viewer. Your sources stay one click
+                away, not buried in a footnote.
+              </p>
+            </div>
+          </div>
+          <div class="feature-card reveal reverse">
+            <div class="feature-media">
+              <video
+                class="feature-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              >
+                <source src="assets/airespect_vid.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="feature-copy">
+              <h3>AI that respects your edits</h3>
+              <p>
+                Mappy plans the steps before it runs them, and each step uses a scoped tool — add child, expand
+                branch, update label. Your manual changes survive instead of getting wiped by a regeneration.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="comparison" id="comparison">
+        <div class="comparison-header reveal">
+          <h2>How Mappy compares</h2>
+          <p>Side-by-side: Mappy AI vs the typical AI mindmap tool.</p>
+        </div>
+        <div class="comparison-grid reveal" role="table" aria-label="How Mappy AI compares">
+          <div class="comparison-grid-cell head head-feature" role="columnheader"></div>
+          <div class="comparison-grid-cell head head-mappy" role="columnheader">
+            <img class="comparison-mappy-logo" src="assets/mindmap_builder.svg" alt="" aria-hidden="true" />
+            <span>Mappy AI</span>
+          </div>
+          <div class="comparison-grid-cell head head-other" role="columnheader">Other mindmap tools</div>
+
+          <div class="comparison-grid-cell feature" role="rowheader">Sources you can drop in</div>
+          <div class="comparison-grid-cell mappy" role="cell"><span class="comparison-icon check"></span>PDFs, slides, audio, video, YouTube, etc. — plus any URL</div>
+          <div class="comparison-grid-cell other" role="cell"><span class="comparison-icon dash"></span>Usually PDF, sometimes URL</div>
+
+          <div class="comparison-grid-cell feature" role="rowheader">Images on nodes</div>
+          <div class="comparison-grid-cell mappy" role="cell"><span class="comparison-icon check"></span>Real page snapshots and web photos</div>
+          <div class="comparison-grid-cell other" role="cell"><span class="comparison-icon dash"></span>AI-made illustrations, or none</div>
+
+          <div class="comparison-grid-cell feature" role="rowheader">Source citations</div>
+          <div class="comparison-grid-cell mappy" role="cell"><span class="comparison-icon check"></span>Click opens the exact source PDF page</div>
+          <div class="comparison-grid-cell other" role="cell"><span class="comparison-icon dash"></span>No source page access</div>
+
+          <div class="comparison-grid-cell feature" role="rowheader">Where the AI works</div>
+          <div class="comparison-grid-cell mappy" role="cell"><span class="comparison-icon check"></span>AI scoped to any branch you select</div>
+          <div class="comparison-grid-cell other" role="cell"><span class="comparison-icon dash"></span>Whole-map chat only</div>
+
+          <div class="comparison-grid-cell feature" role="rowheader">Referencing nodes in chat</div>
+          <div class="comparison-grid-cell mappy" role="cell"><span class="comparison-icon check"></span>Type @ to mention any node by name</div>
+          <div class="comparison-grid-cell other" role="cell"><span class="comparison-icon dash"></span>Not supported</div>
+
+          <div class="comparison-grid-cell feature" role="rowheader">AI edit style</div>
+          <div class="comparison-grid-cell mappy" role="cell"><span class="comparison-icon check"></span>Step-by-step edits; existing nodes stay</div>
+          <div class="comparison-grid-cell other" role="cell"><span class="comparison-icon dash"></span>Wipes and regenerates from scratch</div>
+
+
+          <div class="comparison-grid-cell feature" role="rowheader">Web research</div>
+          <div class="comparison-grid-cell mappy" role="cell"><span class="comparison-icon check"></span>AI searches the web and adds cited sources to the map</div>
+          <div class="comparison-grid-cell other" role="cell"><span class="comparison-icon dash"></span>Paste links manually</div>
+
+          <div class="comparison-grid-cell feature feature-last" role="rowheader">Free tier</div>
+          <div class="comparison-grid-cell mappy mappy-last" role="cell"><span class="comparison-icon check"></span>Generous free plan, AI features included</div>
+          <div class="comparison-grid-cell other other-last" role="cell"><span class="comparison-icon dash"></span>Tight limits and locked features</div>
+        </div>
+      </section>
+
+      <section class="workflow" id="workflow">
+        <div class="workflow-copy reveal">
+          <h2>How people use Mappy AI</h2>
+          <p>Start anywhere.</p>
+        </div>
+        <div class="workflow-steps">
+          <div class="workflow-step reveal">
+            <div class="workflow-step-number" aria-hidden="true">01</div>
+            <h4>Lecture → mindmap</h4>
+            <p>
+              Drop in the audio or the lecture PDF — or both. Mappy AI transcribes the recording and embeds slide
+              snapshots from the deck. A 60-minute class becomes a 2-minute scan.
+            </p>
+          </div>
+          <div class="workflow-step reveal">
+            <div class="workflow-step-number" aria-hidden="true">02</div>
+            <h4>Research paper → sourced map</h4>
+            <p>
+              Upload the PDF. Mappy AI extracts methodology, results, and key references — and embeds figure snapshots
+              from the paper itself, every node linked to the source page.
+            </p>
+          </div>
+          <div class="workflow-step reveal">
+            <div class="workflow-step-number" aria-hidden="true">03</div>
+            <h4>Question → explored map</h4>
+            <p>
+              No source needed. Type any question or topic and Mappy AI maps out what it knows. Keep chatting to
+              expand branches, ask follow-ups, or zoom in on any node with @mentions.
+            </p>
+          </div>
+          <div class="workflow-step reveal">
+            <div class="workflow-step-number" aria-hidden="true">04</div>
+            <h4>Topic → sourced map</h4>
+            <p>
+              Type a subject and Mappy AI searches the live web for real sources. It pulls in relevant articles and
+              references and builds a cited map — not from memory, from actual pages.
+            </p>
+          </div>
+          <div class="workflow-step reveal">
+            <div class="workflow-step-number" aria-hidden="true">05</div>
+            <h4>YouTube video / podcast → structured notes</h4>
+            <p>
+              Paste the link. Mappy AI pulls the transcript, structures it into a mindmap, and adds topic images so
+              you can skim the key points instead of going back through the whole thing.
+            </p>
+          </div>
+          <div class="workflow-step reveal">
+            <div class="workflow-step-number" aria-hidden="true">06</div>
+            <h4>Blank canvas → freeform map</h4>
+            <p>
+              Start from scratch and build your own map by hand. Add nodes, connect ideas, and rearrange as your
+              thinking evolves. Pull in AI to expand a branch or explore a tangent whenever you need it.
+            </p>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="pricing" id="pricing">
+        <div class="pricing-head reveal">
+          <h2>The right plan for where you are.</h2>
+          <p>Start free with AI included. Upgrade when you outgrow it.</p>
+        </div>
+
+        <input type="radio" name="billing" id="billing-yearly" class="billing-toggle-input" checked />
+        <input type="radio" name="billing" id="billing-monthly" class="billing-toggle-input" />
+
+        <div class="billing-toggle reveal" role="radiogroup" aria-label="Billing period">
+          <label for="billing-yearly" class="billing-toggle-pill">
+            <span>Yearly</span>
+            <span class="billing-save">Save 25%</span>
+          </label>
+          <label for="billing-monthly" class="billing-toggle-pill">
+            <span>Monthly</span>
+          </label>
+        </div>
+
+        <div class="pricing-grid">
+          <div class="plan-card reveal">
+            <h3 class="plan-title">Free</h3>
+            <p class="plan-price">$0<span class="plan-price-suffix">/month</span></p>
+            <p class="plan-tagline">Manual mindmapping for small personal projects.</p>
+            <ul class="plan-list plan-list-checks">
+              <li><span class="comparison-icon check"></span>Up to 3 mindmaps</li>
+              <li><span class="comparison-icon check"></span>5 AI generations (total)</li>
+              <li><span class="comparison-icon check"></span>Manual editing tools</li>
+              <li><span class="comparison-icon check"></span>Cloud sync</li>
+              <li class="is-negative"><span class="comparison-icon dash"></span>No collaboration features</li>
+              <li class="is-negative"><span class="comparison-icon dash"></span>No export features</li>
+            </ul>
+            <p class="plan-best">Best for: trying Mappy on a small scale, without collaboration or export.</p>
+            <a class="plan-cta plan-cta-ghost" href="https://app.mappy-ai.com/login.html?mode=signup&amp;ref=home_pricing_free_start">Get started</a>
+          </div>
+
+          <div class="plan-card featured reveal">
+            <span class="plan-badge-popular">Most popular</span>
+            <h3 class="plan-title">Pro</h3>
+            <p class="plan-price plan-price-yearly">$4.50<span class="plan-price-suffix">/month</span></p>
+            <p class="plan-price plan-price-monthly">$6<span class="plan-price-suffix">/month</span></p>
+            <p class="plan-billing-note plan-billing-note-yearly">Billed annually</p>
+            <p class="plan-billing-note plan-billing-note-monthly">Billed monthly</p>
+            <p class="plan-tagline">AI-powered individual plan.</p>
+            <ul class="plan-list plan-list-checks">
+              <li><span class="comparison-icon check"></span>Unlimited mindmaps</li>
+              <li><span class="comparison-icon check"></span>AI-generated mindmaps + explanations</li>
+              <li><span class="comparison-icon check"></span>40 AI generations per month</li>
+              <li><span class="comparison-icon check"></span>Export to PDF</li>
+              <li class="is-negative"><span class="comparison-icon dash"></span>No collaboration features</li>
+            </ul>
+            <p class="plan-best">Best for: individual users who need AI features and export.</p>
+            <a class="plan-cta plan-cta-primary plan-cta-yearly" href="https://app.mappy-ai.com/checkout.html?plan=yearly&amp;ref=home_pricing_pro_yearly">Get started</a>
+            <a class="plan-cta plan-cta-primary plan-cta-monthly" href="https://app.mappy-ai.com/checkout.html?plan=monthly&amp;ref=home_pricing_pro_monthly">Get started</a>
+          </div>
+
+          <div class="plan-card reveal">
+            <h3 class="plan-title">Max</h3>
+            <p class="plan-price plan-price-yearly">$11.25<span class="plan-price-suffix">/month</span></p>
+            <p class="plan-price plan-price-monthly">$15<span class="plan-price-suffix">/month</span></p>
+            <p class="plan-billing-note plan-billing-note-yearly">Billed annually</p>
+            <p class="plan-billing-note plan-billing-note-monthly">Billed monthly</p>
+            <p class="plan-tagline">Everything in Pro, plus collaboration and higher AI limits.</p>
+            <ul class="plan-list plan-list-checks">
+              <li><span class="comparison-icon check"></span>Everything in Pro</li>
+              <li><span class="comparison-icon check"></span>300 AI generations per month</li>
+              <li><span class="comparison-icon check"></span>Collaborative mindmapping</li>
+              <li><span class="comparison-icon check"></span>Priority support</li>
+            </ul>
+            <p class="plan-best">Best for: power users and teams that build maps together.</p>
+            <a class="plan-cta plan-cta-primary plan-cta-yearly" href="https://app.mappy-ai.com/checkout.html?plan=team-yearly&amp;ref=home_pricing_max_yearly">Get started</a>
+            <a class="plan-cta plan-cta-primary plan-cta-monthly" href="https://app.mappy-ai.com/checkout.html?plan=team-monthly&amp;ref=home_pricing_max_monthly">Get started</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq" id="faq">
+        <div class="faq-head reveal">
+          <h2>FAQ</h2>
+          <p>Everything you need to know before you start.</p>
+        </div>
+        <div class="faq-list">
+          <details class="reveal">
+            <summary>What is included in the free plan?</summary>
+            <p>Free includes up to 3 mindmaps, 5 AI generations (total), manual editing tools, and cloud sync. No subscription needed to get started. It does not include collaboration or PDF export.</p>
+          </details>
+          <details class="reveal">
+            <summary>What happens when I reach the 3-mindmap limit?</summary>
+            <p>You can still open, edit, and delete your existing mindmaps. To create more, upgrade to Pro or Max for unlimited mindmaps.</p>
+          </details>
+          <details class="reveal">
+            <summary>What is the difference between Pro and Max?</summary>
+            <p>Pro adds unlimited mindmaps, 40 AI generations per month, and PDF export. Max includes everything in Pro plus collaborative mindmapping, priority support, and 300 AI generations per month.</p>
+          </details>
+          <details class="reveal">
+            <summary>How many AI generations do I get?</summary>
+            <p>Free includes 5 AI generations total. Pro includes 40 generations per month. Max includes 300 generations per month. Chat and explain requests don't count — only mindmap generations, refines, and image attaches.</p>
+          </details>
+          <details class="reveal">
+            <summary>How does yearly billing work?</summary>
+            <p>The yearly price is shown as an effective monthly rate. Yearly billing gives a 25% discount compared with monthly billing.</p>
+          </details>
+          <details class="reveal">
+            <summary>What happens if I cancel?</summary>
+            <p>Your plan stays active until the end of the billing period. Your maps are never deleted.</p>
+          </details>
+          <details class="reveal">
+            <summary>How are my files used for AI?</summary>
+            <p>Files and links are used to ground your AI requests. We do not sell or share your data.</p>
+          </details>
+          <details class="reveal">
+            <summary>What file types can I upload?</summary>
+            <p>You can add PDFs, Word documents, slides, spreadsheets, images, audio, videos, and links to help Mappy AI ground its responses.</p>
+          </details>
+          <details class="reveal">
+            <summary>Can I export my mindmaps?</summary>
+            <p>Export to PDF is available on Pro and Max plans.</p>
+          </details>
+          <details class="reveal">
+            <summary>Is my data private?</summary>
+            <p>Your content stays in your workspace and is only used to answer your requests.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="cta reveal">
+        <div>
+          <h2>Turn anything into a mindmap.</h2>
+          <p>Start free with AI included. Upgrade when you need more.</p>
+        </div>
+        <a class="btn primary" href="#pricing">Try Mappy AI free</a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <a class="footer-brand" href="#top">
+        <img src="assets/mindmap_builder.svg" alt="Mappy AI logo" />
+        <span>Mappy AI</span>
+      </a>
+      <div class="footer-links">
+        <div class="footer-col">
+          <span class="footer-title">Product</span>
+          <a href="#why">Why Mappy AI</a>
+          <a href="#who">Who it's for</a>
+          <a href="#different">Our edge</a>
+          <a href="#features">Features</a>
+          <a href="#comparison">vs Others</a>
+          <a href="#workflow">Use cases</a>
+          <a href="schools/index.html">For Schools</a>
+          <a href="ai-mind-map-generator/index.html">AI generator</a>
+          <a href="study-notes-to-mind-map/index.html">Study notes</a>
+          <a href="exam-revision-mind-maps/index.html">Exam revision</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-title">Resources</span>
+          <a href="blog/">Blog</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-title">Access</span>
+          <a href="https://app.mappy-ai.com/login.html">Sign in</a>
+          <a href="#pricing">Try Mappy AI free</a>
+          <a href="#pricing">Plans</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-title">Legal</span>
+          <a href="terms.html">Terms</a>
+          <a href="privacy.html">Privacy</a>
+        </div>
+      </div>
+      <div class="footer-meta">© Mappy AI. All rights reserved.</div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

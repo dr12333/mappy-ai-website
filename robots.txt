@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /de/
+
+Sitemap: https://mappy-ai.com/sitemap.xml

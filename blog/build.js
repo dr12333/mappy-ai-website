@@ -24,6 +24,8 @@ const BLOG_DESC =
 const ROOT = path.resolve(__dirname, "..");
 const POSTS_DIR = path.join(__dirname, "posts");
 const BLOG_DIR = __dirname;
+const COMPARE_POSTS_DIR = path.join(ROOT, "compare", "posts");
+const COMPARE_DIR = path.join(ROOT, "compare");
 
 // Helpers
 function escapeXml(s) {
@@ -46,6 +48,56 @@ function formatDate(d) {
 
 function isoDate(d) {
   return new Date(d).toISOString();
+}
+
+function slugify(value) {
+  return value
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function estimateReadTime(content) {
+  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 220));
+}
+
+function extractHeadings(markdown) {
+  const seen = new Map();
+  return markdown
+    .split("\n")
+    .map((line) => line.match(/^(##|###)\s+(.+)$/))
+    .filter(Boolean)
+    .map(([, hashes, title]) => {
+      const base = slugify(title.trim());
+      const count = seen.get(base) || 0;
+      seen.set(base, count + 1);
+      const id = count === 0 ? base : `${base}-${count + 1}`;
+      return { depth: hashes.length, title: title.trim(), id };
+    });
+}
+
+function addHeadingAnchors(html, headings) {
+  let headingIndex = 0;
+
+  return html.replace(/<h([23])>([\s\S]*?)<\/h\1>/g, (match, rawDepth, innerHtml) => {
+    const depth = Number(rawDepth);
+    const heading = headings[headingIndex];
+
+    if (!heading || heading.depth !== depth) {
+      return match;
+    }
+
+    headingIndex += 1;
+    return `<h${depth} id="${heading.id}">${innerHtml}<a class="article-anchor" href="#${heading.id}" aria-label="Link to this section">#</a></h${depth}>`;
+  });
+}
+
+function renderTagChips(tags = [], className = "blog-tag") {
+  return tags
+    .map((tag) => `<span class="${className}">${escapeXml(tag)}</span>`)
+    .join("");
 }
 
 // Post-process: wrap FAQ section in semantic markup
@@ -93,13 +145,24 @@ function loadPosts() {
   return files.map((file) => {
     const raw = fs.readFileSync(path.join(POSTS_DIR, file), "utf8");
     const { data, content } = matter(raw);
-    const html = postProcessFaq(marked(content));
-    return { ...data, content: html, file };
+    const headings = extractHeadings(content);
+    const html = addHeadingAnchors(postProcessFaq(marked.parse(content)), headings);
+
+    return {
+      ...data,
+      author: data.author || "Mappy AI Team",
+      content: html,
+      file,
+      headings,
+      readTime: estimateReadTime(content),
+      tags: Array.isArray(data.tags) ? data.tags : [],
+      toc: headings.filter((heading) => heading.depth === 2),
+    };
   });
 }
 
 // Shared HTML fragments
-function headHtml({ title, description, url, isArticle }) {
+function headHtml({ title, description, url, isArticle, extraHead }) {
   const ogType = isArticle ? "article" : "website";
   return `<!DOCTYPE html>
 <html lang="en">
@@ -123,10 +186,11 @@ function headHtml({ title, description, url, isArticle }) {
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon_48x48.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon_32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon_16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title="${BLOG_TITLE}" href="${SITE_URL}/blog/feed.xml" />
     <link rel="stylesheet" href="/styles.css" />
     <link rel="stylesheet" href="/blog/blog.css" />
-    <script defer src="https://metrics.mappy-ai.com/script.js" data-website-id="82477cf9-ac03-4d35-9e62-6d16cd0c3d6b"></script>
+    <script defer src="https://metrics.mappy-ai.com/script.js" data-website-id="82477cf9-ac03-4d35-9e62-6d16cd0c3d6b"></script>${extraHead ? "\n    " + extraHead : ""}
   </head>`;
 }
 
@@ -178,7 +242,7 @@ function footerHtml() {
           <a href="/">Home</a>
           <a href="/#features">Features</a>
           <a href="/#pricing">Pricing</a>
-          <a href="/schools/index.html">For Schools</a>
+          <a href="/schools/">For Schools</a>
         </div>
         <div class="footer-col">
           <span class="footer-title">Resources</span>
@@ -198,6 +262,10 @@ function footerHtml() {
 // Generate post page
 function buildPost(post) {
   const url = `${SITE_URL}/blog/${post.slug}/`;
+  const tocHtml = post.toc
+    .map((item) => `<a href="#${item.id}">${escapeXml(item.title)}</a>`)
+    .join("");
+  const tagHtml = renderTagChips(post.tags, "article-tag");
   const html = `${headHtml({
     title: `${post.title} | ${BLOG_TITLE}`,
     description: post.description,
@@ -206,22 +274,48 @@ function buildPost(post) {
   })}
   <body>
     ${navHtml()}
-    <main>
-      <article>
-        <div class="article-header">
+    <main class="article-main">
+      <article class="article-shell">
+        <section class="article-hero reveal">
           <a class="blog-back" href="/blog/">Back to blog</a>
-          <p class="article-meta">${formatDate(post.date)}</p>
-          <h1>${escapeXml(post.title)}</h1>
-          <p class="article-desc">${escapeXml(post.description)}</p>
-        </div>
-        <div class="article-body">
-          ${post.content}
-          <div class="article-cta">
+          <div class="article-hero-frame">
+            <div class="article-meta-strip">
+              <span>${formatDate(post.date)}</span>
+              <span>${post.readTime} min read</span>
+              <span>${escapeXml(post.author)}</span>
+            </div>
+            <h1>${escapeXml(post.title)}</h1>
+            <p class="article-desc">${escapeXml(post.description)}</p>
+            ${tagHtml ? `<div class="article-tags">${tagHtml}</div>` : ""}
+          </div>
+        </section>
+        <div class="article-layout">
+          <aside class="article-sidebar reveal">
+            ${
+              tocHtml
+                ? `<div class="article-sidebar-card">
+              <p class="article-sidebar-title">In this guide</p>
+              <nav class="article-toc">${tocHtml}</nav>
+            </div>`
+                : ""
+            }
+            <div class="article-sidebar-card article-sidebar-card-accent">
+              <p class="article-sidebar-title">Build from source material</p>
+              <p>Upload PDFs, links, or notes and generate a source-grounded map you can refine branch by branch.</p>
+              <a class="btn primary" href="https://app.mappy-ai.com/login.html?mode=signup&amp;ref=blog_sidebar_cta">Try Mappy AI free</a>
+            </div>
+          </aside>
+          <div class="article-content">
+            <div class="article-body reveal">
+              ${post.content}
+            </div>
+            <div class="article-cta reveal">
             <div>
               <h3>Try it yourself</h3>
               <p>Upload a research paper and see the mind map in seconds.</p>
             </div>
             <a class="btn primary" href="https://app.mappy-ai.com/login.html?mode=signup&amp;ref=blog_cta">Start free</a>
+            </div>
           </div>
         </div>
       </article>
@@ -239,15 +333,17 @@ function buildPost(post) {
 // Generate blog index
 function buildIndex(posts) {
   const url = `${SITE_URL}/blog/`;
-  const cards = posts
+  const items = posts
     .map(
       (p) => `
-          <article class="blog-card">
-            <p class="blog-card-meta">${formatDate(p.date)}</p>
-            <h2><a href="/blog/${p.slug}/">${escapeXml(p.title)}</a></h2>
+          <a class="blog-index-item" href="/blog/${p.slug}/">
+            <div class="blog-index-item-meta">
+              <span>${formatDate(p.date)}</span>
+              <span>${p.readTime} min read</span>
+            </div>
+            <h2>${escapeXml(p.title)}</h2>
             <p>${escapeXml(p.description)}</p>
-            <a class="blog-card-link" href="/blog/${p.slug}/">Read more</a>
-          </article>`
+          </a>`
     )
     .join("\n");
 
@@ -257,18 +353,34 @@ function buildIndex(posts) {
     url,
     isArticle: false,
   })}
-  <body>
-    ${navHtml()}
-    <main>
-      <div class="blog-header">
-        <h1>Blog</h1>
-        <p>${escapeXml(BLOG_DESC)}</p>
-      </div>
-      <div class="blog-list">
-${cards}
-      </div>
+  <body class="blog-index-page">
+    <header class="blog-index-header">
+      <a class="brand" href="/">
+        <img src="/assets/mindmap_builder.svg" alt="Mappy AI logo" />
+        <span>Mappy AI</span>
+      </a>
+    </header>
+    <main class="blog-index-main">
+      <section class="blog-index-list-section">
+        <p class="blog-index-kicker">Blog</p>
+        <h1>Articles</h1>
+        <div class="blog-index-list">
+${items}
+        </div>
+      </section>
     </main>
-    ${footerHtml()}
+    <footer class="blog-index-footer">
+      <a class="footer-brand" href="/">
+        <img src="/assets/mindmap_builder.svg" alt="Mappy AI logo" />
+        <span>Mappy AI</span>
+      </a>
+      <div class="blog-index-footer-links">
+        <a href="/">Home</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+      </div>
+      <div class="footer-meta">&copy; Mappy AI. All rights reserved.</div>
+    </footer>
   </body>
 </html>`;
 
@@ -325,6 +437,129 @@ ${entries.join("\n")}
   console.log(`  ✓ blog/sitemap-blog.xml`);
 }
 
+// Load comparison posts
+function loadComparePosts() {
+  if (!fs.existsSync(COMPARE_POSTS_DIR)) return [];
+  const files = fs
+    .readdirSync(COMPARE_POSTS_DIR)
+    .filter((f) => f.endsWith(".md"))
+    .sort()
+    .reverse();
+
+  return files.map((file) => {
+    const raw = fs.readFileSync(path.join(COMPARE_POSTS_DIR, file), "utf8");
+    const { data, content } = matter(raw);
+    const headings = extractHeadings(content);
+    const html = addHeadingAnchors(postProcessFaq(marked.parse(content)), headings);
+
+    return {
+      ...data,
+      author: data.author || "Mappy AI Team",
+      content: html,
+      file,
+      headings,
+      readTime: estimateReadTime(content),
+      tags: Array.isArray(data.tags) ? data.tags : [],
+      toc: headings.filter((heading) => heading.depth === 2),
+    };
+  });
+}
+
+// Generate comparison page
+function buildComparePost(post) {
+  const url = `${SITE_URL}/compare/${post.slug}/`;
+  const tocHtml = post.toc
+    .map((item) => `<a href="#${item.id}">${escapeXml(item.title)}</a>`)
+    .join("");
+  const tagHtml = renderTagChips(post.tags, "article-tag");
+
+  const faqSchemaHtml = post.faqSchema
+    ? `<script type="application/ld+json">${JSON.stringify(post.faqSchema)}</script>`
+    : "";
+
+  const html = `${headHtml({
+    title: `${post.title} | ${SITE_NAME}`,
+    description: post.description,
+    url,
+    isArticle: true,
+    extraHead: faqSchemaHtml,
+  })}
+  <body>
+    ${navHtml()}
+    <main class="article-main">
+      <article class="article-shell">
+        <section class="article-hero reveal">
+          <a class="blog-back" href="/blog/">Back to blog</a>
+          <div class="article-hero-frame">
+            <div class="article-meta-strip">
+              <span>${formatDate(post.date)}</span>
+              <span>${post.readTime} min read</span>
+              <span>${escapeXml(post.author)}</span>
+            </div>
+            <h1>${escapeXml(post.title)}</h1>
+            <p class="article-desc">${escapeXml(post.description)}</p>
+            ${tagHtml ? `<div class="article-tags">${tagHtml}</div>` : ""}
+          </div>
+        </section>
+        <div class="article-layout">
+          <aside class="article-sidebar reveal">
+            ${
+              tocHtml
+                ? `<div class="article-sidebar-card">
+              <p class="article-sidebar-title">In this comparison</p>
+              <nav class="article-toc">${tocHtml}</nav>
+            </div>`
+                : ""
+            }
+            <div class="article-sidebar-card article-sidebar-card-accent">
+              <p class="article-sidebar-title">See the difference yourself</p>
+              <p>Upload your own files and see how Mappy AI turns them into source-grounded mind maps.</p>
+              <a class="btn primary" href="https://app.mappy-ai.com/login.html?mode=signup&amp;ref=compare_sidebar_cta">Try Mappy AI free</a>
+            </div>
+          </aside>
+          <div class="article-content">
+            <div class="article-body reveal">
+              ${post.content}
+            </div>
+            <div class="article-cta reveal">
+            <div>
+              <h3>Try it yourself</h3>
+              <p>Start free and see the difference in your first mind map.</p>
+            </div>
+            <a class="btn primary" href="https://app.mappy-ai.com/login.html?mode=signup&amp;ref=compare_cta">Start free</a>
+            </div>
+          </div>
+        </div>
+      </article>
+    </main>
+    ${footerHtml()}
+  </body>
+</html>`;
+
+  const dir = path.join(COMPARE_DIR, post.slug);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, "index.html"), html);
+  console.log(`  ✓ compare/${post.slug}/index.html`);
+}
+
+// Generate comparison sitemap fragment
+function buildCompareSitemap(comparePosts) {
+  if (comparePosts.length === 0) return;
+
+  const entries = comparePosts.map(
+    (p) =>
+      `  <url><loc>${SITE_URL}/compare/${p.slug}/</loc><lastmod>${isoDate(p.date).split("T")[0]}</lastmod><priority>0.8</priority></url>`
+  );
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${entries.join("\n")}
+</urlset>`;
+
+  fs.writeFileSync(path.join(COMPARE_DIR, "sitemap-compare.xml"), xml);
+  console.log(`  ✓ compare/sitemap-compare.xml`);
+}
+
 // Main
 console.log("Building Mappy AI blog...\n");
 const posts = loadPosts();
@@ -334,5 +569,12 @@ posts.forEach(buildPost);
 buildIndex(posts);
 buildFeed(posts);
 buildSitemap(posts);
+
+const comparePosts = loadComparePosts();
+if (comparePosts.length > 0) {
+  console.log(`\nFound ${comparePosts.length} comparison page(s)\n`);
+  comparePosts.forEach(buildComparePost);
+  buildCompareSitemap(comparePosts);
+}
 
 console.log("\nDone!");

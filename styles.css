@@ -454,6 +454,12 @@ html[lang="de"] .nav-cta .ghost {
   color: var(--muted);
 }
 
+.hero .eyebrow {
+  font-size: 11px;
+  line-height: 1.2;
+  max-width: none;
+}
+
 .hero h1 {
   font-size: clamp(44px, 5.4vw, 72px);
   line-height: 1.05;
@@ -472,7 +478,6 @@ html[lang="de"] .nav-cta .ghost {
   justify-content: center;
 }
 
-
 .hero-meta {
   font-size: 13px;
   color: var(--muted);
@@ -481,23 +486,6 @@ html[lang="de"] .nav-cta .ghost {
 .hero-visual {
   display: flex;
   justify-content: center;
-}
-
-.video-placeholder {
-  width: min(860px, 100%);
-  height: clamp(220px, 40vh, 420px);
-  border-radius: 18px;
-  border: 1.5px dashed rgba(214, 210, 200, 0.9);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.65), rgba(247, 245, 241, 0.9));
-  color: var(--muted);
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 16px;
 }
 
 .hero-video {
@@ -574,23 +562,6 @@ html[lang="de"] .nav-cta .ghost {
   width: 100%;
   max-width: 100%;
   margin: 0;
-}
-
-.feature-placeholder {
-  width: 100%;
-  aspect-ratio: 960 / 493;
-  border-radius: 14px;
-  border: 1.5px dashed rgba(214, 210, 200, 0.9);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(247, 245, 241, 0.9));
-  color: var(--muted);
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 12px;
 }
 
 .feature-video {
@@ -940,6 +911,8 @@ html[lang="de"] .nav-cta .ghost {
   border: 1px solid var(--stroke);
   background: #ffffff;
   box-shadow: 0 10px 18px rgba(32, 40, 45, 0.08);
+  display: flex;
+  flex-direction: column;
 }
 
 #different .audience-card {
@@ -1016,6 +989,20 @@ html[lang="de"] .nav-cta .ghost {
 .audience-card p {
   font-size: 13px;
   color: var(--muted);
+}
+
+.audience-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.audience-card-cta::after {
+  content: "→";
 }
 
 .audience-grid-links {

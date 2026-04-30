@@ -22,6 +22,7 @@
     <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon_48x48.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon_32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon_16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
     <link rel="stylesheet" href="styles.css" />
     <script defer src="https://metrics.mappy-ai.com/script.js" data-website-id="82477cf9-ac03-4d35-9e62-6d16cd0c3d6b"></script>
     <script type="application/ld+json">
@@ -92,40 +93,41 @@
         </nav>
         <div class="nav-cta">
           <a class="ghost" href="https://app.mappy-ai.com/login.html">Sign in</a>
-          <a class="btn primary" href="#pricing">Try Mappy AI free</a>
+          <a class="btn primary" href="https://app.mappy-ai.com/login.html?mode=signup&amp;ref=home_nav_signup">Start free</a>
         </div>
       </div>
     </header>
 
     <section class="audience-switch" aria-label="Audience switch">
       <div class="audience-switch-links">
-        <a class="is-active" href="index.html">Mappy AI</a>
-        <a href="schools/index.html">Mappy AI for Schools</a>
+        <a class="is-active" href="./">Mappy AI</a>
+        <a href="schools/">Mappy AI for Schools</a>
       </div>
     </section>
 
     <main>
       <section class="hero" id="top">
         <div class="hero-copy reveal">
-          <h1>Turn any source into a visual mindmap.</h1>
+          <p class="eyebrow">Source-grounded AI mind maps</p>
+          <h1>Turn PDFs, lectures, and videos into source-linked mind maps.</h1>
           <p>
-            Drop in PDFs, paste YouTube links, or record a lecture. Mappy AI structures the content, embeds the
-            relevant images, and keeps every node grounded in your sources.
+            Upload a file, paste a link, or record a lecture. Mappy AI maps the structure, pulls in relevant visuals,
+            and keeps every node tied back to the source material.
           </p>
           <div class="hero-actions">
-            <a class="btn primary" href="#pricing">Try Mappy AI free</a>
-          <a class="btn outline" href="#pricing">See plans</a>
+            <a class="btn primary" href="https://app.mappy-ai.com/login.html?mode=signup&amp;ref=home_hero_signup">Start free</a>
+            <a class="btn outline" href="#workflow">See how it works</a>
           </div>
-            <div class="hero-visual reveal">
-              <div class="hero-video-frame">
-                <video
-                  class="hero-video"
-                  autoplay
-                  muted
-                  loop
-                  playsinline
-                  preload="metadata"
-                >
+          <div class="hero-visual reveal">
+            <div class="hero-video-frame">
+              <video
+                class="hero-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              >
                 <source src="assets/hero_vid1.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
@@ -187,8 +189,8 @@
 
       <section class="audience-section" id="who">
         <div class="audience-header reveal">
-          <h2>Who Mappy AI is for</h2>
-          <p>Built for anyone who needs to turn complex material into something clear and memorable.</p>
+          <h2>Pick your starting point</h2>
+          <p>Choose the workflow that matches what you are trying to understand right now.</p>
         </div>
         <div class="audience-grid">
           <div class="audience-card reveal">
@@ -199,11 +201,12 @@
                 <line x1="22" y1="8.5" x2="22" y2="15"/>
               </svg>
             </div>
-            <h3>Students</h3>
+            <h3>Study faster</h3>
             <p>
               Drop in a textbook chapter or record the lecture. Get a structured map with figure snapshots embedded —
               revision-ready in minutes.
             </p>
+            <a class="audience-card-cta" href="study-notes-to-mind-map/">See study workflow</a>
           </div>
           <div class="audience-card reveal">
             <div class="audience-card-icon audience-card-icon-researchers" aria-hidden="true">
@@ -214,11 +217,12 @@
                 <line x1="8" y1="11" x2="14" y2="11"/>
               </svg>
             </div>
-            <h3>Researchers</h3>
+            <h3>Review papers with traceable sources</h3>
             <p>
               Upload a paper or paste the URL. Get a map of methodology, results, and references — each node linked
               back to the exact source page.
             </p>
+            <a class="audience-card-cta" href="blog/research-paper-to-mind-map/">See research workflow</a>
           </div>
           <div class="audience-card reveal">
             <div class="audience-card-icon audience-card-icon-teams" aria-hidden="true">
@@ -229,11 +233,12 @@
                 <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
               </svg>
             </div>
-            <h3>Teams</h3>
+            <h3>Build maps together</h3>
             <p>
               Build strategy maps together, invite teammates as editors or viewers, and export to PDF when you need
               to present. No more emailing files back and forth.
             </p>
+            <a class="audience-card-cta" href="#pricing">See team plan</a>
           </div>
         </div>
       </section>
@@ -342,7 +347,7 @@
                 playsinline
                 preload="metadata"
               >
-                <source src="assets/hero_vid1.mp4" type="video/mp4" />
+                <source src="assets/vis_mindmaps.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               </div>
@@ -380,7 +385,7 @@
           <div class="feature-card reveal">
             <div class="feature-media">
               <video class="feature-video" autoplay muted loop playsinline preload="metadata">
-                <source src="assets/aiscoped_vid.mp4" type="video/mp4" />
+                <source src="assets/expand_vid.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -567,7 +572,6 @@
         </div>
       </section>
 
-
       <section class="pricing" id="pricing">
         <div class="pricing-head reveal">
           <h2>The right plan for where you are.</h2>
@@ -620,8 +624,8 @@
               <li class="is-negative"><span class="comparison-icon dash"></span>No collaboration features</li>
             </ul>
             <p class="plan-best">Best for: individual users who need AI features and export.</p>
-            <a class="plan-cta plan-cta-primary plan-cta-yearly" href="https://app.mappy-ai.com/checkout.html?plan=yearly&amp;ref=home_pricing_pro_yearly">Get started</a>
-            <a class="plan-cta plan-cta-primary plan-cta-monthly" href="https://app.mappy-ai.com/checkout.html?plan=monthly&amp;ref=home_pricing_pro_monthly">Get started</a>
+            <a class="plan-cta plan-cta-primary plan-cta-yearly" href="https://app.mappy-ai.com/login.html?mode=signup&amp;redirect=checkout&amp;plan=yearly&amp;ref=home_pricing_pro_yearly">Get started</a>
+            <a class="plan-cta plan-cta-primary plan-cta-monthly" href="https://app.mappy-ai.com/login.html?mode=signup&amp;redirect=checkout&amp;plan=monthly&amp;ref=home_pricing_pro_monthly">Get started</a>
           </div>
 
           <div class="plan-card reveal">
@@ -638,8 +642,8 @@
               <li><span class="comparison-icon check"></span>Priority support</li>
             </ul>
             <p class="plan-best">Best for: power users and teams that build maps together.</p>
-            <a class="plan-cta plan-cta-primary plan-cta-yearly" href="https://app.mappy-ai.com/checkout.html?plan=team-yearly&amp;ref=home_pricing_max_yearly">Get started</a>
-            <a class="plan-cta plan-cta-primary plan-cta-monthly" href="https://app.mappy-ai.com/checkout.html?plan=team-monthly&amp;ref=home_pricing_max_monthly">Get started</a>
+            <a class="plan-cta plan-cta-primary plan-cta-yearly" href="https://app.mappy-ai.com/login.html?mode=signup&amp;redirect=checkout&amp;plan=team-yearly&amp;ref=home_pricing_max_yearly">Get started</a>
+            <a class="plan-cta plan-cta-primary plan-cta-monthly" href="https://app.mappy-ai.com/login.html?mode=signup&amp;redirect=checkout&amp;plan=team-monthly&amp;ref=home_pricing_max_monthly">Get started</a>
           </div>
         </div>
       </section>
@@ -698,7 +702,7 @@
           <h2>Turn anything into a mindmap.</h2>
           <p>Start free with AI included. Upgrade when you need more.</p>
         </div>
-        <a class="btn primary" href="#pricing">Try Mappy AI free</a>
+        <a class="btn primary" href="https://app.mappy-ai.com/login.html?mode=signup&amp;ref=home_bottom_signup">Start free</a>
       </section>
     </main>
 
@@ -716,21 +720,17 @@
           <a href="#features">Features</a>
           <a href="#comparison">vs Others</a>
           <a href="#workflow">Use cases</a>
-          <a href="schools/index.html">For Schools</a>
-          <a href="ai-mind-map-generator/index.html">AI generator</a>
-          <a href="study-notes-to-mind-map/index.html">Study notes</a>
-          <a href="exam-revision-mind-maps/index.html">Exam revision</a>
+          <a href="schools/">For Schools</a>
+          <a href="ai-mind-map-generator/">AI generator</a>
+          <a href="study-notes-to-mind-map/">Study notes</a>
+          <a href="exam-revision-mind-maps/">Exam revision</a>
           <a href="#pricing">Pricing</a>
           <a href="#faq">FAQ</a>
         </div>
         <div class="footer-col">
-          <span class="footer-title">Resources</span>
-          <a href="blog/">Blog</a>
-        </div>
-        <div class="footer-col">
           <span class="footer-title">Access</span>
           <a href="https://app.mappy-ai.com/login.html">Sign in</a>
-          <a href="#pricing">Try Mappy AI free</a>
+          <a href="https://app.mappy-ai.com/login.html?mode=signup&amp;ref=home_footer_signup">Start free</a>
           <a href="#pricing">Plans</a>
         </div>
         <div class="footer-col">

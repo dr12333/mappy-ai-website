@@ -2,11 +2,26 @@ if ("scrollRestoration" in history) {
   history.scrollRestoration = "manual";
 }
 
+const getHashTarget = (hash = window.location.hash) => {
+  if (!hash || hash === "#") return null;
+  const id = decodeURIComponent(hash.slice(1));
+  return document.getElementById(id);
+};
+
+function getScrollOffset() {
+  const nav = document.querySelector(".nav");
+  return nav ? nav.offsetHeight + 12 : 0;
+}
+
 window.addEventListener("load", () => {
-  if (window.location.hash) {
-    history.replaceState(null, "", window.location.pathname);
+  const target = getHashTarget();
+  if (!target) {
+    window.scrollTo(0, 0);
+    return;
   }
-  window.scrollTo(0, 0);
+
+  const targetY = target.getBoundingClientRect().top + window.pageYOffset - getScrollOffset();
+  window.scrollTo(0, targetY);
 });
 
 const reveals = document.querySelectorAll(".reveal");
@@ -205,11 +220,6 @@ const smoothScrollTo = (targetY) => {
   scrollRafId = requestAnimationFrame(step);
 };
 
-const getScrollOffset = () => {
-  const nav = document.querySelector(".nav");
-  return nav ? nav.offsetHeight + 12 : 0;
-};
-
 document.addEventListener("click", (event) => {
   const link = event.target.closest('a[href^="#"]');
   if (!link) return;
@@ -226,7 +236,7 @@ document.addEventListener("click", (event) => {
     return;
   }
 
-  const target = document.querySelector(href);
+  const target = getHashTarget(href);
   if (!target) return;
   event.preventDefault();
 

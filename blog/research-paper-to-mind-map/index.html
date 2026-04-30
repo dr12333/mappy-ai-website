@@ -20,6 +20,7 @@
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon_48x48.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon_32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon_16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title="Mappy AI Blog" href="https://mappy-ai.com/blog/feed.xml" />
     <link rel="stylesheet" href="/styles.css" />
     <link rel="stylesheet" href="/blog/blog.css" />
@@ -58,23 +59,43 @@
         </div>
       </div>
     </header>
-    <main>
-      <article>
-        <div class="article-header">
+    <main class="article-main">
+      <article class="article-shell">
+        <section class="article-hero reveal">
           <a class="blog-back" href="/blog/">Back to blog</a>
-          <p class="article-meta">April 30, 2026</p>
-          <h1>Research Paper to Mind Map: Turn Dense PDFs into Clear Visual Summaries</h1>
-          <p class="article-desc">Convert a research paper into a visual mind map with source-linked nodes, clearer structure, and faster review. See how the workflow works step by step.</p>
-        </div>
-        <div class="article-body">
-          <p>If you have ever stared at a 30-page research paper and wondered where to start, you are not alone. Dense academic PDFs are built for thoroughness, not for quick understanding. The information is all there, but the structure is buried inside linear pages, nested references, and walls of text.</p>
+          <div class="article-hero-frame">
+            <div class="article-meta-strip">
+              <span>April 30, 2026</span>
+              <span>5 min read</span>
+              <span>Mappy AI Team</span>
+            </div>
+            <h1>Research Paper to Mind Map: Turn Dense PDFs into Clear Visual Summaries</h1>
+            <p class="article-desc">Convert a research paper into a visual mind map with source-linked nodes, clearer structure, and faster review. See how the workflow works step by step.</p>
+            <div class="article-tags"><span class="article-tag">research</span><span class="article-tag">mind map</span><span class="article-tag">PDF</span><span class="article-tag">academic</span><span class="article-tag">study</span></div>
+          </div>
+        </section>
+        <div class="article-layout">
+          <aside class="article-sidebar reveal">
+            <div class="article-sidebar-card">
+              <p class="article-sidebar-title">In this guide</p>
+              <nav class="article-toc"><a href="#why-research-papers-are-hard-to-review-linearly">Why research papers are hard to review linearly</a><a href="#what-a-good-paper-to-map-workflow-looks-like">What a good paper-to-map workflow looks like</a><a href="#step-by-step-research-paper-to-mind-map">Step-by-step: research paper to mind map</a><a href="#what-to-look-for-in-a-research-mapping-tool">What to look for in a research mapping tool</a><a href="#faq">FAQ</a></nav>
+            </div>
+            <div class="article-sidebar-card article-sidebar-card-accent">
+              <p class="article-sidebar-title">Build from source material</p>
+              <p>Upload PDFs, links, or notes and generate a source-grounded map you can refine branch by branch.</p>
+              <a class="btn primary" href="https://app.mappy-ai.com/login.html?mode=signup&amp;ref=blog_sidebar_cta">Try Mappy AI free</a>
+            </div>
+          </aside>
+          <div class="article-content">
+            <div class="article-body reveal">
+              <p>If you have ever stared at a 30-page research paper and wondered where to start, you are not alone. Dense academic PDFs are built for thoroughness, not for quick understanding. The information is all there, but the structure is buried inside linear pages, nested references, and walls of text.</p>
 <p>A mind map changes the shape of that information. Instead of reading top to bottom and hoping the structure sticks, you get a visual overview where every branch connects back to the source material. That makes it faster to find what matters and easier to trust what the map shows you.</p>
 <p>Here is a step-by-step workflow for turning a research paper into a usable mind map — and why source-grounded mapping matters more than a quick AI summary.</p>
-<h2>Why research papers are hard to review linearly</h2>
+<h2 id="why-research-papers-are-hard-to-review-linearly">Why research papers are hard to review linearly<a class="article-anchor" href="#why-research-papers-are-hard-to-review-linearly" aria-label="Link to this section">#</a></h2>
 <p>Academic papers follow a fixed structure — abstract, introduction, methods, results, discussion — but the ideas inside rarely stay in neat boxes. A key finding in the results section might depend on a method explained 15 pages earlier. A limitation buried in the discussion might change how you interpret the abstract.</p>
 <p>Reading linearly means holding all of that in your head at once. For a single paper, that is manageable. For a literature review covering a dozen papers, it becomes a bottleneck.</p>
 <p>The core problem is not a lack of summaries. AI tools can compress a paper into a paragraph in seconds. The problem is trust: when a summary says &quot;the study found X,&quot; can you trace that back to the exact page and paragraph? If not, the summary is convenient but unreliable.</p>
-<h2>What a good paper-to-map workflow looks like</h2>
+<h2 id="what-a-good-paper-to-map-workflow-looks-like">What a good paper-to-map workflow looks like<a class="article-anchor" href="#what-a-good-paper-to-map-workflow-looks-like" aria-label="Link to this section">#</a></h2>
 <p>A useful research-to-map workflow has three properties:</p>
 <ol>
 <li><strong>Speed</strong> — the first draft should take seconds, not hours.</li>
@@ -82,16 +103,16 @@
 <li><strong>Traceability</strong> — every node on the map should link back to the source page so you can verify claims without rereading the whole paper.</li>
 </ol>
 <p>Most AI summary tools give you the first property but skip the other two. That is why source-grounded mind maps are a better fit for research work.</p>
-<h2>Step-by-step: research paper to mind map</h2>
-<h3>Step 1 — Upload the paper</h3>
+<h2 id="step-by-step-research-paper-to-mind-map">Step-by-step: research paper to mind map<a class="article-anchor" href="#step-by-step-research-paper-to-mind-map" aria-label="Link to this section">#</a></h2>
+<h3 id="step-1-upload-the-paper">Step 1 — Upload the paper<a class="article-anchor" href="#step-1-upload-the-paper" aria-label="Link to this section">#</a></h3>
 <p>Start by uploading the PDF directly. The tool reads the full document, including figures, tables, and section headers. This is better than copy-pasting text because it preserves the document structure and page references.</p>
-<h3>Step 2 — Generate the first structure</h3>
+<h3 id="step-2-generate-the-first-structure">Step 2 — Generate the first structure<a class="article-anchor" href="#step-2-generate-the-first-structure" aria-label="Link to this section">#</a></h3>
 <p>The AI builds a mind map from the paper&#39;s content. The central node is the paper title or thesis. Main branches map to sections like methods, key findings, and conclusions. Sub-branches capture the specific claims, data points, and definitions within each section.</p>
 <p>This first draft is a starting point, not a finished product. It captures the shape of the paper quickly so you can start working with the structure rather than building it from scratch.</p>
-<h3>Step 3 — Check source-linked nodes</h3>
+<h3 id="step-3-check-source-linked-nodes">Step 3 — Check source-linked nodes<a class="article-anchor" href="#step-3-check-source-linked-nodes" aria-label="Link to this section">#</a></h3>
 <p>This is the step that separates a useful map from a pretty diagram. Each node should be traceable to a specific page or passage in the original PDF. When you click a node, you should be able to see exactly where that claim came from.</p>
 <p>If a node says &quot;dropout rate was 12% in the control group,&quot; you should be able to open the source and verify that number on the original page. That traceability is what makes the map trustworthy for real academic work.</p>
-<h3>Step 4 — Refine only the weak branches</h3>
+<h3 id="step-4-refine-only-the-weak-branches">Step 4 — Refine only the weak branches<a class="article-anchor" href="#step-4-refine-only-the-weak-branches" aria-label="Link to this section">#</a></h3>
 <p>You do not need to edit the entire map. Focus on the branches that matter most for your purpose:</p>
 <ul>
 <li><strong>For a literature review</strong>: expand the findings and methodology branches, collapse the introduction.</li>
@@ -99,7 +120,7 @@
 <li><strong>For a research proposal</strong>: expand the gaps and limitations, collapse the background context.</li>
 </ul>
 <p>Branch-scoped refinement means the AI improves just the part you point at without regenerating the whole map. Your manual edits on other branches stay intact.</p>
-<h3>Step 5 — Use the final map for review</h3>
+<h3 id="step-5-use-the-final-map-for-review">Step 5 — Use the final map for review<a class="article-anchor" href="#step-5-use-the-final-map-for-review" aria-label="Link to this section">#</a></h3>
 <p>The finished map is a single visual overview you can return to whenever you need to recall the paper. Use it for:</p>
 <ul>
 <li><strong>Literature reviews</strong> — compare maps from multiple papers side by side to spot patterns and contradictions.</li>
@@ -107,7 +128,7 @@
 <li><strong>Writing support</strong> — reference specific source-linked nodes when drafting your own paper or presentation.</li>
 <li><strong>Collaboration</strong> — share the map with a study group so everyone starts from the same structured overview.</li>
 </ul>
-<h2>What to look for in a research mapping tool</h2>
+<h2 id="what-to-look-for-in-a-research-mapping-tool">What to look for in a research mapping tool<a class="article-anchor" href="#what-to-look-for-in-a-research-mapping-tool" aria-label="Link to this section">#</a></h2>
 <p>Not every mind map tool is built for academic work. When evaluating options, check for:</p>
 <ul>
 <li><strong>PDF support</strong> — can you upload the paper directly, or do you need to copy-paste text?</li>
@@ -117,18 +138,20 @@
 <li><strong>Edit preservation</strong> — if you manually adjust a branch, does the AI respect those changes on the next refinement?</li>
 </ul>
 <p>These features matter because research work demands accuracy. A tool that generates a nice-looking diagram but loses the connection to the source material is not saving you time — it is adding a verification step.</p>
-<div class="faq"><h2>FAQ</h2>
+<div class="faq"><h2 id="faq">FAQ<a class="article-anchor" href="#faq" aria-label="Link to this section">#</a></h2>
 <div class="faq-item"><p class="faq-q">Can I map a paper that is not in English?</p><p class="faq-a">Yes. AI-powered tools generally handle multilingual PDFs, though results are strongest for widely studied languages.</p></div>
 <div class="faq-item"><p class="faq-q">How long does it take to generate a map from a 30-page paper?</p><p class="faq-a">The initial map typically generates in under a minute. Refinement depends on how many branches you choose to expand.</p></div>
 <div class="faq-item"><p class="faq-q">Can I map multiple papers into one overview?</p><p class="faq-a">You can create individual maps per paper and compare them visually. Some tools also support merging maps for cross-paper synthesis.</p></div>
 <div class="faq-item"><p class="faq-q">Is the map editable after generation?</p><p class="faq-a">Yes. You can drag branches, rename nodes, add notes, and restructure the hierarchy. The point is to start from a strong first draft and refine from there.</p></div></div>
 
-          <div class="article-cta">
+            </div>
+            <div class="article-cta reveal">
             <div>
               <h3>Try it yourself</h3>
               <p>Upload a research paper and see the mind map in seconds.</p>
             </div>
             <a class="btn primary" href="https://app.mappy-ai.com/login.html?mode=signup&amp;ref=blog_cta">Start free</a>
+            </div>
           </div>
         </div>
       </article>
@@ -145,7 +168,7 @@
           <a href="/">Home</a>
           <a href="/#features">Features</a>
           <a href="/#pricing">Pricing</a>
-          <a href="/schools/index.html">For Schools</a>
+          <a href="/schools/">For Schools</a>
         </div>
         <div class="footer-col">
           <span class="footer-title">Resources</span>

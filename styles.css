@@ -2032,14 +2032,22 @@ html[lang="de"] .nav-cta .ghost {
 /* Base reveal — fades up with visible scale-in so it reads as
    "settling into place" rather than just "moving up." Bigger movement
    (48px / scale 0.94) than the conservative first pass so the motion
-   actually registers. The cubic-bezier(0.22, 1, 0.36, 1) is
-   ease-out-quart: starts fast, eases out long — masks the larger
-   distance with a quick initial burst followed by a graceful settle. */
+   actually registers.
+
+   Two different easings on purpose:
+     - transform uses cubic-bezier(0.22, 1, 0.36, 1) (ease-out-quart)
+       so the element snaps into position with a satisfying settle.
+     - opacity uses plain `ease` (symmetric) so the fade rises evenly
+       throughout the duration. With the same ease-out-quart applied
+       to opacity, the alpha hits ~85% in the first 30% of the
+       duration, which the eye reads as "instantly visible" — the
+       fade becomes invisible and the entrance feels like a pure
+       slide-in. Decoupling fixes that. */
 .reveal {
   opacity: 0;
   transform: translateY(48px) scale(0.94);
   transition:
-    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 1.1s ease,
     transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }

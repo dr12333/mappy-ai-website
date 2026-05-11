@@ -2029,17 +2029,18 @@ html[lang="de"] .nav-cta .ghost {
   margin-top: 0;
 }
 
-/* Base reveal — fades up with a hair of scale-in so it reads as
-   "settling into place" rather than just "moving up." The
-   cubic-bezier(0.22, 1, 0.36, 1) is ease-out-quart: starts fast, eases
-   out long. Feels more premium than plain `ease`, which is symmetric
-   and reads slightly mechanical. */
+/* Base reveal — fades up with visible scale-in so it reads as
+   "settling into place" rather than just "moving up." Bigger movement
+   (48px / scale 0.94) than the conservative first pass so the motion
+   actually registers. The cubic-bezier(0.22, 1, 0.36, 1) is
+   ease-out-quart: starts fast, eases out long — masks the larger
+   distance with a quick initial burst followed by a graceful settle. */
 .reveal {
   opacity: 0;
-  transform: translateY(28px) scale(0.985);
+  transform: translateY(48px) scale(0.94);
   transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 
@@ -2049,19 +2050,22 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 /* Stagger child reveals when their parent has .reveal-stagger. Each
-   direct child gets an extra 80ms delay so they appear in sequence
-   instead of all at once — turns a flat "everything pops in" moment
-   into a brief cascade.
+   direct child gets an extra 120ms delay so they appear in sequence
+   instead of all at once — a more pronounced cascade than the first
+   pass (80ms), now visible enough that the eye tracks each card
+   landing rather than perceiving them as a single group.
 
-   Capped at the 5th child so a long workflow / pricing list doesn't
-   leave the bottom items with a half-second wait while the user is
-   already looking at them. */
+   Capped at the 7th child so longer lists (workflow has 6) still get
+   the full cascade, but anything beyond a typical section length
+   doesn't leave the bottom items waiting on the user. */
 .reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
-.reveal-stagger > .reveal:nth-child(2) { transition-delay: 80ms; }
-.reveal-stagger > .reveal:nth-child(3) { transition-delay: 160ms; }
-.reveal-stagger > .reveal:nth-child(4) { transition-delay: 240ms; }
-.reveal-stagger > .reveal:nth-child(5) { transition-delay: 320ms; }
-.reveal-stagger > .reveal:nth-child(n+6) { transition-delay: 320ms; }
+.reveal-stagger > .reveal:nth-child(2) { transition-delay: 120ms; }
+.reveal-stagger > .reveal:nth-child(3) { transition-delay: 240ms; }
+.reveal-stagger > .reveal:nth-child(4) { transition-delay: 360ms; }
+.reveal-stagger > .reveal:nth-child(5) { transition-delay: 480ms; }
+.reveal-stagger > .reveal:nth-child(6) { transition-delay: 600ms; }
+.reveal-stagger > .reveal:nth-child(7) { transition-delay: 720ms; }
+.reveal-stagger > .reveal:nth-child(n+8) { transition-delay: 720ms; }
 
 /* Direction variants — slide horizontally instead of vertically. Used
    on the few two-column layouts where a left/right entrance reinforces
@@ -2078,9 +2082,51 @@ html[lang="de"] .nav-cta .ghost {
   transform: translateX(0) scale(1);
 }
 
+/* ── Interactive motion ───────────────────────────────────────────
+   Scroll-reveal is one-shot motion. To make the page feel ALIVE while
+   the user is on it (not just on first encounter), add subtle hover
+   lifts on the main cards + a gentle continuous float on the active
+   feature-tab eyebrow pill. Each piece is small on its own; together
+   they make hover feel responsive and the static page feel less static. */
+
+/* Card hover lift — small translate-up with a shadow boost. Applies
+   to the four main card families: why-cards, audience-cards (who-it's-
+   for grid), workflow-steps, and plan-cards. */
+.why-card,
+.audience-card,
+.workflow-step,
+.plan-card {
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.why-card:hover,
+.audience-card:hover,
+.workflow-step:hover,
+.plan-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Gentle continuous float on the active feature-tab eyebrow pill.
+   Picks up where the entrance animation leaves off — the eye is
+   already drawn to that area; a slow 3s bob keeps it from feeling
+   frozen without becoming distracting. */
+@keyframes eyebrow-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+.features-tab-panel.is-active .features-tab-eyebrow {
+  animation: eyebrow-float 3s ease-in-out infinite;
+}
+
 /* Reduced-motion users: skip the slide-in and shrink, keep a quick
    fade so the page doesn't feel broken (full disable would leave
-   long pre-reveal opacity:0 frames during scroll). */
+   long pre-reveal opacity:0 frames during scroll). Hover lifts and
+   the eyebrow float are also disabled — both qualify as decorative
+   motion under prefers-reduced-motion. */
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .reveal.from-left,
@@ -2089,6 +2135,15 @@ html[lang="de"] .nav-cta .ghost {
     transition: opacity 0.25s ease !important;
     transition-delay: 0s !important;
     transform: none !important;
+  }
+  .why-card:hover,
+  .audience-card:hover,
+  .workflow-step:hover,
+  .plan-card:hover {
+    transform: none;
+  }
+  .features-tab-panel.is-active .features-tab-eyebrow {
+    animation: none;
   }
 }
 

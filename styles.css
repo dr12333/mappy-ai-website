@@ -10,8 +10,19 @@
   --coral: #ff9c7f;
   --mint: #9fe2d0;
   --sky: #9ebcff;
-  --shadow: 0 18px 40px rgba(32, 40, 45, 0.18);
-  --page-width: 980px;
+  /* Three-step shadow scale. Replaces 30+ one-off box-shadow values
+     scattered through the file. Every shadow in the codebase should
+     map to one of these — sm for hover lifts and small chrome, md
+     for cards / nav / dropdowns (the default), lg for featured
+     elements that should visually float (pillar comparison column,
+     pricing-card hover). */
+  --shadow-sm: 0 6px 14px rgba(32, 40, 45, 0.08);
+  --shadow-md: 0 14px 28px rgba(32, 40, 45, 0.10);
+  --shadow-lg: 0 24px 48px rgba(32, 40, 45, 0.14);
+  /* Legacy alias kept temporarily for any rule that still references
+     --shadow directly. New code should use --shadow-md. */
+  --shadow: var(--shadow-md);
+  --page-width: 1240px;
   --logo-size: 36px;
   --logo-font-size: 18px;
 }
@@ -104,7 +115,7 @@ h4 {
   backdrop-filter: blur(12px);
   border: 1.5px solid rgba(214, 210, 200, 0.9);
   border-radius: 16px;
-  box-shadow: 0 18px 30px rgba(32, 40, 45, 0.12);
+  box-shadow: var(--shadow-md);
 }
 
 .brand {
@@ -189,7 +200,7 @@ h4 {
   background: #ffffff;
   border: 1px solid var(--stroke);
   border-radius: 10px;
-  box-shadow: 0 12px 22px rgba(32, 40, 45, 0.14);
+  box-shadow: var(--shadow-md);
   padding: 6px;
   display: grid;
   gap: 2px;
@@ -286,19 +297,19 @@ html[lang="de"] .nav-cta .ghost {
   flex-direction: column;
   gap: 4px;
   cursor: pointer;
-  box-shadow: 0 10px 18px rgba(32, 40, 45, 0.12);
+  box-shadow: var(--shadow-sm);
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
 .nav-toggle:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 22px rgba(32, 40, 45, 0.18);
+  box-shadow: var(--shadow-md);
   background: #ffffff;
 }
 
 .nav-toggle:active {
   transform: translateY(0);
-  box-shadow: 0 8px 14px rgba(32, 40, 45, 0.16);
+  box-shadow: var(--shadow-sm);
 }
 
 .nav-toggle span {
@@ -384,7 +395,7 @@ html[lang="de"] .nav-cta .ghost {
   font-weight: 500;
   font-size: 15px;
   font-family: inherit;
-  box-shadow: 0 10px 18px rgba(60, 60, 67, 0.12);
+  box-shadow: var(--shadow-sm);
   height: 44px;
   gap: 6px;
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
@@ -394,7 +405,7 @@ html[lang="de"] .nav-cta .ghost {
   background: var(--accent);
   border-color: var(--accent);
   color: #ffffff;
-  box-shadow: 0 12px 18px rgba(60, 60, 67, 0.18);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn.primary:hover {
@@ -417,7 +428,7 @@ html[lang="de"] .nav-cta .ghost {
 .btn:hover,
 .ghost:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 22px rgba(60, 60, 67, 0.18);
+  box-shadow: var(--shadow-md);
   background: #ffffff;
 }
 
@@ -510,7 +521,7 @@ html[lang="de"] .nav-cta .ghost {
   background-size: 100% 100%, 240% 240%;
   background-position: 0 0, 0% 50%;
   animation: aiBorderShift 10s ease-in-out infinite;
-  box-shadow: 0 18px 32px rgba(32, 40, 45, 0.16);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
   line-height: 0;
 }
@@ -537,7 +548,7 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 18px;
   background: var(--surface-strong);
   border: 1px solid var(--stroke);
-  box-shadow: 0 16px 28px rgba(32, 40, 45, 0.12);
+  box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -607,12 +618,12 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 18px;
   border: 1px solid var(--stroke);
   background: var(--surface-strong);
-  box-shadow: 0 16px 28px rgba(32, 40, 45, 0.12);
+  box-shadow: var(--shadow-md);
 }
 
 .why-card.highlight {
   border-color: var(--accent);
-  box-shadow: 0 20px 36px rgba(32, 40, 45, 0.16);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-8px);
 }
 
@@ -714,9 +725,7 @@ html[lang="de"] .nav-cta .ghost {
      and the deep shadow are enough to make the column read as a
      raised card. A real border created sub-pixel mismatch at the
      header's rounded corners against the card's outer curve. */
-  box-shadow:
-    0 22px 50px rgba(32, 40, 45, 0.18),
-    0 4px 12px rgba(32, 40, 45, 0.08);
+  box-shadow: var(--shadow-lg);
   z-index: 0;
 }
 
@@ -899,7 +908,7 @@ html[lang="de"] .nav-cta .ghost {
     background: var(--surface-strong);
     border: 1.5px solid var(--accent);
     border-radius: 14px;
-    box-shadow: 0 12px 24px rgba(32, 40, 45, 0.10);
+    box-shadow: var(--shadow-md);
     margin: 0;
     padding: 14px 16px;
     font-weight: 500;
@@ -957,7 +966,7 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 14px;
   border: 1px solid var(--stroke);
   background: #ffffff;
-  box-shadow: 0 10px 18px rgba(32, 40, 45, 0.08);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
 }
@@ -999,10 +1008,17 @@ html[lang="de"] .nav-cta .ghost {
   background-color: #f7f5f1;
 }
 
+/* Icon treatment: was a 48px filled-dark-square with a white SVG inside,
+   which read as a templated Webflow-era pattern. Now an outlined square
+   with a monochrome ink-colored icon — quieter, more premium-feeling,
+   consistent across all five variants without color-coding each one. */
 .audience-card-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1.5px solid var(--stroke);
+  background: var(--surface-strong);
+  color: var(--ink);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1016,16 +1032,20 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .audience-card-icon-mappy svg {
-  width: 34px;
-  height: 34px;
+  width: 26px;
+  height: 26px;
 }
 
+/* The legacy per-variant background rule. Kept empty (no background
+   override) so the outlined treatment above wins — all five icon
+   variants now share one neutral look. Previously each variant
+   inherited a dark filled `background: var(--accent)` from this rule. */
 .audience-card-icon-students,
 .audience-card-icon-researchers,
 .audience-card-icon-teams,
 .audience-card-icon-mappy,
 .audience-card-icon-notes {
-  background: var(--accent);
+  /* intentionally empty — uses .audience-card-icon base treatment */
 }
 
 .audience-card h3 {
@@ -1081,7 +1101,7 @@ html[lang="de"] .nav-cta .ghost {
 .audience-link-card:focus-visible {
   transform: translateY(-4px);
   border-color: var(--accent);
-  box-shadow: 0 18px 28px rgba(32, 40, 45, 0.14);
+  box-shadow: var(--shadow-md);
 }
 
 .evidence-card {
@@ -1130,7 +1150,7 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 14px;
   border: 1px solid var(--stroke);
   background: var(--surface-strong);
-  box-shadow: 0 10px 18px rgba(32, 40, 45, 0.08);
+  box-shadow: var(--shadow-sm);
 }
 
 .workflow-step-number {
@@ -1197,7 +1217,7 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 18px;
   padding: 24px;
   background: #ffffff;
-  box-shadow: 0 14px 26px rgba(60, 60, 67, 0.12);
+  box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -1206,7 +1226,7 @@ html[lang="de"] .nav-cta .ghost {
 
 .plan-card.featured {
   border-color: #2f3437;
-  box-shadow: 0 18px 32px rgba(60, 60, 67, 0.18);
+  box-shadow: var(--shadow-lg);
   transform: none;
 }
 
@@ -1417,12 +1437,12 @@ html[lang="de"] .nav-cta .ghost {
   background: var(--accent);
   color: #ffffff;
   border: 1.5px solid var(--accent);
-  box-shadow: 0 12px 18px rgba(60, 60, 67, 0.18);
+  box-shadow: var(--shadow-sm);
 }
 
 .plan-cta-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 24px rgba(60, 60, 67, 0.22);
+  box-shadow: var(--shadow-md);
   color: #ffffff;
 }
 
@@ -1430,13 +1450,13 @@ html[lang="de"] .nav-cta .ghost {
   background: #f7f7f5;
   color: var(--ink);
   border: 1.5px solid var(--stroke);
-  box-shadow: 0 10px 18px rgba(60, 60, 67, 0.10);
+  box-shadow: var(--shadow-sm);
 }
 
 .plan-cta-ghost:hover {
   transform: translateY(-2px);
   background: #ffffff;
-  box-shadow: 0 14px 22px rgba(60, 60, 67, 0.14);
+  box-shadow: var(--shadow-md);
 }
 
 @media (max-width: 720px) {
@@ -1520,7 +1540,7 @@ html[lang="de"] .nav-cta .ghost {
   background: #2f3437;
   border-color: #2f3437;
   color: #ffffff;
-  box-shadow: 0 12px 18px rgba(60, 60, 67, 0.18);
+  box-shadow: var(--shadow-sm);
 }
 
 .pricing-card {
@@ -1528,14 +1548,14 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 18px;
   border: 1px solid var(--stroke);
   background: var(--surface-strong);
-  box-shadow: 0 16px 28px rgba(32, 40, 45, 0.12);
+  box-shadow: var(--shadow-md);
   display: grid;
   gap: 12px;
 }
 
 .pricing-card.featured {
   border-color: var(--accent);
-  box-shadow: 0 20px 36px rgba(32, 40, 45, 0.16);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-8px);
 }
 
@@ -1689,7 +1709,7 @@ html[lang="de"] .nav-cta .ghost {
   border: 1px solid var(--stroke);
   border-radius: 14px;
   padding: 20px;
-  box-shadow: 0 24px 46px rgba(32, 40, 45, 0.2);
+  box-shadow: var(--shadow-lg);
   display: grid;
   gap: 12px;
 }

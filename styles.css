@@ -2029,15 +2029,67 @@ html[lang="de"] .nav-cta .ghost {
   margin-top: 0;
 }
 
+/* Base reveal — fades up with a hair of scale-in so it reads as
+   "settling into place" rather than just "moving up." The
+   cubic-bezier(0.22, 1, 0.36, 1) is ease-out-quart: starts fast, eases
+   out long. Feels more premium than plain `ease`, which is symmetric
+   and reads slightly mechanical. */
 .reveal {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(28px) scale(0.985);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
 }
 
 .reveal.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+}
+
+/* Stagger child reveals when their parent has .reveal-stagger. Each
+   direct child gets an extra 80ms delay so they appear in sequence
+   instead of all at once — turns a flat "everything pops in" moment
+   into a brief cascade.
+
+   Capped at the 5th child so a long workflow / pricing list doesn't
+   leave the bottom items with a half-second wait while the user is
+   already looking at them. */
+.reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
+.reveal-stagger > .reveal:nth-child(2) { transition-delay: 80ms; }
+.reveal-stagger > .reveal:nth-child(3) { transition-delay: 160ms; }
+.reveal-stagger > .reveal:nth-child(4) { transition-delay: 240ms; }
+.reveal-stagger > .reveal:nth-child(5) { transition-delay: 320ms; }
+.reveal-stagger > .reveal:nth-child(n+6) { transition-delay: 320ms; }
+
+/* Direction variants — slide horizontally instead of vertically. Used
+   on the few two-column layouts where a left/right entrance reinforces
+   the column relationship. Apply with .reveal.from-left or
+   .reveal.from-right in HTML. */
+.reveal.from-left {
+  transform: translateX(-36px) scale(0.985);
+}
+.reveal.from-right {
+  transform: translateX(36px) scale(0.985);
+}
+.reveal.from-left.is-visible,
+.reveal.from-right.is-visible {
+  transform: translateX(0) scale(1);
+}
+
+/* Reduced-motion users: skip the slide-in and shrink, keep a quick
+   fade so the page doesn't feel broken (full disable would leave
+   long pre-reveal opacity:0 frames during scroll). */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.from-left,
+  .reveal.from-right,
+  .reveal-stagger > .reveal {
+    transition: opacity 0.25s ease !important;
+    transition-delay: 0s !important;
+    transform: none !important;
+  }
 }
 
 @keyframes pulse {

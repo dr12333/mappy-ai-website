@@ -685,6 +685,177 @@ html[lang="de"] .nav-cta .ghost {
   gap: 24px;
 }
 
+/* ── Features tabs (consolidates the old "different" + "features" sections)
+   Pattern: pill-style horizontal tab bar centered above one large panel
+   showing the active feature's video + copy. All five panels are
+   rendered in the DOM (SEO) but only the active one is displayed;
+   videos for inactive panels are paused via script.js to keep only one
+   moving thing on screen. */
+.features-tabs {
+  margin: 60px 0 20px;
+  display: grid;
+  gap: 32px;
+}
+
+.features-tabs-header {
+  text-align: center;
+  display: grid;
+  gap: 8px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.features-tabs-header h2 {
+  font-size: 30px;
+}
+
+.features-tabs-header p {
+  color: var(--muted);
+}
+
+.features-tabs-control {
+  display: flex;
+  gap: 4px;
+  background: var(--accent-soft);
+  padding: 6px;
+  border-radius: 999px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  /* Horizontal scroll fallback when the bar doesn't fit; mobile media
+     query below hides the scrollbar chrome. */
+  overflow-x: auto;
+}
+
+.features-tab {
+  border: none;
+  background: transparent;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.features-tab:hover {
+  color: var(--ink);
+}
+
+.features-tab.is-active {
+  background: var(--surface-strong);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+
+.features-tab-panels {
+  background: var(--surface-strong);
+  border: 1px solid var(--stroke);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: var(--shadow-md);
+}
+
+.features-tab-panel {
+  display: none;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.features-tab-panel.is-active {
+  display: grid;
+  /* Subtle fade-in when switching tabs — avoids the abrupt content
+     swap that makes tabbed UIs feel clunky. */
+  animation: features-tab-fade 0.25s ease-out;
+}
+
+@keyframes features-tab-fade {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.features-tab-media {
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--accent-soft);
+  aspect-ratio: 16 / 11;
+}
+
+.features-tab-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.features-tab-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.features-tab-eyebrow {
+  display: inline-block;
+  align-self: flex-start;
+  background: var(--sun);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.features-tab-copy h3 {
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.features-tab-copy p {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Mobile: tab bar scrolls horizontally without visible chrome; panel
+   stacks vertically (media on top, copy below). */
+@media (max-width: 720px) {
+  .features-tabs-control {
+    width: 100%;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px;
+    justify-content: flex-start;
+  }
+  .features-tabs-control::-webkit-scrollbar {
+    display: none;
+  }
+
+  .features-tab-panels {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .features-tab-panel.is-active {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .features-tab-copy h3 {
+    font-size: 22px;
+  }
+
+  .features-tab-copy p {
+    font-size: 15px;
+  }
+}
+
 .comparison {
   margin: 60px 0 20px;
   display: grid;

@@ -255,3 +255,64 @@ document.addEventListener("click", (event) => {
 
   history.pushState(null, "", href);
 });
+
+// ── Features tabs ───────────────────────────────────────────────────
+// Switches the active panel in the "What makes Mappy AI different"
+// section. All panels live in the DOM (SEO); CSS shows only the active
+// one. Videos are paused on inactive panels so only one is moving at
+// a time — that's the main reason we replaced the old 6-card grid.
+(() => {
+  const tabs = Array.from(document.querySelectorAll(".features-tab"));
+  const panels = Array.from(document.querySelectorAll(".features-tab-panel"));
+  if (!tabs.length || !panels.length) return;
+
+  const activate = (targetId) => {
+    panels.forEach((panel) => {
+      const isActive = panel.dataset.panel === targetId;
+      panel.classList.toggle("is-active", isActive);
+      const video = panel.querySelector("video");
+      if (video) {
+        if (isActive) {
+          video.currentTime = 0;
+          // Some browsers reject autoplay until a user interaction; the
+          // tab click IS the gesture so play() should succeed here, but
+          // swallow the promise rejection just in case (reduced-motion,
+          // battery saver, etc).
+          const playPromise = video.play();
+          if (playPromise && typeof playPromise.catch === "function") {
+            playPromise.catch(() => {});
+          }
+        } else {
+          video.pause();
+        }
+      }
+    });
+    tabs.forEach((tab) => {
+      const isActive = tab.dataset.target === targetId;
+      tab.classList.toggle("is-active", isActive);
+      tab.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => activate(tab.dataset.target));
+  });
+
+  // On load, only the initially-active panel's video should be playing.
+  // The other panels' <video> elements don't have autoplay set in HTML
+  // (only the active one does), but be defensive — pause anything
+  // outside the active panel so a stale browser cache or markup edit
+  // can't sneak past.
+  panels.forEach((panel) => {
+    const video = panel.querySelector("video");
+    if (!video) return;
+    if (panel.classList.contains("is-active")) {
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {});
+      }
+    } else {
+      video.pause();
+    }
+  });
+})();

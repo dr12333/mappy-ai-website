@@ -84,8 +84,7 @@
         <nav class="nav-links">
           <a href="#why">Why</a>
           <a href="#who">Who</a>
-          <a href="#different">Our edge</a>
-          <a href="#features">Features</a>
+          <a href="#different">Features</a>
           <a href="#comparison">vs Others</a>
           <a href="#workflow">Use cases</a>
           <a href="#pricing">Pricing</a>
@@ -243,224 +242,101 @@
         </div>
       </section>
 
-      <section class="audience-section" id="different">
-        <div class="audience-header reveal">
+      <section class="features-tabs reveal" id="different">
+        <div class="features-tabs-header">
           <h2>What makes Mappy AI different</h2>
-          <p>Things you won't find in another mindmap tool.</p>
+          <p>Five things you won't find in another mindmap tool.</p>
         </div>
-        <div class="audience-grid audience-grid-2x2">
-          <div class="audience-card reveal">
-            <div class="audience-card-media audience-card-media-1" aria-hidden="true">
-              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
-                <source src="assets/realimages_vid.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <h3>Real images, not AI illustrations</h3>
-            <p>
-              Most mindmap tools don't embed images at all. The ones that include them rely on generic AI
-              illustrations. Mappy AI pulls the actual figures from your PDF — or real photos from the web for
-              abstract topics. Real visuals tied to real sources.
-            </p>
-          </div>
-          <div class="audience-card reveal">
-            <div class="audience-card-media audience-card-media-2" aria-hidden="true">
-              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
-                <source src="assets/sourceembeded_video.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <h3>Sources embedded, not footnoted</h3>
-            <p>
-              In Visual mode, nodes that reference a diagram or figure carry a snapshot of the source PDF page.
-              Click any node, choose "View source page" from its menu, and the original PDF opens at the exact
-              page that informed it. Sources stay one click away — not buried behind a citation.
-            </p>
-          </div>
-          <div class="audience-card reveal">
-            <div class="audience-card-media audience-card-media-3" aria-hidden="true">
-              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
-                <source src="assets/aiscoped_vid.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <h3>AI scoped to a branch</h3>
-            <p>
-              Click any node to open its menu, then choose an AI action — the AI works on just that branch, not
-              the whole map. Faster, more accurate, and less prone to hallucination than the chat-sidebar pattern
-              other tools use.
-            </p>
-          </div>
-          <div class="audience-card reveal">
-            <div class="audience-card-media audience-card-media-4" aria-hidden="true">
-              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
-                <source src="assets/@mention_vid.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <h3>@mention any node by name</h3>
-            <p>
-              Type @ in chat to reference any node precisely. No more "the third bullet under chemistry" — Mappy
-              AI knows exactly which node you mean.
-            </p>
-          </div>
-          <div class="audience-card reveal">
-            <div class="audience-card-media audience-card-media-5" aria-hidden="true">
-              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
-                <source src="assets/airespect_vid.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <h3>AI that respects your edits</h3>
-            <p>
-              When the AI updates your map, it plans the steps first, then runs each one through a scoped tool —
-              add a child here, rename a label there. Your manual edits survive instead of getting wiped by a
-              regeneration.
-            </p>
-          </div>
-          <div class="audience-card reveal">
-            <div class="audience-card-media audience-card-media-6" aria-hidden="true">
-              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
-                <source src="assets/audio_vid.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <h3>From audio to mindmap in one step</h3>
-            <p>
-              Drop in a lecture recording, voice memo, or any audio file. Mappy AI transcribes it, structures the
-              content into topics, and adds related images. A 60-minute lecture becomes a 2-minute scan.
-            </p>
-          </div>
-        </div>
-      </section>
 
-      <section class="features-section" id="features">
-        <h2 class="section-title reveal">Features</h2>
-        <div class="features">
-            <div class="feature-card reveal">
-              <div class="feature-media">
-              <video
-                class="feature-video"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="metadata"
-              >
-                <source src="assets/vis_mindmaps.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
+        <div class="features-tabs-control" role="tablist" aria-label="Feature highlights">
+          <button class="features-tab is-active" role="tab" aria-selected="true" data-target="real-images" type="button">Real images</button>
+          <button class="features-tab" role="tab" aria-selected="false" data-target="sources" type="button">Source-linked</button>
+          <button class="features-tab" role="tab" aria-selected="false" data-target="ai-scope" type="button">AI scoped to a branch</button>
+          <button class="features-tab" role="tab" aria-selected="false" data-target="respect" type="button">Respects your edits</button>
+          <button class="features-tab" role="tab" aria-selected="false" data-target="audio" type="button">Audio → mindmap</button>
+        </div>
+
+        <!-- All panels rendered in the DOM (rather than swapped via JS) so
+             crawlers see every feature's copy. Visibility flipped via CSS;
+             video play/pause controlled by the tab handler in script.js so
+             only the active panel's video actually plays. -->
+        <div class="features-tab-panels">
+          <div class="features-tab-panel is-active" data-panel="real-images" role="tabpanel">
+            <div class="features-tab-media">
+              <video class="features-tab-video" autoplay muted loop playsinline preload="metadata">
+                <source src="assets/realimages_vid.mp4" type="video/mp4" />
               </video>
-              </div>
-            <div class="feature-copy">
-              <h3>Visual mindmaps from any source</h3>
+            </div>
+            <div class="features-tab-copy">
+              <span class="features-tab-eyebrow">FEATURE 01</span>
+              <h3>Real images, not AI illustrations</h3>
               <p>
-                Drop in a PDF, paste a YouTube link, record a lecture, or share any URL. Mappy structures the content
-                into a clean hierarchy AND embeds the actual images — page snapshots from your PDFs, topic images
-                from the web. Mindmaps that look like a textbook, not a wall of bullets.
+                Mappy pulls actual figures from your PDF — and real photos from the web for abstract topics.
+                Real visuals tied to real sources, not generic AI art.
               </p>
             </div>
           </div>
-          <div class="feature-card reveal reverse">
-            <div class="feature-media">
-              <video
-                class="feature-video"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="metadata"
-              >
-                <source src="assets/@mention_vid.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <div class="feature-copy">
-              <h3>Ask Mappy AI</h3>
-              <p>
-                Click any node for an explanation tied to your sources. Use @nodename to reference any node by name in
-                chat. Select any branch to scope AI options to just that part of the map.
-              </p>
-            </div>
-          </div>
-          <div class="feature-card reveal">
-            <div class="feature-media">
-              <video class="feature-video" autoplay muted loop playsinline preload="metadata">
-                <source src="assets/expand_vid.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <div class="feature-copy">
-              <h3>Expand any branch</h3>
-              <p>
-                Tell Mappy where you want more depth and it adds sub-nodes, examples, and follow-ups — without
-                touching the rest of the map.
-              </p>
-            </div>
-          </div>
-          <div class="feature-card reveal reverse">
-            <div class="feature-media">
-              <video
-                class="feature-video"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="metadata"
-              >
-                <source src="assets/video_8_schoolwebsite.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <div class="feature-copy">
-              <h3>Share with editors and viewers</h3>
-              <p>
-                Invite collaborators as editors or viewers. Edits sync across devices in real time. Export the map to
-                PDF when you need it offline.
-              </p>
-            </div>
-          </div>
-          <div class="feature-card reveal">
-            <div class="feature-media">
-              <video
-                class="feature-video"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="metadata"
-              >
+
+          <div class="features-tab-panel" data-panel="sources" role="tabpanel">
+            <div class="features-tab-media">
+              <video class="features-tab-video" muted loop playsinline preload="metadata">
                 <source src="assets/sourceembeded_video.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
               </video>
             </div>
-            <div class="feature-copy">
-              <h3>Click any node, see the source page</h3>
+            <div class="features-tab-copy">
+              <span class="features-tab-eyebrow">FEATURE 02</span>
+              <h3>Sources stay one click away</h3>
               <p>
-                Visual-mode PDF nodes carry a reference to the page that informed them. Click a node and choose "View source
-                page" to open the original PDF at that exact page in an inline viewer. Your sources stay one click
-                away, not buried in a footnote.
+                In Visual mode, nodes carry a snapshot of the source PDF page. Click any node and the original
+                PDF opens at the exact page that informed it — never buried behind a footnote.
               </p>
             </div>
           </div>
-          <div class="feature-card reveal reverse">
-            <div class="feature-media">
-              <video
-                class="feature-video"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="metadata"
-              >
-                <source src="assets/airespect_vid.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
+
+          <div class="features-tab-panel" data-panel="ai-scope" role="tabpanel">
+            <div class="features-tab-media">
+              <video class="features-tab-video" muted loop playsinline preload="metadata">
+                <source src="assets/aiscoped_vid.mp4" type="video/mp4" />
               </video>
             </div>
-            <div class="feature-copy">
+            <div class="features-tab-copy">
+              <span class="features-tab-eyebrow">FEATURE 03</span>
+              <h3>AI scoped to a branch</h3>
+              <p>
+                Click any node and run the AI on just that branch — or type @ in chat to reference any node by
+                name. Faster and less prone to hallucination than full-map chat.
+              </p>
+            </div>
+          </div>
+
+          <div class="features-tab-panel" data-panel="respect" role="tabpanel">
+            <div class="features-tab-media">
+              <video class="features-tab-video" muted loop playsinline preload="metadata">
+                <source src="assets/airespect_vid.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="features-tab-copy">
+              <span class="features-tab-eyebrow">FEATURE 04</span>
               <h3>AI that respects your edits</h3>
               <p>
-                Mappy plans the steps before it runs them, and each step uses a scoped tool — add child, expand
-                branch, update label. Your manual changes survive instead of getting wiped by a regeneration.
+                Mappy plans the steps first, then runs each one through a scoped tool — add a child here, rename
+                a label there. Your manual edits survive instead of getting wiped by a regeneration.
+              </p>
+            </div>
+          </div>
+
+          <div class="features-tab-panel" data-panel="audio" role="tabpanel">
+            <div class="features-tab-media">
+              <video class="features-tab-video" muted loop playsinline preload="metadata">
+                <source src="assets/audio_vid.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="features-tab-copy">
+              <span class="features-tab-eyebrow">FEATURE 05</span>
+              <h3>Audio → mindmap in one step</h3>
+              <p>
+                Drop in a lecture recording or voice memo. Mappy transcribes it, structures the content into
+                topics, and adds related images. A 60-minute lecture becomes a 2-minute scan.
               </p>
             </div>
           </div>
@@ -716,8 +592,7 @@
           <span class="footer-title">Product</span>
           <a href="#why">Why Mappy AI</a>
           <a href="#who">Who it's for</a>
-          <a href="#different">Our edge</a>
-          <a href="#features">Features</a>
+          <a href="#different">Features</a>
           <a href="#comparison">vs Others</a>
           <a href="#workflow">Use cases</a>
           <a href="schools/">For Schools</a>

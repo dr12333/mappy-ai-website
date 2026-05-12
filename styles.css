@@ -1838,9 +1838,9 @@ html[lang="de"] .nav-cta .ghost {
   width: 12px;
   height: 12px;
   color: var(--muted);
-  background:
-    linear-gradient(currentColor, currentColor) center / 12px 2.5px no-repeat,
-    linear-gradient(currentColor, currentColor) center / 2.5px 12px no-repeat;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cline x1='1.5' y1='6' x2='10.5' y2='6' stroke='black' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='6' y1='1.5' x2='6' y2='10.5' stroke='black' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cline x1='1.5' y1='6' x2='10.5' y2='6' stroke='black' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='6' y1='1.5' x2='6' y2='10.5' stroke='black' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
 }
 

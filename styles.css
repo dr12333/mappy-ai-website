@@ -1870,20 +1870,17 @@ html[lang="de"] .nav-cta .ghost {
 
   .faq-list details::details-content {
     block-size: 0;
-    overflow: clip;
+    overflow: hidden;
     opacity: 0;
-    transform: translateY(-6px);
     transition:
-      block-size 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 0.32s ease 0.06s,
-      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-      content-visibility 0.45s allow-discrete;
+      block-size 0.4s cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 0.3s ease-out,
+      content-visibility 0.4s allow-discrete;
   }
 
   .faq-list details[open]::details-content {
     block-size: auto;
     opacity: 1;
-    transform: translateY(0);
   }
 }
 

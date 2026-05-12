@@ -147,7 +147,7 @@ h4 {
 
 .nav-links {
   display: flex;
-  gap: 16px;
+  gap: 28px;
   font-size: 13px;
   color: var(--muted);
   justify-self: center;
@@ -244,7 +244,7 @@ h4 {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   flex: 1;
-  gap: 16px;
+  gap: 28px;
 }
 
 .nav-cta .btn,

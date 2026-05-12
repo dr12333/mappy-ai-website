@@ -819,19 +819,6 @@ html[lang="de"] .nav-cta .ghost {
   gap: 18px;
 }
 
-.features-tab-eyebrow {
-  display: inline-block;
-  align-self: flex-start;
-  background: var(--sun);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ink);
-}
-
 .features-tab-copy h3 {
   font-size: 30px;
   line-height: 1.1;
@@ -2138,24 +2125,11 @@ html[lang="de"] .nav-cta .ghost {
   box-shadow: var(--shadow-lg);
 }
 
-/* Gentle continuous float on the active feature-tab eyebrow pill.
-   Picks up where the entrance animation leaves off — the eye is
-   already drawn to that area; a slow 3s bob keeps it from feeling
-   frozen without becoming distracting. */
-@keyframes eyebrow-float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-3px); }
-}
-
-.features-tab-panel.is-active .features-tab-eyebrow {
-  animation: eyebrow-float 3s ease-in-out infinite;
-}
-
 /* Reduced-motion users: skip the slide-in and shrink, keep a quick
    fade so the page doesn't feel broken (full disable would leave
-   long pre-reveal opacity:0 frames during scroll). Hover lifts and
-   the eyebrow float are also disabled — both qualify as decorative
-   motion under prefers-reduced-motion. */
+   long pre-reveal opacity:0 frames during scroll). Hover lifts are
+   also disabled — they qualify as decorative motion under
+   prefers-reduced-motion. */
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .reveal.from-left,
@@ -2170,9 +2144,6 @@ html[lang="de"] .nav-cta .ghost {
   .workflow-step:hover,
   .plan-card:hover {
     transform: none;
-  }
-  .features-tab-panel.is-active .features-tab-eyebrow {
-    animation: none;
   }
 }
 

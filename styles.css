@@ -60,10 +60,10 @@ body {
     linear-gradient(
       135deg,
       rgba(255, 202, 78, 0.36) 0%,    /* #FFCA4E sun */
-      rgba(241, 154, 72, 0.36) 25%,   /* #F19A48 amber */
-      rgba(235, 89, 79, 0.34) 50%,    /* #EB594F coral */
-      rgba(252, 152, 147, 0.34) 75%,  /* #FC9893 blush */
-      rgba(101, 140, 255, 0.32) 100%  /* #658CFF cool blue */
+      rgba(241, 154, 72, 0.36) 22%,   /* #F19A48 amber */
+      rgba(235, 89, 79, 0.34) 45%,    /* #EB594F coral */
+      rgba(252, 152, 147, 0.34) 65%,  /* #FC9893 blush */
+      rgba(101, 140, 255, 0.40) 85%   /* #658CFF cool blue — pulled left + alpha bump for more presence */
     ),
     /* Bottom band: mirror — fade-to-surface goes opaque at top, transparent
        at bottom so the color band reads from the page bottom upward. */
@@ -71,10 +71,10 @@ body {
     linear-gradient(
       135deg,
       rgba(255, 202, 78, 0.36) 0%,
-      rgba(241, 154, 72, 0.36) 25%,
-      rgba(235, 89, 79, 0.34) 50%,
-      rgba(252, 152, 147, 0.34) 75%,
-      rgba(101, 140, 255, 0.32) 100%
+      rgba(241, 154, 72, 0.36) 22%,
+      rgba(235, 89, 79, 0.34) 45%,
+      rgba(252, 152, 147, 0.34) 65%,
+      rgba(101, 140, 255, 0.40) 85%
     );
   background-repeat: no-repeat;
   background-size: 100% 70vh, 100% 70vh, 100% 70vh, 100% 70vh;

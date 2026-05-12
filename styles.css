@@ -602,11 +602,11 @@ html[lang="de"] .nav-cta .ghost {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 36px 0;
+  padding: 70px 0;
 }
 
 .why-section {
-  margin: 50px 0 70px;
+  margin: 90px 0 110px;
 }
 
 .why-head h2 {
@@ -693,7 +693,7 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .audience-section {
-  margin: 60px 0 20px;
+  margin: 110px 0 40px;
   display: grid;
   gap: 24px;
 }
@@ -705,7 +705,7 @@ html[lang="de"] .nav-cta .ghost {
    videos for inactive panels are paused via script.js to keep only one
    moving thing on screen. */
 .features-tabs {
-  margin: 60px 0 20px;
+  margin: 110px 0 40px;
   display: grid;
   gap: 32px;
 }
@@ -865,7 +865,7 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .comparison {
-  margin: 60px 0 20px;
+  margin: 110px 0 40px;
   display: grid;
   gap: 24px;
 }
@@ -1362,7 +1362,7 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .pricing {
-  padding: 40px 0;
+  padding: 80px 0;
 }
 
 .pricing-head {
@@ -1780,7 +1780,7 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .faq {
-  padding: 50px 0;
+  padding: 90px 0;
 }
 
 .faq-head {
@@ -1835,7 +1835,7 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .cta {
-  margin: 40px 0 60px;
+  margin: 80px 0 80px;
   padding: 28px;
   border-radius: 20px;
   background: var(--accent);

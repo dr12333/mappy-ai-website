@@ -1630,9 +1630,8 @@ html[lang="de"] .nav-cta .ghost {
   right: -22px;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  border: 1.5px solid var(--ink);
-  background: #2E3437;
+  background: transparent;
+  border: none;
   padding: 0;
   cursor: pointer;
   display: inline-flex;
@@ -1640,11 +1639,23 @@ html[lang="de"] .nav-cta .ghost {
   justify-content: center;
   color: #ffffff;
   z-index: 25;
+}
+
+/* The actual shaking circle is a ::before pseudo, so the letter
+   and the badge (real children) stay still in the foreground
+   while only the circle background + border rotate. */
+.audience-tip-trigger::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #2E3437;
+  border: 1.5px solid var(--ink);
   transform-origin: 50% 50%;
   animation: audience-tip-shake 5s ease-in-out infinite;
 }
 
-.audience-tip-trigger:hover {
+.audience-tip-trigger:hover::before {
   animation-play-state: paused;
 }
 

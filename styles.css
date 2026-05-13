@@ -621,133 +621,46 @@ html[lang="de"] .nav-cta .ghost {
   max-width: none;
 }
 
-/* Why-section comparison: 4 paired rows. Each row pairs one
-   "Traditional notes" pain on the left with its "Mappy AI" fix
-   on the right, joined by an arrow in the middle. The pairing
-   surfaces the bullet-by-bullet correspondence that was implicit
-   in the old two-column layout. */
-.why-headers {
+/* Why-section: 4 editorial benefit statements in a 2x2 grid.
+   No icons, no comparison badges — just confident headlines and
+   short copy. The headline carries the contrast; the body
+   explains the "why" without resorting to ✗/✓ visual shorthand. */
+.why-grid {
   display: grid;
-  grid-template-columns: 1fr 40px 1fr;
-  gap: 18px;
-  align-items: center;
-  padding: 0 22px;
-  margin: 26px 0 12px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 56px;
+  margin-top: 36px;
+}
+
+.why-point h3 {
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+.why-point p {
+  font-size: 15px;
   color: var(--muted);
-}
-
-.why-headers-bad,
-.why-headers-good {
-  /* Tiny indent so the headers line up with the row text, accounting
-     for the 26px mark icon + 12px gap = 38px on each row. */
-  padding-left: 38px;
-}
-
-.why-rows {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.why-row {
-  display: grid;
-  grid-template-columns: 1fr 40px 1fr;
-  gap: 18px;
-  align-items: center;
-  padding: 18px 22px;
-  border-radius: 16px;
-  border: 1px solid var(--stroke);
-  background: var(--surface-strong);
-  box-shadow: var(--shadow-sm);
-}
-
-.why-row-side {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.why-row-side p {
+  line-height: 1.6;
   margin: 0;
-  font-size: 14.5px;
-  line-height: 1.4;
-}
-
-.why-row-bad p {
-  color: var(--muted);
-  text-decoration: line-through;
-  text-decoration-color: rgba(235, 89, 79, 0.45);
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 1px;
-}
-
-.why-row-good p {
-  color: var(--ink);
-  font-weight: 500;
-}
-
-.why-row-mark {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.why-row-mark-bad {
-  background: rgba(235, 89, 79, 0.12);
-  color: #cf3a31;
-}
-
-.why-row-mark-good {
-  background: rgba(159, 226, 208, 0.4);
-  color: #1f8569;
-}
-
-.why-row-mark svg {
-  width: 13px;
-  height: 13px;
-}
-
-.why-row-arrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--muted);
-  opacity: 0.42;
-}
-
-.why-row-arrow svg {
-  width: 16px;
-  height: 16px;
+  max-width: 44ch;
 }
 
 @media (max-width: 720px) {
-  .why-headers {
-    display: none;
-  }
-
-  .why-row {
+  .why-grid {
     grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 16px 18px;
+    gap: 22px;
+    margin-top: 28px;
   }
 
-  .why-row-arrow {
-    transform: rotate(90deg);
-    justify-self: center;
-    margin: 2px 0;
+  .why-point h3 {
+    font-size: 19px;
   }
 
-  .why-row-side p {
-    font-size: 14px;
+  .why-point p {
+    font-size: 14.5px;
   }
 }
 

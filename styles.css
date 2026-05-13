@@ -1378,12 +1378,6 @@ html[lang="de"] .nav-cta .ghost {
   background: var(--surface-strong);
   box-shadow: var(--shadow-sm);
   align-items: start;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
-}
-
-.workflow-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
 }
 
 .workflow-card-number {
@@ -2235,24 +2229,13 @@ html[lang="de"] .nav-cta .ghost {
    feature-tab eyebrow pill. Each piece is small on its own; together
    they make hover feel responsive and the static page feel less static. */
 
-/* Card hover lift — small translate-up with a shadow boost. Applies
-   to the main card families: why-cards, audience-cards (who-it's-
-   for grid), and plan-cards. (Workflow leaves manage their own
-   hover treatment for the mindmap layout.) */
-.why-card,
-.audience-card,
-.plan-card {
-  transition:
-    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.why-card:hover,
-.audience-card:hover,
-.plan-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
+/* No whole-card hover lifts. The card containers (why-card,
+   audience-card, plan-card, workflow-card, feature-card) are
+   purely informational <div>/<article> elements — they aren't
+   themselves links or buttons. Hover effects on them would
+   misleadingly signal interactivity. The actual interactive
+   elements inside (CTAs, links, buttons) keep their own hover
+   states. */
 
 /* Reduced-motion users: skip the slide-in and shrink, keep a quick
    fade so the page doesn't feel broken (full disable would leave
@@ -2267,12 +2250,6 @@ html[lang="de"] .nav-cta .ghost {
     transition: opacity 0.25s ease !important;
     transition-delay: 0s !important;
     transform: none !important;
-  }
-  .why-card:hover,
-  .audience-card:hover,
-  .workflow-card:hover,
-  .plan-card:hover {
-    transform: none;
   }
   .faq-list summary::after,
   .faq-list details::details-content {

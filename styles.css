@@ -1767,11 +1767,17 @@ html[lang="de"] .nav-cta .ghost {
   color: var(--ink);
 }
 
-/* Active visual cue on the avatar when bubble is open — the
-   notification dot fades since the message is now visible. */
-.audience-tip[data-state="open"] .audience-tip-badge {
+/* Notification dot disappears permanently the first time the
+   user opens the tip — they've seen the message, no need to keep
+   nudging. State is held via data-seen on the tip and persisted
+   to localStorage so it survives refreshes. */
+.audience-tip-badge {
+  transition: opacity 0.25s ease;
+}
+
+.audience-tip[data-seen="true"] .audience-tip-badge {
   opacity: 0;
-  transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
 .audience-tip.reveal {

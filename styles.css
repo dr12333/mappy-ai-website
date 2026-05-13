@@ -1001,6 +1001,29 @@ html[lang="de"] .nav-cta .ghost {
   filter: drop-shadow(0 6px 14px rgba(32, 40, 45, 0.08));
 }
 
+/* Split-canvas variant — used by the 'Sources' panel to show two
+   illustrations side by side (a node with embedded source on the
+   left, the matching PDF page on the right) instead of a single
+   centered showcase. */
+.features-tab-canvas-split {
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.features-tab-canvas-split .features-tab-canvas-image {
+  width: auto;
+  height: 88%;
+  max-width: 48%;
+}
+
+.features-tab-canvas-image-left {
+  align-self: center;
+}
+
+.features-tab-canvas-image-right {
+  align-self: center;
+}
+
 .features-tab-copy {
   display: flex;
   flex-direction: column;

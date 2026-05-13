@@ -972,6 +972,38 @@ html[lang="de"] .nav-cta .ghost {
   object-fit: cover;
 }
 
+/* Mindmap-canvas treatment for showcase illustrations — same dotted
+   grid Mappy uses as its editor canvas background, so the static
+   showcase SVG reads as "this is a real Mappy map" rather than an
+   ad-hoc graphic. Background-color is a slightly cooler cream than
+   --accent-soft to read as the editor surface. */
+.features-tab-media-canvas {
+  background: #fafaf6;
+  background-image: radial-gradient(circle, rgba(46, 52, 55, 0.16) 1.2px, transparent 1.4px);
+  background-size: 18px 18px;
+  background-position: 0 0;
+  border: 1px solid var(--stroke);
+}
+
+.features-tab-canvas {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.features-tab-canvas-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(32, 40, 45, 0.08));
+}
+
 .features-tab-copy {
   display: flex;
   flex-direction: column;

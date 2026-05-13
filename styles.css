@@ -473,29 +473,54 @@ html[lang="de"] .nav-cta .ghost {
   margin-top: 36px;
 }
 
-/* Hero opening choreography — bigger and more deliberate than the
-   global .reveal so the entrance reads as the page's headline
-   moment. The copy lifts up first; the video card follows ~200ms
-   later with a stronger rise + scale-up so it feels like it's
-   blooming into place rather than just sliding in. */
-.hero > .hero-copy.reveal {
-  transform: translateY(48px) scale(0.97);
-  transition:
-    opacity 0.85s ease,
-    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+/* Hero opening choreography — auto-playing CSS @keyframes instead
+   of an IntersectionObserver-triggered .reveal. The observer-based
+   pattern leaves the elements visibly offset (heading 48px down,
+   video 80px down) until JS finishes loading and the observer
+   callback fires. For above-the-fold content this is enough of a
+   delay that the user perceives the offset as "the page loaded
+   wrong" rather than as an animation. CSS animations start on
+   first paint, so the from-state is shown for at most one frame.
+
+   The copy lifts up first; the video card follows ~200ms later
+   with a stronger rise + scale-up so it feels like it's blooming
+   into place rather than just sliding in. */
+.hero > .hero-copy {
+  animation: hero-copy-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.hero > .hero-visual.reveal {
-  transform: translateY(80px) scale(0.82);
-  transition:
-    opacity 1.3s ease 0.2s,
-    transform 1.35s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+.hero > .hero-visual {
+  animation: hero-visual-in 1.35s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
   transform-origin: 50% 100%;
 }
 
-.hero > .hero-copy.reveal.is-visible,
-.hero > .hero-visual.reveal.is-visible {
-  transform: translateY(0) scale(1);
+@keyframes hero-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(48px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes hero-visual-in {
+  from {
+    opacity: 0;
+    transform: translateY(80px) scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero > .hero-copy,
+  .hero > .hero-visual {
+    animation: none;
+  }
 }
 
 .eyebrow {

@@ -1684,59 +1684,27 @@ html[lang="de"] .nav-cta .ghost {
   97% { transform: rotate(6deg); }
 }
 
-/* Open: the message bubble. Anchored inside the canvas, top-right
-   corner. Dark border (--ink) matches the logo text color; body
-   text is also in ink for a stronger, less-AI-template look. */
+/* Open: the message bubble. Just the message text + close button,
+   anchored inside the canvas top-right. Dark --ink border matches
+   the logo text. Looks like a real notification message — no
+   avatar, no sender label, just the content. */
 .audience-tip-bubble {
   position: absolute;
   top: 16px;
   right: 16px;
   max-width: 280px;
-  padding: 14px 16px 14px 14px;
+  padding: 14px 36px 14px 16px;
   background: #FBFBFA;
   border: 1.5px solid var(--ink);
   border-radius: 14px;
   box-shadow: 0 12px 24px rgba(46, 52, 55, 0.18);
   z-index: 26;
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
-
-.audience-tip-avatar-bubble {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  color: #ffffff;
-  background: linear-gradient(135deg, #FFCA4E 0%, #F19A48 35%, #EB594F 70%, #FC9893 100%);
-  box-shadow: 0 4px 10px rgba(235, 89, 79, 0.22);
-}
-
-.audience-tip-avatar-bubble svg {
-  width: 18px;
-  height: 18px;
-}
-
-.audience-tip-body {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-  flex: 1;
-}
-
-.audience-tip-from {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--ink);
 }
 
 .audience-tip-bubble p {
   margin: 0;
   font-size: 13px;
-  line-height: 1.45;
+  line-height: 1.5;
   color: var(--ink);
 }
 

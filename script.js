@@ -690,38 +690,18 @@ document.addEventListener("click", (event) => {
 // collapse. The actual show/hide is CSS-driven (transform + opacity
 // transitions); JS just flips the data-state attribute.
 //
-// data-seen tracks whether the user has ever opened the tip. Once
-// set, the green notification dot stays hidden permanently (CSS
-// keys off the attribute). Persisted in localStorage so the dot
-// doesn't reappear on every page reload.
+// data-seen tracks whether the user has opened the tip during the
+// current session. Once set, the green dot + shake animation stop
+// (CSS keys off the attribute). State is in-memory only — a
+// refresh starts the user over with the dot + shake again.
 (() => {
   const tip = document.querySelector(".audience-tip");
   if (!tip) return;
   const trigger = tip.querySelector(".audience-tip-trigger");
   if (!trigger) return;
 
-  const SEEN_KEY = "mappy-audience-tip-seen";
-
-  // Restore seen-state from previous visits if available.
-  try {
-    if (window.localStorage && localStorage.getItem(SEEN_KEY)) {
-      tip.dataset.seen = "true";
-    }
-  } catch (e) {
-    // localStorage can throw in private mode / disabled storage —
-    // ignore, the dot just reappears on refresh in that case.
-  }
-
-  const markSeen = () => {
-    if (tip.dataset.seen === "true") return;
-    tip.dataset.seen = "true";
-    try {
-      localStorage?.setItem(SEEN_KEY, "1");
-    } catch (e) {}
-  };
-
   trigger.addEventListener("click", () => {
-    markSeen();
+    tip.dataset.seen = "true";
     tip.dataset.state = tip.dataset.state === "open" ? "collapsed" : "open";
   });
 

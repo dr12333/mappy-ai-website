@@ -968,6 +968,17 @@ html[lang="de"] .nav-cta .ghost {
   animation: features-canvas-image-rise 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
 }
 
+/* Copy text gets its own longer fade so the heading + paragraph
+   ease in more gradually than the canvas card itself. */
+.features-tab-panel.is-active .features-tab-copy {
+  animation: features-tab-copy-fade 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+@keyframes features-tab-copy-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 @keyframes features-canvas-image-rise {
   from {
     opacity: 0;

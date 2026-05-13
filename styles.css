@@ -1659,6 +1659,13 @@ html[lang="de"] .nav-cta .ghost {
   animation-play-state: paused;
 }
 
+/* Once the user has opened the tip at least once (data-seen),
+   the shake stops permanently — they've engaged, no need to
+   keep knocking. */
+.audience-tip[data-seen="true"] .audience-tip-trigger::before {
+  animation: none;
+}
+
 /* Two icons inside the trigger, crossfade-rotated based on
    data-state. Closed: D visible. Open: D fades + rotates 45°
    into a cross icon that doubles as the close button. */

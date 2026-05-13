@@ -1310,185 +1310,129 @@ html[lang="de"] .nav-cta .ghost {
   color: #8c8f90;
 }
 
-/* ── Workflow: radial mindmap ─────────────────────────────────────
-   The section visualizes itself as a mindmap. A central node holds
-   the section heading; six leaf cards sit in two columns around it
-   (3 left, 3 right). An SVG layer behind the cards draws curved
-   connector lines from each leaf to the center node — paths are
-   computed in JS so they track the rendered card positions, and
-   they animate in via stroke-dashoffset when the section enters
-   the viewport. */
-.workflow-mindmap {
-  position: relative;
+/* ── Workflow: sticky intro + scrolling card stack ───────────────
+   Two-column layout. The left column (heading + tagline + CTA)
+   sticks to the top of the viewport as the right column scrolls
+   past it. The user reads the section's pitch once while the
+   six use-case cards animate in beside it. */
+.workflow-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 1.05fr) minmax(0, 1fr);
-  grid-template-rows: repeat(3, minmax(150px, auto));
-  column-gap: 72px;
-  row-gap: 28px;
-  align-items: stretch;
-  min-height: 640px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 80px;
+  align-items: start;
 }
 
-.workflow-connectors {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: visible;
-  z-index: 0;
+.workflow-intro {
+  position: sticky;
+  /* Top offset clears the sticky nav (~70px including its own top
+     offset) plus a comfortable breathing gap. */
+  top: 120px;
+  align-self: start;
+  padding-top: 24px;
 }
 
-.workflow-connectors path {
-  fill: none;
-  stroke: var(--stroke);
-  stroke-width: 1.75;
-  stroke-linecap: round;
-  stroke-dasharray: var(--length, 1000);
-  stroke-dashoffset: var(--length, 1000);
-  transition: stroke-dashoffset 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-  transition-delay: calc(180ms + var(--idx, 0) * 90ms);
-}
-
-.workflow-mindmap.is-visible .workflow-connectors path {
-  stroke-dashoffset: 0;
-}
-
-/* Center node — the section heading, dressed as a mindmap root. */
-.workflow-center {
-  grid-column: 2;
-  grid-row: 1 / -1;
-  align-self: center;
-  justify-self: center;
-  position: relative;
-  z-index: 1;
-  width: min(100%, 340px);
-  padding: 32px 28px;
-  text-align: center;
-  border-radius: 28px;
-  background:
-    linear-gradient(140deg, #ffd589 0%, #ff9d77 55%, #fcadc0 100%);
+.workflow-eyebrow {
+  display: inline-block;
+  background: var(--coral);
   color: var(--ink);
-  box-shadow: var(--shadow-lg);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 22px;
 }
 
-.workflow-center h2 {
-  font-size: 26px;
-  line-height: 1.15;
-  margin: 0;
+.workflow-intro h2 {
+  font-size: 46px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 22px;
+  max-width: 480px;
 }
 
-.workflow-center p {
-  margin: 8px 0 0;
-  font-size: 14px;
-  color: rgba(46, 52, 55, 0.75);
+.workflow-intro p {
+  font-size: 16px;
+  color: var(--muted);
+  margin: 0 0 30px;
+  line-height: 1.55;
+  max-width: 440px;
 }
 
-/* Leaf nodes — 6 cards positioned in the two outer columns. Order
-   in HTML is left-col-top, left-col-mid, left-col-bot, then right
-   column the same. */
-.workflow-leaf {
-  position: relative;
-  z-index: 1;
-  padding: 18px 20px;
-  border-radius: 16px;
-  border: 1px solid var(--stroke);
-  background: var(--surface-strong);
-  box-shadow: var(--shadow-sm);
+.workflow-stack {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  gap: 18px;
 }
 
-.workflow-leaf:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(214, 210, 200, 1);
+.workflow-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 26px;
+  padding: 28px 30px;
+  border-radius: 20px;
+  background: var(--accent-soft);
+  align-items: start;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
 }
 
-.workflow-leaf[data-leaf="1"] { grid-column: 1; grid-row: 1; --leaf-color: #ff9c7f; }
-.workflow-leaf[data-leaf="2"] { grid-column: 1; grid-row: 2; --leaf-color: #9ebcff; }
-.workflow-leaf[data-leaf="3"] { grid-column: 1; grid-row: 3; --leaf-color: #fcadc0; }
-.workflow-leaf[data-leaf="4"] { grid-column: 3; grid-row: 1; --leaf-color: #9fe2d0; }
-.workflow-leaf[data-leaf="5"] { grid-column: 3; grid-row: 2; --leaf-color: #ffc66b; }
-.workflow-leaf[data-leaf="6"] { grid-column: 3; grid-row: 3; --leaf-color: #c5bdb0; }
+.workflow-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
 
-.workflow-leaf-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 11px;
+.workflow-card-number {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--coral);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: color-mix(in oklab, var(--leaf-color) 32%, white);
-  color: color-mix(in oklab, var(--leaf-color) 80%, #2e3437 30%);
   flex-shrink: 0;
+  margin-top: 4px;
 }
 
-.workflow-leaf-icon svg {
-  width: 22px;
-  height: 22px;
-}
-
-.workflow-leaf h4 {
-  font-size: 15px;
+.workflow-card-body h4 {
+  font-size: 22px;
   font-weight: 700;
-  margin: 0;
-  line-height: 1.25;
+  line-height: 1.2;
+  margin: 6px 0 12px;
 }
 
-.workflow-leaf p {
-  font-size: 12.5px;
+.workflow-card-body p {
+  font-size: 14.5px;
   color: var(--muted);
-  line-height: 1.55;
+  line-height: 1.6;
   margin: 0;
 }
 
-/* Mobile: collapse the radial into a single column. Center node
-   sits on top; leaves stack below in the natural HTML order with
-   a thin vertical connector line drawn via ::before. SVG layer
-   is hidden — it can't represent the column flow meaningfully. */
 @media (max-width: 900px) {
-  .workflow-mindmap {
+  .workflow-layout {
     grid-template-columns: 1fr;
-    grid-template-rows: none;
-    column-gap: 0;
-    row-gap: 18px;
-    min-height: 0;
+    gap: 36px;
   }
 
-  .workflow-connectors {
-    display: none;
+  .workflow-intro {
+    position: static;
+    padding-top: 0;
   }
 
-  .workflow-center {
-    grid-column: 1;
-    grid-row: auto;
-    width: min(100%, 420px);
-    justify-self: center;
-    margin-bottom: 8px;
+  .workflow-intro h2 {
+    font-size: 34px;
   }
 
-  .workflow-leaf {
-    grid-column: 1;
-    grid-row: auto;
-    padding-left: 36px;
+  .workflow-card {
+    padding: 22px 22px;
+    gap: 18px;
   }
 
-  /* Thin vertical line connecting stacked leaves — drawn via a
-     left-side ::before on each leaf (skips the first so the line
-     doesn't reach above the center node). */
-  .workflow-leaf::before {
-    content: "";
-    position: absolute;
-    left: 18px;
-    top: -18px;
-    width: 2px;
-    height: 18px;
-    background: var(--stroke);
-    border-radius: 2px;
+  .workflow-card-body h4 {
+    font-size: 18px;
   }
 }
 
@@ -2321,12 +2265,9 @@ html[lang="de"] .nav-cta .ghost {
   }
   .why-card:hover,
   .audience-card:hover,
-  .workflow-leaf:hover,
+  .workflow-card:hover,
   .plan-card:hover {
     transform: none;
-  }
-  .workflow-mindmap.is-visible .workflow-connectors path {
-    transition: none;
   }
   .faq-list summary::after,
   .faq-list details::details-content {

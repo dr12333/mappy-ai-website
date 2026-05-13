@@ -947,26 +947,25 @@ html[lang="de"] .nav-cta .ghost {
 
 .features-tab-panel.is-active {
   display: grid;
-  /* Tab swap — the whole panel drifts up calmly from below. The
-     showcase image inside has its own more dramatic rise (see
-     .features-tab-panel.is-active .features-tab-canvas-image
-     below) which compounds with this transform, so the image
-     reads as the dominant motion. */
-  animation: features-tab-fade 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Tab swap — the panel container fades in without any vertical
+     motion (so the canvas card stays put and reads as the stable
+     surface). The showcase image inside has its own bigger rise
+     animation, so the image is the only thing that visibly moves
+     when tabs switch. */
+  animation: features-tab-fade 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes features-tab-fade {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* Showcase image gets a stronger, slightly delayed rise. Its
-   transform compounds with the panel's, so the image visibly
-   travels further than the rest of the content — gives the canvas
-   illustration the "blooming onto the card" feel that's the
-   highlight of the tab transition. */
+/* Showcase image rises up and scales in onto the (already-fading-in)
+   canvas card. The translate doesn't compound with the panel anymore
+   since the panel itself has no transform — the image is the sole
+   element that moves vertically. */
 .features-tab-panel.is-active .features-tab-canvas-image {
-  animation: features-canvas-image-rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  animation: features-canvas-image-rise 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
 }
 
 @keyframes features-canvas-image-rise {

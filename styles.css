@@ -1777,6 +1777,16 @@ html[lang="de"] .nav-cta .ghost {
   color: var(--ink);
 }
 
+/* Force the OS emoji font for the sign-off ✌️ so it doesn't pick
+   up a sub-par fallback glyph from Space Grotesk's cascade. Bumps
+   size slightly — color emoji renders cleaner at 16-18px than at
+   the 13px body size. */
+.audience-tip-emoji {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", emoji, sans-serif;
+  font-size: 17px;
+  vertical-align: -2px;
+}
+
 /* Notification dot disappears permanently the first time the
    user opens the tip — they've seen the message, no need to keep
    nudging. State is held via data-seen on the tip and persisted

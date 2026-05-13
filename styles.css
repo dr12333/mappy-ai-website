@@ -640,8 +640,8 @@ html[lang="de"] .nav-cta .ghost {
   padding: 34px 32px;
   border-radius: 22px;
   border: 1px solid var(--stroke);
+  background: var(--surface-strong);
   box-shadow: var(--shadow-sm);
-  overflow: hidden;
 }
 
 .why-card-icon {
@@ -698,21 +698,11 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 50%;
 }
 
-/* Traditional-notes card — quiet notebook feel. Surface is a cool
-   off-white with very faint ruled lines (think aged graph paper at
-   low contrast). Icon and text are muted; bullets are gray dots. */
-.why-card-traditional {
-  background-color: #f5f3ee;
-  background-image: repeating-linear-gradient(
-    transparent 0,
-    transparent 26px,
-    rgba(120, 110, 92, 0.07) 26px,
-    rgba(120, 110, 92, 0.07) 27px
-  );
-}
-
+/* Traditional-notes card — quieter treatment. Outlined icon
+   squircle, muted heading + bullets + body. Reads as the
+   "what you have now" option. */
 .why-card-traditional .why-card-icon {
-  background: rgba(120, 110, 92, 0.1);
+  border: 1.5px solid var(--stroke);
   color: var(--muted);
 }
 
@@ -725,31 +715,18 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .why-card-traditional li::before {
-  background: rgba(94, 101, 105, 0.5);
+  background: rgba(94, 101, 105, 0.45);
 }
 
-/* Mappy AI card — brighter and slightly lifted. Soft warm radial
-   in the upper-right corner picks up the brand sunset palette
-   without flooding the card. Icon gets the coral fill so the eye
-   lands on the "answer" side first. */
+/* Mappy AI card — same surface, slightly lifted. Icon is the dark
+   accent fill (matching the workflow number badges elsewhere on
+   the page). Heading + bullets stay neutral ink. */
 .why-card-mappy {
-  background: var(--surface-strong);
   box-shadow: var(--shadow-md);
 }
 
-.why-card-mappy::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 100% 0%, rgba(255, 156, 127, 0.16), transparent 55%),
-    radial-gradient(circle at 0% 100%, rgba(158, 188, 255, 0.10), transparent 50%);
-  pointer-events: none;
-  border-radius: inherit;
-}
-
 .why-card-mappy .why-card-icon {
-  background: linear-gradient(135deg, #ff9c7f, #ffb89a);
+  background: var(--accent);
   color: #ffffff;
 }
 
@@ -769,7 +746,7 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .why-card-mappy li::before {
-  background: var(--coral);
+  background: var(--ink);
 }
 
 @media (max-width: 720px) {

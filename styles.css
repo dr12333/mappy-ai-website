@@ -2145,30 +2145,12 @@ html[lang="de"] .nav-cta .ghost {
   margin-top: 8px;
 }
 
-/* Smooth open/close. Uses the modern ::details-content pseudo plus
-   interpolate-size so block-size can transition from 0 to auto.
-   Non-supporting browsers fall through to the default instant
-   toggle — no JS needed. */
-@supports (interpolate-size: allow-keywords) {
-  html {
-    interpolate-size: allow-keywords;
-  }
-
-  .faq-list details::details-content {
-    block-size: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition:
-      block-size 1.1s cubic-bezier(0.65, 0, 0.35, 1),
-      opacity 0.9s cubic-bezier(0.65, 0, 0.35, 1),
-      content-visibility 1.1s allow-discrete;
-  }
-
-  .faq-list details[open]::details-content {
-    block-size: auto;
-    opacity: 1;
-  }
-}
+/* Open/close animation is driven from JS (Web Animations API).
+   The native <details> toggle is instant; the CSS approach
+   (::details-content + interpolate-size) requires very fresh
+   browser support and silently no-ops on anything older, leaving
+   an instant toggle. WAAPI in script.js gives reliable animation
+   across all modern browsers. */
 
 .cta {
   margin: 80px 0 80px;

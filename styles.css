@@ -1331,81 +1331,86 @@ html[lang="de"] .nav-cta .ghost {
   padding-top: 24px;
 }
 
+/* Eyebrow uses the site-wide .eyebrow treatment (text-only, uppercase,
+   letter-spaced) — the standard Mappy tag style, not a colored pill. */
 .workflow-eyebrow {
-  display: inline-block;
-  background: var(--coral);
-  color: var(--ink);
-  padding: 7px 14px;
-  border-radius: 999px;
+  display: block;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 22px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-bottom: 18px;
 }
 
 .workflow-intro h2 {
-  font-size: 46px;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  margin: 0 0 22px;
-  max-width: 480px;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0 0 18px;
+  max-width: 420px;
 }
 
 .workflow-intro p {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--muted);
-  margin: 0 0 30px;
-  line-height: 1.55;
-  max-width: 440px;
+  margin: 0 0 28px;
+  line-height: 1.6;
+  max-width: 420px;
 }
 
 .workflow-stack {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
+/* Workflow cards follow the same surface/stroke/shadow recipe as
+   .why-card and .audience-card — keeps every card on the page
+   reading as part of the same family. */
 .workflow-card {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 26px;
-  padding: 28px 30px;
-  border-radius: 20px;
-  background: var(--accent-soft);
+  gap: 20px;
+  padding: 24px 24px;
+  border-radius: 18px;
+  border: 1px solid var(--stroke);
+  background: var(--surface-strong);
+  box-shadow: var(--shadow-sm);
   align-items: start;
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
 }
 
 .workflow-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
 
 .workflow-card-number {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: var(--coral);
+  background: var(--accent);
   color: #ffffff;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .workflow-card-body h4 {
-  font-size: 22px;
+  font-size: 17px;
   font-weight: 700;
-  line-height: 1.2;
-  margin: 6px 0 12px;
+  line-height: 1.25;
+  margin: 6px 0 8px;
 }
 
 .workflow-card-body p {
-  font-size: 14.5px;
+  font-size: 14px;
   color: var(--muted);
   line-height: 1.6;
   margin: 0;
@@ -1414,7 +1419,7 @@ html[lang="de"] .nav-cta .ghost {
 @media (max-width: 900px) {
   .workflow-layout {
     grid-template-columns: 1fr;
-    gap: 36px;
+    gap: 32px;
   }
 
   .workflow-intro {
@@ -1423,16 +1428,16 @@ html[lang="de"] .nav-cta .ghost {
   }
 
   .workflow-intro h2 {
-    font-size: 34px;
+    font-size: 28px;
   }
 
   .workflow-card {
-    padding: 22px 22px;
-    gap: 18px;
+    padding: 20px 20px;
+    gap: 16px;
   }
 
   .workflow-card-body h4 {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 

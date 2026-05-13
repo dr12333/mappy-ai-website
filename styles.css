@@ -79,7 +79,7 @@ body {
       rgba(101, 140, 255, 0.40) 85%
     );
   background-repeat: no-repeat;
-  background-size: 100% 85vh, 100% 85vh, 100% 70vh, 100% 70vh;
+  background-size: 100% 65vh, 100% 65vh, 100% 70vh, 100% 70vh;
   background-position: top, top, bottom, bottom;
   color: var(--ink);
   line-height: 1.6;

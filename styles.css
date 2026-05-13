@@ -621,11 +621,13 @@ html[lang="de"] .nav-cta .ghost {
   max-width: none;
 }
 
-/* Why-section: 4 editorial benefit cards in a 2x2 grid. Each card
-   carries one distinct brand-palette accent (coral, sky, sun, mint)
-   drawn as a short "branch" mark below the heading — different
-   color per card so the section reads as a palette spread without
-   leaning on icons or templated badge graphics. */
+/* Why-section: two side-by-side cards with distinct visual
+   identities. The left card carries a quiet, paper-notebook feel
+   (cool muted surface, soft ruled-line texture, gray text and
+   bullets). The right card is the brighter Mappy answer (warm
+   corner wash, coral dot bullets, ink text, larger shadow). The
+   visual contrast tells the comparison story — no badges or
+   strikethrough needed. */
 .why-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -633,69 +635,156 @@ html[lang="de"] .nav-cta .ghost {
   margin-top: 36px;
 }
 
-.why-point {
-  padding: 32px 30px;
-  border-radius: 20px;
+.why-card {
+  position: relative;
+  padding: 34px 32px;
+  border-radius: 22px;
   border: 1px solid var(--stroke);
-  background: var(--surface-strong);
   box-shadow: var(--shadow-sm);
+  overflow: hidden;
 }
 
-.why-point h3 {
-  font-size: 22px;
+.why-card-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.why-card-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.why-card h3 {
+  font-size: 20px;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  margin: 0 0 16px;
-  padding-bottom: 16px;
+  margin: 0 0 18px;
   position: relative;
-  color: var(--ink);
+  z-index: 1;
 }
 
-/* The branch mark — a short colored line below each heading. Color
-   comes from --accent-color, which we vary per card below. */
-.why-point h3::after {
+.why-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.why-card li {
+  font-size: 14.5px;
+  line-height: 1.5;
+  padding-left: 22px;
+  position: relative;
+}
+
+.why-card li::before {
   content: "";
   position: absolute;
   left: 0;
-  bottom: 0;
-  width: 40px;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--accent-color, var(--accent));
+  top: 0.5em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
 }
 
-.why-point:nth-child(1) { --accent-color: #ff9c7f; }  /* coral  */
-.why-point:nth-child(2) { --accent-color: #9ebcff; }  /* sky    */
-.why-point:nth-child(3) { --accent-color: #ffc66b; }  /* sun    */
-.why-point:nth-child(4) { --accent-color: #9fe2d0; }  /* mint   */
+/* Traditional-notes card — quiet notebook feel. Surface is a cool
+   off-white with very faint ruled lines (think aged graph paper at
+   low contrast). Icon and text are muted; bullets are gray dots. */
+.why-card-traditional {
+  background-color: #f5f3ee;
+  background-image: repeating-linear-gradient(
+    transparent 0,
+    transparent 26px,
+    rgba(120, 110, 92, 0.07) 26px,
+    rgba(120, 110, 92, 0.07) 27px
+  );
+}
 
-.why-point p {
-  font-size: 14.5px;
+.why-card-traditional .why-card-icon {
+  background: rgba(120, 110, 92, 0.1);
   color: var(--muted);
-  line-height: 1.65;
-  margin: 0;
 }
 
-.why-point p + p {
-  margin-top: 10px;
+.why-card-traditional h3 {
+  color: var(--muted);
+}
+
+.why-card-traditional li {
+  color: var(--muted);
+}
+
+.why-card-traditional li::before {
+  background: rgba(94, 101, 105, 0.5);
+}
+
+/* Mappy AI card — brighter and slightly lifted. Soft warm radial
+   in the upper-right corner picks up the brand sunset palette
+   without flooding the card. Icon gets the coral fill so the eye
+   lands on the "answer" side first. */
+.why-card-mappy {
+  background: var(--surface-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.why-card-mappy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 156, 127, 0.16), transparent 55%),
+    radial-gradient(circle at 0% 100%, rgba(158, 188, 255, 0.10), transparent 50%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.why-card-mappy .why-card-icon {
+  background: linear-gradient(135deg, #ff9c7f, #ffb89a);
+  color: #ffffff;
+}
+
+.why-card-mappy .why-card-icon svg {
+  /* Mindmap icon uses a larger native viewBox (140) so it needs a
+     little more visual room inside the same 46px squircle. */
+  width: 28px;
+  height: 28px;
+}
+
+.why-card-mappy h3 {
+  color: var(--ink);
+}
+
+.why-card-mappy li {
+  color: var(--ink);
+}
+
+.why-card-mappy li::before {
+  background: var(--coral);
 }
 
 @media (max-width: 720px) {
   .why-grid {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 16px;
     margin-top: 28px;
   }
 
-  .why-point {
-    padding: 26px 24px;
+  .why-card {
+    padding: 28px 24px;
   }
 
-  .why-point h3 {
-    font-size: 19px;
-    margin-bottom: 14px;
-    padding-bottom: 14px;
+  .why-card h3 {
+    font-size: 18px;
   }
 }
 

@@ -3,6 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // Run before any layout/paint so the browser doesn't render
+      // the page at its previously-restored scroll position before
+      // our main script.js (loaded at the end of <body>) has a
+      // chance to set scrollRestoration. Without this, refreshes
+      // briefly show the page offset by however far you were
+      // scrolled previously.
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+      if (!window.location.hash || window.location.hash === "#") {
+        window.scrollTo(0, 0);
+      }
+    </script>
     <title>Mappy AI | AI Mind Maps from Files, Links, and Notes</title>
     <meta
       name="description"

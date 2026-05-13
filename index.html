@@ -23,7 +23,11 @@
         history.scrollRestoration = "manual";
       }
       var forceTopIfNoHash = function () {
-        if (!window.location.hash || window.location.hash === "#") {
+        var hash = window.location.hash;
+        // "#top" is the brand-logo anchor — it should mean "actual
+        // top of page" (y=0), NOT "scroll to the id=top element
+        // with sticky-nav offset". Treat it as no-hash.
+        if (!hash || hash === "#" || hash === "#top") {
           window.scrollTo(0, 0);
         }
       };

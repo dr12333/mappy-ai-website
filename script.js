@@ -14,6 +14,16 @@ function getScrollOffset() {
 }
 
 window.addEventListener("load", () => {
+  const hash = window.location.hash;
+  // "#top" is the brand-logo anchor — treat as "actual page top",
+  // not as a hash-navigation target. (Otherwise refreshing after a
+  // logo click lands at the hero section with sticky-nav offset,
+  // hiding the audience-switch above the viewport.)
+  if (!hash || hash === "#" || hash === "#top") {
+    window.scrollTo(0, 0);
+    return;
+  }
+
   const target = getHashTarget();
   if (!target) {
     window.scrollTo(0, 0);
@@ -225,14 +235,20 @@ document.addEventListener("click", (event) => {
   if (!link) return;
 
   const href = link.getAttribute("href");
-  if (!href || href === "#") {
+  // "#top" and "#" both mean "scroll to the actual top of the page"
+  // (y=0). Without the #top special-case the click would otherwise
+  // fall through to hash-navigation and scroll to the id=top element
+  // WITH the sticky-nav offset, hiding the audience-switch.
+  if (!href || href === "#" || href === "#top") {
     event.preventDefault();
     if (prefersReducedMotion.matches) {
       window.scrollTo(0, 0);
     } else {
       smoothScrollTo(0);
     }
-    history.pushState(null, "", "#top");
+    // Clear the hash from the URL so a subsequent refresh lands at
+    // actual top, not at "#top".
+    history.replaceState(null, "", window.location.pathname + window.location.search);
     return;
   }
 

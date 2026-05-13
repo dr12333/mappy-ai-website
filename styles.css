@@ -1601,7 +1601,7 @@ html[lang="de"] .nav-cta .ghost {
   width: 240px;
   border-radius: 14px;
   line-height: 1.45;
-  text-align: left;
+  text-align: center;
 }
 
 /* Interactive states — applied by script.js when nodes are hydrated

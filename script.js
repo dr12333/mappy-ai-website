@@ -392,8 +392,9 @@ document.addEventListener("click", (event) => {
       y,
       // Initial bg color: prefer --node-color custom property; fallback to white.
       bg: el.style.getPropertyValue("--node-color").trim() || "#FFFFFF",
-      // Initial text color: matches the node's :text rule in CSS.
-      text: el.classList.contains("audience-node-l1") ? "#FFFFFF" : "#2E3437",
+      // Initial text color: white on every node (all three levels
+      // now have colored backgrounds; this matches the CSS defaults).
+      text: "#FFFFFF",
       shape: "pill",
     });
   });

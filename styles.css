@@ -1562,37 +1562,29 @@ html[lang="de"] .nav-cta .ghost {
   box-shadow: var(--shadow-sm);
 }
 
+/* All three levels are tinted with a sunset-palette color set via
+   the --node-color custom property inline on each node:
+     Level 0 (center) → #F19A48 amber
+     Level 1          → #EB594F coral
+     Level 2          → #FC9893 blush
+   White text on all so the colored nodes read as a cohesive
+   gradient across the mindmap. */
+.audience-node-l1,
+.audience-node-l2,
 .audience-node-center {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 15px;
-  padding: 12px 22px;
-  border-color: var(--accent);
-  box-shadow: var(--shadow-md);
-}
-
-.audience-node-icon {
-  display: inline-flex;
-  width: 18px;
-  height: 18px;
-  color: var(--accent);
-  flex-shrink: 0;
-}
-
-.audience-node-icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Level-1 nodes are tinted with one of the sunset-palette colors
-   (set via the --node-color custom property inline on each node).
-   White text for readability against the saturated background. */
-.audience-node-l1 {
   background: var(--node-color, var(--surface-strong));
   border-color: var(--node-color, var(--stroke));
   color: #ffffff;
+}
+
+.audience-node-center {
+  font-weight: 700;
+  font-size: 15px;
+  padding: 12px 22px;
+  box-shadow: var(--shadow-md);
+}
+
+.audience-node-l1 {
   font-weight: 600;
 }
 
@@ -1600,7 +1592,6 @@ html[lang="de"] .nav-cta .ghost {
   font-size: 12.5px;
   font-weight: 500;
   padding: 8px 14px;
-  color: var(--muted);
 }
 
 /* Interactive states — applied by script.js when nodes are hydrated

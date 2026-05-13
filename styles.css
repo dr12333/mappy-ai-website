@@ -1528,7 +1528,9 @@ html[lang="de"] .nav-cta .ghost {
   background-size: 18px 18px;
   border: 1px solid var(--stroke);
   box-shadow: var(--shadow-md);
-  overflow: hidden;
+  /* Overflow visible so the tip-trigger avatar can sit half-overlapping
+     the top-right corner. Nodes and toolbar are JS-clamped inside the
+     canvas bounds, so they don't need overflow:hidden as a guard. */
 }
 
 .audience-canvas-edges {
@@ -1604,42 +1606,114 @@ html[lang="de"] .nav-cta .ghost {
   text-align: center;
 }
 
-/* Onboarding tip — message-style card pinned to the canvas's
-   top-right corner. The avatar carries the brand sunset gradient
-   (the pop of color) so the cream surface and ink text stay calm
-   and readable. Rides on the global .reveal IntersectionObserver,
-   with overridden transform so it slides in from the upper-right
-   on a 400ms delay after the canvas itself reveals. */
+/* Onboarding tip — two states. Logical wrapper holds both the
+   trigger and the bubble; data-state on the wrapper controls
+   which is visible. Trigger sits half-overlapping the canvas
+   top-right corner; bubble appears inside the canvas top-right
+   when opened. */
 .audience-tip {
+  /* No own layout — children position themselves. The .reveal
+     animation still applies to the whole tip (fade + slide-in). */
+}
+
+.audience-tip[data-state="open"] .audience-tip-trigger {
+  display: none;
+}
+
+.audience-tip[data-state="collapsed"] .audience-tip-bubble {
+  display: none;
+}
+
+/* Collapsed: the trigger avatar sits half-overlapping the canvas's
+   top-right corner. Shakes every 5s to attract attention. Green
+   notification dot signals "there's a message". */
+.audience-tip-trigger {
+  position: absolute;
+  top: -22px;
+  right: -22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: linear-gradient(135deg, #FFCA4E 0%, #F19A48 35%, #EB594F 70%, #FC9893 100%);
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 6px 14px rgba(235, 89, 79, 0.22), 0 0 0 4px rgba(251, 251, 250, 0.85);
+  z-index: 25;
+  transform-origin: 50% 50%;
+  animation: audience-tip-shake 5s ease-in-out infinite;
+}
+
+.audience-tip-trigger:hover {
+  animation-play-state: paused;
+}
+
+.audience-tip-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.audience-tip-avatar svg {
+  width: 20px;
+  height: 20px;
+}
+
+.audience-tip-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid #ffffff;
+}
+
+/* Periodic shake — still 90% of the time, then a quick wobble.
+   Cycle length 5s; the actual motion happens in the last ~10%. */
+@keyframes audience-tip-shake {
+  0%, 90%, 100% { transform: rotate(0); }
+  91% { transform: rotate(-10deg); }
+  93% { transform: rotate(10deg); }
+  95% { transform: rotate(-8deg); }
+  97% { transform: rotate(6deg); }
+}
+
+/* Open: the message bubble. Anchored inside the canvas, top-right
+   corner. Dark border (--ink) matches the logo text color; body
+   text is also in ink for a stronger, less-AI-template look. */
+.audience-tip-bubble {
   position: absolute;
   top: 16px;
   right: 16px;
   max-width: 280px;
-  padding: 14px 16px;
+  padding: 14px 16px 14px 14px;
   background: #FBFBFA;
-  border: 1.5px solid #cfcfc9;
+  border: 1.5px solid var(--ink);
   border-radius: 14px;
-  box-shadow: 0 12px 24px rgba(60, 60, 67, 0.16);
-  z-index: 25;
+  box-shadow: 0 12px 24px rgba(46, 52, 55, 0.18);
+  z-index: 26;
   display: flex;
   gap: 12px;
   align-items: flex-start;
 }
 
-.audience-tip-avatar {
+.audience-tip-avatar-bubble {
   width: 34px;
   height: 34px;
   border-radius: 50%;
   flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   color: #ffffff;
   background: linear-gradient(135deg, #FFCA4E 0%, #F19A48 35%, #EB594F 70%, #FC9893 100%);
-  box-shadow: 0 6px 14px rgba(235, 89, 79, 0.22);
+  box-shadow: 0 4px 10px rgba(235, 89, 79, 0.22);
 }
 
-.audience-tip-avatar svg {
+.audience-tip-avatar-bubble svg {
   width: 18px;
   height: 18px;
 }
@@ -1647,8 +1721,9 @@ html[lang="de"] .nav-cta .ghost {
 .audience-tip-body {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   min-width: 0;
+  flex: 1;
 }
 
 .audience-tip-from {
@@ -1658,11 +1733,40 @@ html[lang="de"] .nav-cta .ghost {
   color: var(--ink);
 }
 
-.audience-tip p {
+.audience-tip-bubble p {
   margin: 0;
   font-size: 13px;
   line-height: 1.45;
-  color: var(--muted);
+  color: var(--ink);
+}
+
+.audience-tip-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.55;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.audience-tip-close:hover {
+  opacity: 1;
+  background: rgba(46, 52, 55, 0.08);
+}
+
+.audience-tip-close svg {
+  width: 12px;
+  height: 12px;
 }
 
 .audience-tip.reveal {

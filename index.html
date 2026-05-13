@@ -252,23 +252,47 @@
           <div class="audience-node audience-node-l2" data-node-id="teams-child" style="top: 61%; left: 78%; --node-color: #FC9893;">Build maps together with live cursors. Export to PDF when it's time to present.</div>
           <div class="audience-node audience-node-l2" data-node-id="summarizers-child" style="top: 84%; left: 78%; --node-color: #FC9893;">Long-form docs, links, or recordings → a clear hierarchy you can navigate by shape.</div>
 
-          <!-- Onboarding tip — message-style card in the top-right of
-               the canvas. Avatar uses the brand sunset gradient for
-               a pop of color; surface stays cream so the message
-               itself reads cleanly. -->
-          <div class="audience-tip reveal" role="status">
-            <span class="audience-tip-avatar" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="12" cy="12" r="3.6"/>
-                <circle cx="5"  cy="6"  r="2"/>
-                <circle cx="19" cy="6"  r="2"/>
-                <circle cx="5"  cy="18" r="2"/>
-                <circle cx="19" cy="18" r="2"/>
-              </svg>
-            </span>
-            <div class="audience-tip-body">
-              <span class="audience-tip-from">Mappy AI</span>
-              <p>Feel free to play around with this simplified version of the editor.</p>
+          <!-- Onboarding tip — two states. Collapsed: a gradient avatar
+               button sitting half-overlapping the canvas top-right
+               corner, with a green notification dot and a 5s shake
+               animation to attract attention. Open: a message bubble
+               appears inside the canvas top-right with the same
+               avatar + message + close button. JS toggles the
+               data-state attribute. -->
+          <div class="audience-tip reveal" data-state="collapsed">
+            <button class="audience-tip-trigger" type="button" aria-label="Open Mappy AI tip">
+              <span class="audience-tip-avatar" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <circle cx="12" cy="12" r="3.6"/>
+                  <circle cx="5"  cy="6"  r="2"/>
+                  <circle cx="19" cy="6"  r="2"/>
+                  <circle cx="5"  cy="18" r="2"/>
+                  <circle cx="19" cy="18" r="2"/>
+                </svg>
+              </span>
+              <span class="audience-tip-badge" aria-hidden="true"></span>
+            </button>
+
+            <div class="audience-tip-bubble" role="status">
+              <span class="audience-tip-avatar audience-tip-avatar-bubble" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <circle cx="12" cy="12" r="3.6"/>
+                  <circle cx="5"  cy="6"  r="2"/>
+                  <circle cx="19" cy="6"  r="2"/>
+                  <circle cx="5"  cy="18" r="2"/>
+                  <circle cx="19" cy="18" r="2"/>
+                </svg>
+              </span>
+              <div class="audience-tip-body">
+                <span class="audience-tip-from">Mappy AI</span>
+                <p>Feel free to play around with this simplified version of the editor.</p>
+              </div>
+              <button class="audience-tip-close" type="button" aria-label="Close">
+                <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                  <line x1="3.5" y1="3.5" x2="10.5" y2="10.5"/>
+                  <line x1="10.5" y1="3.5" x2="3.5" y2="10.5"/>
+                </svg>
+              </button>
             </div>
           </div>
 

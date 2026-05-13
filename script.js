@@ -685,3 +685,21 @@ document.addEventListener("click", (event) => {
   updateEdges();
 })();
 
+// ── Audience onboarding tip: collapsed ↔ open ─────────────────────
+// Tip starts collapsed (gradient avatar with green dot + 5s shake).
+// Clicking the avatar opens the message bubble; clicking the close
+// button collapses it again.
+(() => {
+  const tip = document.querySelector(".audience-tip");
+  if (!tip) return;
+  const trigger = tip.querySelector(".audience-tip-trigger");
+  const closeBtn = tip.querySelector(".audience-tip-close");
+  if (!trigger || !closeBtn) return;
+  trigger.addEventListener("click", () => {
+    tip.dataset.state = "open";
+  });
+  closeBtn.addEventListener("click", () => {
+    tip.dataset.state = "collapsed";
+  });
+})();
+

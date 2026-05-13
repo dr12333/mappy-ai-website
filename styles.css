@@ -1635,14 +1635,13 @@ html[lang="de"] .nav-cta .ghost {
   height: 44px;
   border-radius: 50%;
   border: 1.5px solid var(--ink);
-  background: linear-gradient(135deg, #FFCA4E 0%, #F19A48 35%, #EB594F 70%, #FC9893 100%);
+  background: #658CFF;
   padding: 0;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  box-shadow: 0 6px 14px rgba(235, 89, 79, 0.22), 0 0 0 4px rgba(251, 251, 250, 0.85);
   z-index: 25;
   transform-origin: 50% 50%;
   animation: audience-tip-shake 5s ease-in-out infinite;
@@ -1652,15 +1651,13 @@ html[lang="de"] .nav-cta .ghost {
   animation-play-state: paused;
 }
 
-.audience-tip-avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.audience-tip-avatar svg {
-  width: 20px;
-  height: 20px;
+.audience-tip-letter {
+  font-family: inherit;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+  letter-spacing: -0.01em;
 }
 
 .audience-tip-badge {

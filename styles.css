@@ -468,9 +468,34 @@ html[lang="de"] .nav-cta .ghost {
   align-items: center;
 }
 
-.hero-copy .hero-visual {
+.hero > .hero-visual {
   width: min(1050px, 100%);
   margin-top: 36px;
+}
+
+/* Hero opening choreography — bigger and more deliberate than the
+   global .reveal so the entrance reads as the page's headline
+   moment. The copy lifts up first; the video card follows ~200ms
+   later with a stronger rise + scale-up so it feels like it's
+   blooming into place rather than just sliding in. */
+.hero > .hero-copy.reveal {
+  transform: translateY(48px) scale(0.97);
+  transition:
+    opacity 0.85s ease,
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero > .hero-visual.reveal {
+  transform: translateY(80px) scale(0.82);
+  transition:
+    opacity 1.3s ease 0.2s,
+    transform 1.35s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+  transform-origin: 50% 100%;
+}
+
+.hero > .hero-copy.reveal.is-visible,
+.hero > .hero-visual.reveal.is-visible {
+  transform: translateY(0) scale(1);
 }
 
 .eyebrow {

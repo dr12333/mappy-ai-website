@@ -452,27 +452,41 @@ document.addEventListener("click", (event) => {
     if (!selectedId) return;
     const node = nodes.get(selectedId);
     if (!node) return;
-    // Vertical panel — place to the right of the selected node by
-    // default, vertically centered on the node. If the node is too
-    // far right (no room for the 200px panel), flip to the left
-    // side instead. Toolbar height is also clamped vertically by
-    // the canvas — center is preferred but we constrain the y
-    // offset so the panel doesn't bleed off top/bottom edges.
-    const placeRight = node.x < 65;
-    const rect = canvas.getBoundingClientRect();
-    const toolbarHeight = toolbar.offsetHeight || 280;
-    const halfPct = ((toolbarHeight / 2) / rect.height) * 100;
-    const clampedY = Math.max(halfPct + 1, Math.min(100 - halfPct - 1, node.y));
-    toolbar.style.top = clampedY + "%";
-    if (placeRight) {
-      toolbar.style.left = node.x + "%";
-      toolbar.style.right = "auto";
-      toolbar.style.transform = "translate(40px, -50%)";
+    // Compute toolbar position in pixels, clamp to the canvas
+    // box, then convert back to percentages. This guarantees the
+    // toolbar always stays fully inside the canvas regardless of
+    // node position or canvas size.
+    const canvasRect = canvas.getBoundingClientRect();
+    const nodeRect = node.el.getBoundingClientRect();
+    const toolbarW = toolbar.offsetWidth || 200;
+    const toolbarH = toolbar.offsetHeight || 280;
+    const padding = 8;  // gap from canvas edge
+    const gap = 12;     // gap between node and toolbar
+
+    // Node bounds in canvas-local pixels.
+    const nodeLeft = nodeRect.left - canvasRect.left;
+    const nodeRight = nodeRect.right - canvasRect.left;
+    const nodeCenterY = (nodeRect.top + nodeRect.bottom) / 2 - canvasRect.top;
+
+    // Prefer right side; flip to left if it would clip; if neither
+    // fits, dock against the right edge of the canvas.
+    let toolbarLeft;
+    if (nodeRight + gap + toolbarW <= canvasRect.width - padding) {
+      toolbarLeft = nodeRight + gap;
+    } else if (nodeLeft - gap - toolbarW >= padding) {
+      toolbarLeft = nodeLeft - gap - toolbarW;
     } else {
-      toolbar.style.left = "auto";
-      toolbar.style.right = (100 - node.x) + "%";
-      toolbar.style.transform = "translate(-40px, -50%)";
+      toolbarLeft = canvasRect.width - toolbarW - padding;
     }
+
+    // Center vertically on node, clamp inside canvas.
+    let toolbarTop = nodeCenterY - toolbarH / 2;
+    toolbarTop = Math.max(padding, Math.min(canvasRect.height - toolbarH - padding, toolbarTop));
+
+    toolbar.style.left = (toolbarLeft / canvasRect.width * 100) + "%";
+    toolbar.style.top = (toolbarTop / canvasRect.height * 100) + "%";
+    toolbar.style.right = "auto";
+    toolbar.style.transform = "none";
   };
 
   const FONT_MIN = 10;
@@ -560,6 +574,12 @@ document.addEventListener("click", (event) => {
       const node = nodes.get(id);
       if (!node) return;
       const rect = canvas.getBoundingClientRect();
+      const nodeRect = el.getBoundingClientRect();
+      // Half the node's own dimensions as canvas-percent values, so
+      // the drag clamp keeps the WHOLE node inside the canvas
+      // bounds (not just its center point).
+      const halfWidthPct = (nodeRect.width / 2 / rect.width) * 100;
+      const halfHeightPct = (nodeRect.height / 2 / rect.height) * 100;
       drag = {
         node,
         el,
@@ -568,6 +588,8 @@ document.addEventListener("click", (event) => {
         origX: node.x,
         origY: node.y,
         rect,
+        halfWidthPct,
+        halfHeightPct,
         moved: false,
         pointerId: event.pointerId,
       };
@@ -586,8 +608,10 @@ document.addEventListener("click", (event) => {
     }
     const dxPct = (dx / drag.rect.width) * 100;
     const dyPct = (dy / drag.rect.height) * 100;
-    drag.node.x = clamp(drag.origX + dxPct, 4, 96);
-    drag.node.y = clamp(drag.origY + dyPct, 6, 94);
+    // Clamp by node's own bounding-box dimensions so the whole
+    // node stays inside the canvas, not just its center.
+    drag.node.x = clamp(drag.origX + dxPct, drag.halfWidthPct, 100 - drag.halfWidthPct);
+    drag.node.y = clamp(drag.origY + dyPct, drag.halfHeightPct, 100 - drag.halfHeightPct);
     drag.el.style.left = drag.node.x + "%";
     drag.el.style.top = drag.node.y + "%";
     updateEdges();

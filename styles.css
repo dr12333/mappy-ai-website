@@ -1616,26 +1616,29 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 /* ── Floating toolbar ──────────────────────────────────────────────
-   Vertical panel matching the actual Mappy AI app's node-edit
-   sidebar, simplified to four controls (node color, text color,
-   font size, shape). Positioned next to the selected node by JS —
-   transform: translate(0, -50%) so the toolbar's left edge anchors
-   at node.x and is vertically centered on the node's y. The JS
-   flips to translate(-100%, -50%) when there's no room on the
-   right side. */
+   Replicates the actual Mappy AI app's .node-menu styling so the
+   demo feels like the same product:
+     - --color-bg-raised (#f7f7f5) background
+     - 1.5px --border-color-strong (#cfcfc9) border, 8px radius
+     - 10px padding, 8px gap between sections
+     - --shadow-popup (0 12px 24px rgba(60,60,67,0.16))
+     - 172px wide
+     - 34px control-height for buttons
+     - 12px text-sm labels in --color-text-secondary (#6b6b6b)
+   Positioned next to the selected node by JS. */
 .audience-toolbar {
   position: absolute;
-  width: 200px;
-  padding: 16px;
+  width: 172px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  background: var(--surface-strong);
-  border: 1px solid var(--stroke);
-  border-radius: 14px;
-  box-shadow: var(--shadow-md);
+  gap: 8px;
+  background: #f7f7f5;
+  border: 1.5px solid #cfcfc9;
+  border-radius: 8px;
+  box-shadow: 0 12px 24px rgba(60, 60, 67, 0.16);
   z-index: 20;
-  transform: translate(0, -50%);
+  font-family: inherit;
 }
 
 .audience-toolbar[hidden] {
@@ -1645,112 +1648,199 @@ html[lang="de"] .nav-cta .ghost {
 .audience-toolbar-section {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-}
-
-.audience-toolbar-label {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--muted);
-}
-
-.audience-toolbar-swatches {
-  display: flex;
-  flex-wrap: wrap;
   gap: 6px;
 }
 
-.audience-toolbar-swatches button {
+.audience-toolbar-section > label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b6b6b;
+}
+
+/* Color picker — a single trigger button shows the current color.
+   Click opens a popover with the palette options. Mirrors the
+   app's .color-trigger + .color-dropdown pattern. */
+.audience-toolbar-color-select {
+  position: relative;
+}
+
+.audience-toolbar-color-trigger {
   width: 22px;
   height: 22px;
-  border-radius: 6px;
-  border: 1.5px solid transparent;
-  background: var(--swatch, transparent);
+  border-radius: 4px;
+  border: 1.5px solid #c9c9c3;
+  cursor: pointer;
+  padding: 0;
+  background: var(--current-color, #ffffff);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.audience-toolbar-color-trigger:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(60, 60, 67, 0.16);
+}
+
+.audience-toolbar-color-popover {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px;
+  width: 168px;
+  background: #ffffff;
+  border: 1.5px solid #c9c9c3;
+  border-radius: 12px;
+  box-shadow: 0 12px 24px rgba(60, 60, 67, 0.16);
+  z-index: 30;
+}
+
+.audience-toolbar-color-popover button {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid transparent;
   padding: 0;
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.15s ease;
+  background: var(--swatch, transparent);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  flex-shrink: 0;
 }
 
 .audience-toolbar-swatch-white {
-  background: #ffffff !important;
-  border-color: var(--stroke) !important;
+  background: #ffffff;
+  border-color: #c9c9c3 !important;
 }
 
-.audience-toolbar-swatches button:hover {
-  transform: scale(1.08);
+.audience-toolbar-color-popover button:hover {
+  transform: scale(1.15);
 }
 
-.audience-toolbar-swatches button.is-active {
-  box-shadow: 0 0 0 2px var(--accent);
-  border-color: transparent;
+.audience-toolbar-color-popover button.is-active {
+  border-color: #2e3437;
 }
 
+/* Font size — grid of decrement / value / increment */
 .audience-toolbar-font {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 34px 1fr 34px;
   gap: 6px;
 }
 
 .audience-toolbar-font button {
-  width: 30px;
-  height: 28px;
-  border-radius: 7px;
-  border: 1px solid var(--stroke);
-  background: var(--surface-strong);
+  height: 34px;
+  border-radius: 8px;
+  border: 1.5px solid #c9c9c3;
+  background: #ffffff;
   cursor: pointer;
   font-size: 16px;
-  font-weight: 600;
-  color: var(--ink);
+  font-weight: 500;
+  color: #2e3437;
+  font-family: inherit;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .audience-toolbar-font button:hover {
-  border-color: var(--ink);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(60, 60, 67, 0.16);
+}
+
+.audience-toolbar-font button:active {
+  transform: translateY(0);
 }
 
 .audience-toolbar-font-value {
-  flex: 1;
-  text-align: center;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink);
-  padding: 6px 0;
-  border-radius: 7px;
-  border: 1px solid var(--stroke);
-  background: var(--surface-strong);
-  min-width: 0;
-}
-
-.audience-toolbar-shape-group {
-  display: flex;
-  gap: 6px;
-}
-
-.audience-toolbar-shape-group button {
-  flex: 1;
-  padding: 6px 10px;
-  border: 1px solid var(--stroke);
-  border-radius: 8px;
-  background: var(--surface-strong);
-  font-size: 12.5px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
   font-weight: 500;
+  color: #2e3437;
+  border-radius: 8px;
+  border: 1.5px solid #c9c9c3;
+  background: #ffffff;
+}
+
+/* Shape — custom-select dropdown trigger (matches .custom-select
+   .select-trigger in the app). */
+.audience-toolbar-shape-select {
+  position: relative;
+}
+
+.audience-toolbar-shape-trigger {
+  width: 100%;
+  height: 34px;
+  border-radius: 8px;
+  border: 1.5px solid #c9c9c3;
+  padding: 0 32px 0 10px;
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  color: #2e3437;
+  text-align: left;
   cursor: pointer;
-  color: var(--ink);
   font-family: inherit;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.audience-toolbar-shape-group button:hover {
-  border-color: var(--ink);
+.audience-toolbar-shape-trigger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(60, 60, 67, 0.16);
 }
 
-.audience-toolbar-shape-group button.is-active {
-  background: var(--accent);
-  color: #ffffff;
-  border-color: var(--accent);
+.audience-toolbar-shape-trigger::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 20 20'%3E%3Cpath fill='%236b6b6b' d='M5.5 7.5L10 12l4.5-4.5'/%3E%3C/svg%3E") no-repeat center;
+  background-size: 12px;
+}
+
+.audience-toolbar-shape-popover {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1.5px solid #c9c9c3;
+  border-radius: 12px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 12px 24px rgba(60, 60, 67, 0.16);
+  z-index: 30;
+}
+
+.audience-toolbar-shape-popover button {
+  border: none;
+  background: transparent;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #2e3437;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.audience-toolbar-shape-popover button:hover,
+.audience-toolbar-shape-popover button.is-active {
+  background: rgba(0, 0, 0, 0.06);
 }
 
 /* Mobile: the mindmap is too wide and dense to read on phones.

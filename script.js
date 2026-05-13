@@ -437,14 +437,18 @@ document.addEventListener("click", (event) => {
     nodeEls.forEach((el) => {
       el.classList.toggle("is-selected", el.dataset.nodeId === id);
     });
+    // Show the toolbar before measuring its size so offsetWidth/
+    // offsetHeight in positionToolbar return the real values
+    // instead of 0 (hidden elements report 0 dimensions).
+    toolbar.hidden = false;
     positionToolbar();
     syncToolbarValues();
-    toolbar.hidden = false;
   };
 
   const deselect = () => {
     selectedId = null;
     nodeEls.forEach((el) => el.classList.remove("is-selected"));
+    closeAllPopovers();
     toolbar.hidden = true;
   };
 
@@ -458,8 +462,8 @@ document.addEventListener("click", (event) => {
     // node position or canvas size.
     const canvasRect = canvas.getBoundingClientRect();
     const nodeRect = node.el.getBoundingClientRect();
-    const toolbarW = toolbar.offsetWidth || 200;
-    const toolbarH = toolbar.offsetHeight || 280;
+    const toolbarW = toolbar.offsetWidth || 172;
+    const toolbarH = toolbar.offsetHeight || 240;
     const padding = 8;  // gap from canvas edge
     const gap = 12;     // gap between node and toolbar
 
@@ -491,26 +495,41 @@ document.addEventListener("click", (event) => {
 
   const FONT_MIN = 10;
   const FONT_MAX = 28;
+  const SHAPE_LABELS = { pill: "Pill", rounded: "Rounded" };
+
+  const closeAllPopovers = () => {
+    toolbar
+      .querySelectorAll(".audience-toolbar-color-popover, .audience-toolbar-shape-popover")
+      .forEach((p) => (p.hidden = true));
+  };
 
   const syncToolbarValues = () => {
     if (!selectedId) return;
     const node = nodes.get(selectedId);
     if (!node) return;
-    toolbar
-      .querySelectorAll(".audience-toolbar-swatches button[data-bg]")
-      .forEach((btn) => {
-        btn.classList.toggle("is-active", btn.dataset.bg.toLowerCase() === node.bg.toLowerCase());
-      });
-    toolbar
-      .querySelectorAll(".audience-toolbar-swatches button[data-text]")
-      .forEach((btn) => {
-        btn.classList.toggle("is-active", btn.dataset.text.toLowerCase() === node.text.toLowerCase());
-      });
-    toolbar
-      .querySelectorAll(".audience-toolbar-shape-group button")
-      .forEach((btn) => {
-        btn.classList.toggle("is-active", btn.dataset.shape === node.shape);
-      });
+    // Color trigger backgrounds reflect the node's current colors.
+    const bgTrigger = toolbar.querySelector(
+      '.audience-toolbar-color-select[data-target="bg"] .audience-toolbar-color-trigger'
+    );
+    const textTrigger = toolbar.querySelector(
+      '.audience-toolbar-color-select[data-target="text"] .audience-toolbar-color-trigger'
+    );
+    if (bgTrigger) bgTrigger.style.setProperty("--current-color", node.bg);
+    if (textTrigger) textTrigger.style.setProperty("--current-color", node.text);
+    // Mark active swatch inside each popover.
+    toolbar.querySelectorAll(".audience-toolbar-color-popover button[data-bg]").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.dataset.bg.toLowerCase() === node.bg.toLowerCase());
+    });
+    toolbar.querySelectorAll(".audience-toolbar-color-popover button[data-text]").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.dataset.text.toLowerCase() === node.text.toLowerCase());
+    });
+    // Shape trigger label + popover active state.
+    const shapeValue = toolbar.querySelector(".audience-toolbar-shape-value");
+    if (shapeValue) shapeValue.textContent = SHAPE_LABELS[node.shape] || node.shape;
+    toolbar.querySelectorAll(".audience-toolbar-shape-popover button").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.dataset.shape === node.shape);
+    });
+    // Font size display.
     const fontValue = toolbar.querySelector(".audience-toolbar-font-value");
     if (fontValue) fontValue.textContent = Math.round(node.fontSize);
   };
@@ -521,17 +540,39 @@ document.addEventListener("click", (event) => {
     const node = nodes.get(selectedId);
     if (!node) return;
 
+    // Trigger buttons toggle their popover (and close the others).
+    const colorTrigger = event.target.closest(".audience-toolbar-color-trigger");
+    const shapeTrigger = event.target.closest(".audience-toolbar-shape-trigger");
+    if (colorTrigger) {
+      const popover = colorTrigger.parentElement.querySelector(".audience-toolbar-color-popover");
+      const wasHidden = popover.hidden;
+      closeAllPopovers();
+      popover.hidden = !wasHidden;
+      return;
+    }
+    if (shapeTrigger) {
+      const popover = shapeTrigger.parentElement.querySelector(".audience-toolbar-shape-popover");
+      const wasHidden = popover.hidden;
+      closeAllPopovers();
+      popover.hidden = !wasHidden;
+      return;
+    }
+
+    // Inside-popover swatch / option clicks.
     const bgBtn = event.target.closest("button[data-bg]");
     const textBtn = event.target.closest("button[data-text]");
-    const shapeBtn = event.target.closest("button[data-shape]");
+    const shapeBtn = event.target.closest(".audience-toolbar-shape-popover button[data-shape]");
     const fontBtn = event.target.closest("button[data-font]");
 
     if (bgBtn) {
       node.bg = bgBtn.dataset.bg;
+      closeAllPopovers();
     } else if (textBtn) {
       node.text = textBtn.dataset.text;
+      closeAllPopovers();
     } else if (shapeBtn) {
       node.shape = shapeBtn.dataset.shape;
+      closeAllPopovers();
     } else if (fontBtn) {
       const step = 2;
       if (fontBtn.dataset.font === "inc") {
@@ -544,6 +585,17 @@ document.addEventListener("click", (event) => {
     }
     applyNodeStyle(node);
     syncToolbarValues();
+  });
+
+  // Click outside any popover (but still inside the toolbar) closes
+  // open popovers without deselecting.
+  document.addEventListener("pointerdown", (event) => {
+    if (!toolbar.contains(event.target)) return;
+    if (event.target.closest(".audience-toolbar-color-popover")) return;
+    if (event.target.closest(".audience-toolbar-shape-popover")) return;
+    if (event.target.closest(".audience-toolbar-color-trigger")) return;
+    if (event.target.closest(".audience-toolbar-shape-trigger")) return;
+    closeAllPopovers();
   });
 
   const applyNodeStyle = (node) => {

@@ -1001,27 +1001,36 @@ html[lang="de"] .nav-cta .ghost {
   filter: drop-shadow(0 6px 14px rgba(32, 40, 45, 0.08));
 }
 
-/* Split-canvas variant — used by the 'Sources' panel to show two
-   illustrations side by side (a node with embedded source on the
-   left, the matching PDF page on the right) instead of a single
-   centered showcase. */
+/* Split-canvas variant — used by the 'Sources' panel. Both
+   illustrations are positioned absolutely in opposite corners of
+   the canvas so they overlap diagonally: 2.1 in the upper-left
+   sits in front, 2.2 in the lower-right tucks behind it. The
+   overlap reads as a layered "click → see the underlying page"
+   relationship between the two showcases. */
 .features-tab-canvas-split {
-  justify-content: space-between;
-  gap: 16px;
+  position: relative;
+  justify-content: initial;
+  gap: 0;
+  padding: 0;
 }
 
 .features-tab-canvas-split .features-tab-canvas-image {
+  position: absolute;
   width: auto;
-  height: 68%;
-  max-width: 48%;
+  height: 80%;
+  max-width: 62%;
 }
 
 .features-tab-canvas-image-left {
-  align-self: flex-start;
+  top: 6%;
+  left: 4%;
+  z-index: 2;
 }
 
 .features-tab-canvas-image-right {
-  align-self: flex-end;
+  bottom: 6%;
+  right: 4%;
+  z-index: 1;
 }
 
 .features-tab-copy {

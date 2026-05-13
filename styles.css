@@ -1616,96 +1616,141 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 /* ── Floating toolbar ──────────────────────────────────────────────
-   Appears above the selected node. Uses transform: translate(-50%,
-   -100%) so the toolbar's bottom-center anchors at the node's
-   top-center (with the position math done in JS via top/left %). */
+   Vertical panel matching the actual Mappy AI app's node-edit
+   sidebar, simplified to four controls (node color, text color,
+   font size, shape). Positioned next to the selected node by JS —
+   transform: translate(0, -50%) so the toolbar's left edge anchors
+   at node.x and is vertically centered on the node's y. The JS
+   flips to translate(-100%, -50%) when there's no room on the
+   right side. */
 .audience-toolbar {
   position: absolute;
-  transform: translate(-50%, -100%);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
+  width: 200px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   background: var(--surface-strong);
   border: 1px solid var(--stroke);
   border-radius: 14px;
   box-shadow: var(--shadow-md);
   z-index: 20;
-  white-space: nowrap;
-  margin-top: -10px; /* small gap between toolbar and node */
+  transform: translate(0, -50%);
 }
 
 .audience-toolbar[hidden] {
   display: none;
 }
 
-.audience-toolbar-group {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+.audience-toolbar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 }
 
-.audience-toolbar-sep {
-  width: 1px;
-  height: 18px;
-  background: var(--stroke);
-  margin: 0 2px;
+.audience-toolbar-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
 }
 
-.audience-toolbar-swatch,
-.audience-toolbar-text,
-.audience-toolbar-shape {
+.audience-toolbar-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.audience-toolbar-swatches button {
   width: 22px;
   height: 22px;
-  border: 1px solid transparent;
   border-radius: 6px;
-  background: transparent;
+  border: 1.5px solid transparent;
+  background: var(--swatch, transparent);
   padding: 0;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--ink);
-  transition: border-color 0.15s ease, transform 0.12s ease;
-}
-
-.audience-toolbar-swatch {
-  background: var(--swatch, transparent);
+  transition: transform 0.12s ease, box-shadow 0.15s ease;
 }
 
 .audience-toolbar-swatch-white {
-  background: #ffffff;
-  border-color: var(--stroke);
+  background: #ffffff !important;
+  border-color: var(--stroke) !important;
 }
 
-.audience-toolbar-swatch:hover,
-.audience-toolbar-text:hover,
-.audience-toolbar-shape:hover {
+.audience-toolbar-swatches button:hover {
   transform: scale(1.08);
 }
 
-.audience-toolbar-swatch.is-active,
-.audience-toolbar-text.is-active,
-.audience-toolbar-shape.is-active {
+.audience-toolbar-swatches button.is-active {
+  box-shadow: 0 0 0 2px var(--accent);
+  border-color: transparent;
+}
+
+.audience-toolbar-font {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.audience-toolbar-font button {
+  width: 30px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid var(--stroke);
+  background: var(--surface-strong);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.audience-toolbar-font button:hover {
+  border-color: var(--ink);
+}
+
+.audience-toolbar-font-value {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 6px 0;
+  border-radius: 7px;
+  border: 1px solid var(--stroke);
+  background: var(--surface-strong);
+  min-width: 0;
+}
+
+.audience-toolbar-shape-group {
+  display: flex;
+  gap: 6px;
+}
+
+.audience-toolbar-shape-group button {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--stroke);
+  border-radius: 8px;
+  background: var(--surface-strong);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--ink);
+  font-family: inherit;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.audience-toolbar-shape-group button:hover {
+  border-color: var(--ink);
+}
+
+.audience-toolbar-shape-group button.is-active {
+  background: var(--accent);
+  color: #ffffff;
   border-color: var(--accent);
-}
-
-.audience-toolbar-shape-icon {
-  width: 14px;
-  height: 9px;
-  background: var(--ink);
-  display: block;
-}
-
-.audience-toolbar-shape-icon-pill {
-  border-radius: 999px;
-}
-
-.audience-toolbar-shape-icon-rounded {
-  border-radius: 3px;
 }
 
 /* Mobile: the mindmap is too wide and dense to read on phones.

@@ -249,26 +249,45 @@
           <div class="audience-node audience-node-l2" data-node-id="teams-child" style="top: 78%; left: 78%; --node-color: #FC9893;">Live shared editing &amp; PDF export</div>
 
           <!-- Floating toolbar — appears next to the selected node.
-               Hidden by default; shown by the JS hydrator on selection. -->
+               Vertical panel matching the actual Mappy AI app's
+               node-edit sidebar, simplified to four controls. -->
           <div class="audience-toolbar" hidden>
-            <div class="audience-toolbar-group" data-group="bg">
-              <button type="button" class="audience-toolbar-swatch" data-bg="#5A9CB5" style="--swatch: #5A9CB5;" aria-label="Steel blue"></button>
-              <button type="button" class="audience-toolbar-swatch" data-bg="#FACE68" style="--swatch: #FACE68;" aria-label="Yellow"></button>
-              <button type="button" class="audience-toolbar-swatch" data-bg="#FAAC68" style="--swatch: #FAAC68;" aria-label="Orange"></button>
-              <button type="button" class="audience-toolbar-swatch" data-bg="#FA6868" style="--swatch: #FA6868;" aria-label="Red"></button>
-              <button type="button" class="audience-toolbar-swatch" data-bg="#FDACAC" style="--swatch: #FDACAC;" aria-label="Pink"></button>
-              <button type="button" class="audience-toolbar-swatch" data-bg="#8CA9FF" style="--swatch: #8CA9FF;" aria-label="Blue"></button>
-              <button type="button" class="audience-toolbar-swatch audience-toolbar-swatch-white" data-bg="#FFFFFF" aria-label="White"></button>
+            <div class="audience-toolbar-section">
+              <span class="audience-toolbar-label">Node Color</span>
+              <div class="audience-toolbar-swatches">
+                <button type="button" data-bg="#5A9CB5" style="--swatch: #5A9CB5;" aria-label="Steel blue"></button>
+                <button type="button" data-bg="#FACE68" style="--swatch: #FACE68;" aria-label="Yellow"></button>
+                <button type="button" data-bg="#FAAC68" style="--swatch: #FAAC68;" aria-label="Orange"></button>
+                <button type="button" data-bg="#FA6868" style="--swatch: #FA6868;" aria-label="Red"></button>
+                <button type="button" data-bg="#FDACAC" style="--swatch: #FDACAC;" aria-label="Pink"></button>
+                <button type="button" data-bg="#8CA9FF" style="--swatch: #8CA9FF;" aria-label="Blue"></button>
+                <button type="button" data-bg="#FFFFFF" class="audience-toolbar-swatch-white" aria-label="White"></button>
+              </div>
             </div>
-            <div class="audience-toolbar-sep"></div>
-            <div class="audience-toolbar-group" data-group="text">
-              <button type="button" class="audience-toolbar-text" data-text="#2E3437" aria-label="Dark text"><span style="color:#2E3437">A</span></button>
-              <button type="button" class="audience-toolbar-text" data-text="#FFFFFF" aria-label="White text"><span style="color:#FFFFFF;background:#2E3437;border-radius:3px;padding:0 3px;">A</span></button>
+
+            <div class="audience-toolbar-section">
+              <span class="audience-toolbar-label">Text Color</span>
+              <div class="audience-toolbar-swatches">
+                <button type="button" data-text="#2E3437" style="--swatch: #2E3437;" aria-label="Dark text"></button>
+                <button type="button" data-text="#FFFFFF" class="audience-toolbar-swatch-white" aria-label="White text"></button>
+              </div>
             </div>
-            <div class="audience-toolbar-sep"></div>
-            <div class="audience-toolbar-group" data-group="shape">
-              <button type="button" class="audience-toolbar-shape" data-shape="pill" aria-label="Pill shape"><span class="audience-toolbar-shape-icon audience-toolbar-shape-icon-pill"></span></button>
-              <button type="button" class="audience-toolbar-shape" data-shape="rounded" aria-label="Rounded shape"><span class="audience-toolbar-shape-icon audience-toolbar-shape-icon-rounded"></span></button>
+
+            <div class="audience-toolbar-section">
+              <span class="audience-toolbar-label">Font size</span>
+              <div class="audience-toolbar-font">
+                <button type="button" data-font="dec" aria-label="Decrease font size">−</button>
+                <span class="audience-toolbar-font-value">14</span>
+                <button type="button" data-font="inc" aria-label="Increase font size">+</button>
+              </div>
+            </div>
+
+            <div class="audience-toolbar-section">
+              <span class="audience-toolbar-label">Shape</span>
+              <div class="audience-toolbar-shape-group">
+                <button type="button" data-shape="pill">Pill</button>
+                <button type="button" data-shape="rounded">Rounded</button>
+              </div>
             </div>
           </div>
 

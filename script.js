@@ -396,6 +396,9 @@ document.addEventListener("click", (event) => {
       // now have colored backgrounds; this matches the CSS defaults).
       text: "#FFFFFF",
       shape: "pill",
+      // Initial font size in px — read from computed style so we
+      // start in sync with whatever the CSS rules set per level.
+      fontSize: parseFloat(getComputedStyle(el).fontSize) || 14,
     });
   });
 
@@ -449,60 +452,95 @@ document.addEventListener("click", (event) => {
     if (!selectedId) return;
     const node = nodes.get(selectedId);
     if (!node) return;
-    // Place toolbar above the node. Clamp top to 0 so it doesn't
-    // disappear above the canvas when a top-row node is selected.
-    const top = Math.max(node.y - 14, 2);
-    toolbar.style.left = node.x + "%";
-    toolbar.style.top = top + "%";
+    // Vertical panel — place to the right of the selected node by
+    // default, vertically centered on the node. If the node is too
+    // far right (no room for the 200px panel), flip to the left
+    // side instead. Toolbar height is also clamped vertically by
+    // the canvas — center is preferred but we constrain the y
+    // offset so the panel doesn't bleed off top/bottom edges.
+    const placeRight = node.x < 65;
+    const rect = canvas.getBoundingClientRect();
+    const toolbarHeight = toolbar.offsetHeight || 280;
+    const halfPct = ((toolbarHeight / 2) / rect.height) * 100;
+    const clampedY = Math.max(halfPct + 1, Math.min(100 - halfPct - 1, node.y));
+    toolbar.style.top = clampedY + "%";
+    if (placeRight) {
+      toolbar.style.left = node.x + "%";
+      toolbar.style.right = "auto";
+      toolbar.style.transform = "translate(40px, -50%)";
+    } else {
+      toolbar.style.left = "auto";
+      toolbar.style.right = (100 - node.x) + "%";
+      toolbar.style.transform = "translate(-40px, -50%)";
+    }
   };
+
+  const FONT_MIN = 10;
+  const FONT_MAX = 28;
 
   const syncToolbarValues = () => {
     if (!selectedId) return;
     const node = nodes.get(selectedId);
     if (!node) return;
-    toolbar.querySelectorAll(".audience-toolbar-swatch").forEach((btn) => {
-      btn.classList.toggle("is-active", btn.dataset.bg.toLowerCase() === node.bg.toLowerCase());
-    });
-    toolbar.querySelectorAll(".audience-toolbar-text").forEach((btn) => {
-      btn.classList.toggle("is-active", btn.dataset.text.toLowerCase() === node.text.toLowerCase());
-    });
-    toolbar.querySelectorAll(".audience-toolbar-shape").forEach((btn) => {
-      btn.classList.toggle("is-active", btn.dataset.shape === node.shape);
-    });
+    toolbar
+      .querySelectorAll(".audience-toolbar-swatches button[data-bg]")
+      .forEach((btn) => {
+        btn.classList.toggle("is-active", btn.dataset.bg.toLowerCase() === node.bg.toLowerCase());
+      });
+    toolbar
+      .querySelectorAll(".audience-toolbar-swatches button[data-text]")
+      .forEach((btn) => {
+        btn.classList.toggle("is-active", btn.dataset.text.toLowerCase() === node.text.toLowerCase());
+      });
+    toolbar
+      .querySelectorAll(".audience-toolbar-shape-group button")
+      .forEach((btn) => {
+        btn.classList.toggle("is-active", btn.dataset.shape === node.shape);
+      });
+    const fontValue = toolbar.querySelector(".audience-toolbar-font-value");
+    if (fontValue) fontValue.textContent = Math.round(node.fontSize);
   };
 
   // ── Toolbar event handlers ─────────────────────────────────────
   toolbar.addEventListener("click", (event) => {
-    const swatchBtn = event.target.closest(".audience-toolbar-swatch");
-    const textBtn = event.target.closest(".audience-toolbar-text");
-    const shapeBtn = event.target.closest(".audience-toolbar-shape");
     if (!selectedId) return;
     const node = nodes.get(selectedId);
     if (!node) return;
 
-    if (swatchBtn) {
-      node.bg = swatchBtn.dataset.bg;
-      applyNodeStyle(node);
+    const bgBtn = event.target.closest("button[data-bg]");
+    const textBtn = event.target.closest("button[data-text]");
+    const shapeBtn = event.target.closest("button[data-shape]");
+    const fontBtn = event.target.closest("button[data-font]");
+
+    if (bgBtn) {
+      node.bg = bgBtn.dataset.bg;
     } else if (textBtn) {
       node.text = textBtn.dataset.text;
-      applyNodeStyle(node);
     } else if (shapeBtn) {
       node.shape = shapeBtn.dataset.shape;
-      applyNodeStyle(node);
+    } else if (fontBtn) {
+      const step = 2;
+      if (fontBtn.dataset.font === "inc") {
+        node.fontSize = Math.min(FONT_MAX, node.fontSize + step);
+      } else {
+        node.fontSize = Math.max(FONT_MIN, node.fontSize - step);
+      }
     } else {
       return;
     }
+    applyNodeStyle(node);
     syncToolbarValues();
   });
 
   const applyNodeStyle = (node) => {
     // Apply background, border (match the bg color for the colored
-    // nodes; stroke-color for white) and text color directly.
+    // nodes; stroke-color for white), text color, shape, font size.
     node.el.style.background = node.bg;
     node.el.style.borderColor =
       node.bg.toLowerCase() === "#ffffff" ? "" : node.bg;
     node.el.style.color = node.text;
     node.el.style.borderRadius = node.shape === "rounded" ? "12px" : "999px";
+    node.el.style.fontSize = node.fontSize + "px";
   };
 
   // ── Drag (pointer events; works for mouse + touch) ─────────────

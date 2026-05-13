@@ -1017,18 +1017,18 @@ html[lang="de"] .nav-cta .ghost {
 .features-tab-canvas-split .features-tab-canvas-image {
   position: absolute;
   width: auto;
-  height: 80%;
+  height: 44%;
   max-width: 62%;
 }
 
 .features-tab-canvas-image-left {
-  top: 6%;
+  top: 4%;
   left: 4%;
   z-index: 2;
 }
 
 .features-tab-canvas-image-right {
-  bottom: 6%;
+  bottom: 4%;
   right: 4%;
   z-index: 1;
 }

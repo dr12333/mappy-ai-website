@@ -55,15 +55,17 @@ body {
      stripe. Both bands share the same angle for visual consistency. */
   background-image:
     /* Top band: fade-to-surface overlay (transparent at top, surface
-       at 70% down — masks the color band below it). */
-    linear-gradient(180deg, rgba(251, 251, 250, 0) 0%, rgba(251, 251, 250, 1) 70%),
+       at 80% down — masks the color band below it). The top band
+       runs hotter than the bottom (alphas ~0.55 vs 0.34) so the
+       hero reads as the page's most saturated zone. */
+    linear-gradient(180deg, rgba(251, 251, 250, 0) 0%, rgba(251, 251, 250, 1) 80%),
     linear-gradient(
       135deg,
-      rgba(255, 202, 78, 0.36) 0%,    /* #FFCA4E sun */
-      rgba(241, 154, 72, 0.36) 22%,   /* #F19A48 amber */
-      rgba(235, 89, 79, 0.34) 45%,    /* #EB594F coral */
-      rgba(252, 152, 147, 0.34) 65%,  /* #FC9893 blush */
-      rgba(101, 140, 255, 0.40) 85%   /* #658CFF cool blue — pulled left + alpha bump for more presence */
+      rgba(255, 202, 78, 0.55) 0%,    /* #FFCA4E sun */
+      rgba(241, 154, 72, 0.55) 22%,   /* #F19A48 amber */
+      rgba(235, 89, 79, 0.52) 45%,    /* #EB594F coral */
+      rgba(252, 152, 147, 0.52) 65%,  /* #FC9893 blush */
+      rgba(101, 140, 255, 0.58) 85%   /* #658CFF cool blue */
     ),
     /* Bottom band: mirror — fade-to-surface goes opaque at top, transparent
        at bottom so the color band reads from the page bottom upward. */
@@ -77,7 +79,7 @@ body {
       rgba(101, 140, 255, 0.40) 85%
     );
   background-repeat: no-repeat;
-  background-size: 100% 70vh, 100% 70vh, 100% 70vh, 100% 70vh;
+  background-size: 100% 85vh, 100% 85vh, 100% 70vh, 100% 70vh;
   background-position: top, top, bottom, bottom;
   color: var(--ink);
   line-height: 1.6;

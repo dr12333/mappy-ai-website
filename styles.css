@@ -947,14 +947,15 @@ html[lang="de"] .nav-cta .ghost {
 
 .features-tab-panel.is-active {
   display: grid;
-  /* Subtle fade-in when switching tabs — avoids the abrupt content
-     swap that makes tabbed UIs feel clunky. */
-  animation: features-tab-fade 0.25s ease-out;
+  /* Tab swap animation — the active panel rises in from below with
+     a slight scale-up. Slower and more visible than a token fade so
+     the transition reads as deliberate motion, not a flicker. */
+  animation: features-tab-fade 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes features-tab-fade {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(16px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .features-tab-media {

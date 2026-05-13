@@ -1652,7 +1652,7 @@ html[lang="de"] .nav-cta .ghost {
   background: #2E3437;
   border: 1.5px solid var(--ink);
   transform-origin: 50% 50%;
-  animation: audience-tip-shake 5s ease-in-out infinite;
+  animation: audience-tip-shake 3s ease-in-out infinite;
 }
 
 .audience-tip-trigger:hover::before {
@@ -1718,14 +1718,17 @@ html[lang="de"] .nav-cta .ghost {
   border: 2px solid #ffffff;
 }
 
-/* Periodic shake — still 90% of the time, then a quick wobble.
-   Cycle length 5s; the actual motion happens in the last ~10%. */
+/* Periodic shake — bigger amplitude (up to ±18deg) and faster
+   cycle (3s instead of 5s) so the avatar feels more "knocking" /
+   attention-grabbing. Still in the last ~15% of the cycle so it
+   reads as a punctuation burst, not constant motion. */
 @keyframes audience-tip-shake {
-  0%, 90%, 100% { transform: rotate(0); }
-  91% { transform: rotate(-10deg); }
-  93% { transform: rotate(10deg); }
-  95% { transform: rotate(-8deg); }
-  97% { transform: rotate(6deg); }
+  0%, 85%, 100% { transform: rotate(0); }
+  87% { transform: rotate(-18deg); }
+  90% { transform: rotate(18deg); }
+  93% { transform: rotate(-14deg); }
+  96% { transform: rotate(12deg); }
+  98% { transform: rotate(-6deg); }
 }
 
 /* Open: message bubble appears ABOVE the trigger avatar like a

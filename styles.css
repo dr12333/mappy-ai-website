@@ -526,7 +526,7 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .hero-video-frame {
-  width: min(860px, 100%);
+  width: min(1080px, 100%);
   padding: 6px;
   border-radius: 20px;
   border: 1.5px solid transparent;

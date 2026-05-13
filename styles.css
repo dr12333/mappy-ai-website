@@ -1017,11 +1017,11 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .features-tab-canvas-image-left {
-  align-self: center;
+  align-self: flex-start;
 }
 
 .features-tab-canvas-image-right {
-  align-self: center;
+  align-self: flex-end;
 }
 
 .features-tab-copy {

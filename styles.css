@@ -1657,52 +1657,18 @@ html[lang="de"] .nav-cta .ghost {
   color: #6b6b6b;
 }
 
-/* Color picker — a single trigger button shows the current color.
-   Click opens a popover with the palette options. Mirrors the
-   app's .color-trigger + .color-dropdown pattern. */
-.audience-toolbar-color-select {
-  position: relative;
-}
-
-.audience-toolbar-color-trigger {
-  width: 22px;
-  height: 22px;
-  border-radius: 4px;
-  border: 1.5px solid #c9c9c3;
-  cursor: pointer;
-  padding: 0;
-  background: var(--current-color, #ffffff);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.audience-toolbar-color-trigger:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(60, 60, 67, 0.16);
-}
-
-.audience-toolbar-color-popover {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
+/* Inline color swatches — row of palette swatches shown directly
+   in each color section. Same circle+ring styling as the app's
+   .color-preset-row, just inline rather than inside a popover. */
+.audience-toolbar-swatches {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  padding: 10px;
-  width: 168px;
-  background: #ffffff;
-  border: 1.5px solid #c9c9c3;
-  border-radius: 12px;
-  box-shadow: 0 12px 24px rgba(60, 60, 67, 0.16);
-  z-index: 30;
 }
 
-.audience-toolbar-color-popover[hidden] {
-  display: none;
-}
-
-.audience-toolbar-color-popover button {
-  width: 20px;
-  height: 20px;
+.audience-toolbar-swatches button {
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   border: 2px solid transparent;
   padding: 0;
@@ -1717,11 +1683,11 @@ html[lang="de"] .nav-cta .ghost {
   border-color: #c9c9c3 !important;
 }
 
-.audience-toolbar-color-popover button:hover {
+.audience-toolbar-swatches button:hover {
   transform: scale(1.15);
 }
 
-.audience-toolbar-color-popover button.is-active {
+.audience-toolbar-swatches button.is-active {
   border-color: #2e3437;
 }
 

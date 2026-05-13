@@ -499,7 +499,7 @@ document.addEventListener("click", (event) => {
 
   const closeAllPopovers = () => {
     toolbar
-      .querySelectorAll(".audience-toolbar-color-popover, .audience-toolbar-shape-popover")
+      .querySelectorAll(".audience-toolbar-shape-popover")
       .forEach((p) => (p.hidden = true));
   };
 
@@ -507,20 +507,11 @@ document.addEventListener("click", (event) => {
     if (!selectedId) return;
     const node = nodes.get(selectedId);
     if (!node) return;
-    // Color trigger backgrounds reflect the node's current colors.
-    const bgTrigger = toolbar.querySelector(
-      '.audience-toolbar-color-select[data-target="bg"] .audience-toolbar-color-trigger'
-    );
-    const textTrigger = toolbar.querySelector(
-      '.audience-toolbar-color-select[data-target="text"] .audience-toolbar-color-trigger'
-    );
-    if (bgTrigger) bgTrigger.style.setProperty("--current-color", node.bg);
-    if (textTrigger) textTrigger.style.setProperty("--current-color", node.text);
-    // Mark active swatch inside each popover.
-    toolbar.querySelectorAll(".audience-toolbar-color-popover button[data-bg]").forEach((btn) => {
+    // Mark active inline swatch.
+    toolbar.querySelectorAll(".audience-toolbar-swatches button[data-bg]").forEach((btn) => {
       btn.classList.toggle("is-active", btn.dataset.bg.toLowerCase() === node.bg.toLowerCase());
     });
-    toolbar.querySelectorAll(".audience-toolbar-color-popover button[data-text]").forEach((btn) => {
+    toolbar.querySelectorAll(".audience-toolbar-swatches button[data-text]").forEach((btn) => {
       btn.classList.toggle("is-active", btn.dataset.text.toLowerCase() === node.text.toLowerCase());
     });
     // Shape trigger label + popover active state.
@@ -540,25 +531,15 @@ document.addEventListener("click", (event) => {
     const node = nodes.get(selectedId);
     if (!node) return;
 
-    // Trigger buttons toggle their popover (and close the others).
-    const colorTrigger = event.target.closest(".audience-toolbar-color-trigger");
+    // Shape trigger toggles its popover.
     const shapeTrigger = event.target.closest(".audience-toolbar-shape-trigger");
-    if (colorTrigger) {
-      const popover = colorTrigger.parentElement.querySelector(".audience-toolbar-color-popover");
-      const wasHidden = popover.hidden;
-      closeAllPopovers();
-      popover.hidden = !wasHidden;
-      return;
-    }
     if (shapeTrigger) {
       const popover = shapeTrigger.parentElement.querySelector(".audience-toolbar-shape-popover");
-      const wasHidden = popover.hidden;
-      closeAllPopovers();
-      popover.hidden = !wasHidden;
+      popover.hidden = !popover.hidden;
       return;
     }
 
-    // Inside-popover swatch / option clicks.
+    // Direct control clicks (inline swatches + font + shape option).
     const bgBtn = event.target.closest("button[data-bg]");
     const textBtn = event.target.closest("button[data-text]");
     const shapeBtn = event.target.closest(".audience-toolbar-shape-popover button[data-shape]");
@@ -566,10 +547,8 @@ document.addEventListener("click", (event) => {
 
     if (bgBtn) {
       node.bg = bgBtn.dataset.bg;
-      closeAllPopovers();
     } else if (textBtn) {
       node.text = textBtn.dataset.text;
-      closeAllPopovers();
     } else if (shapeBtn) {
       node.shape = shapeBtn.dataset.shape;
       closeAllPopovers();
@@ -587,13 +566,12 @@ document.addEventListener("click", (event) => {
     syncToolbarValues();
   });
 
-  // Click outside any popover (but still inside the toolbar) closes
-  // open popovers without deselecting.
+  // Click inside the toolbar but outside the shape popover/trigger
+  // closes the shape popover (e.g. clicking a swatch should close
+  // any open popover too).
   document.addEventListener("pointerdown", (event) => {
     if (!toolbar.contains(event.target)) return;
-    if (event.target.closest(".audience-toolbar-color-popover")) return;
     if (event.target.closest(".audience-toolbar-shape-popover")) return;
-    if (event.target.closest(".audience-toolbar-color-trigger")) return;
     if (event.target.closest(".audience-toolbar-shape-trigger")) return;
     closeAllPopovers();
   });

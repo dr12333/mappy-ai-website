@@ -260,8 +260,14 @@
                avatar + message + close button. JS toggles the
                data-state attribute. -->
           <div class="audience-tip reveal" data-state="collapsed">
-            <button class="audience-tip-trigger" type="button" aria-label="Open Mappy AI tip">
-              <span class="audience-tip-letter" aria-hidden="true">D</span>
+            <button class="audience-tip-trigger" type="button" aria-label="Toggle Mappy AI tip">
+              <span class="audience-tip-icon audience-tip-icon-d" aria-hidden="true">D</span>
+              <span class="audience-tip-icon audience-tip-icon-x" aria-hidden="true">
+                <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                  <line x1="3.5" y1="3.5" x2="10.5" y2="10.5"/>
+                  <line x1="10.5" y1="3.5" x2="3.5" y2="10.5"/>
+                </svg>
+              </span>
               <span class="audience-tip-badge" aria-hidden="true"></span>
             </button>
 

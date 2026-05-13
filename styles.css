@@ -1659,13 +1659,52 @@ html[lang="de"] .nav-cta .ghost {
   animation-play-state: paused;
 }
 
-.audience-tip-letter {
+/* Two icons inside the trigger, crossfade-rotated based on
+   data-state. Closed: D visible. Open: D fades + rotates 45°
+   into a cross icon that doubles as the close button. */
+.audience-tip-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.audience-tip-icon-d {
   font-family: inherit;
   font-size: 19px;
   font-weight: 700;
   line-height: 1;
-  color: #ffffff;
   letter-spacing: -0.01em;
+}
+
+.audience-tip-icon-x svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Default (collapsed): D is visible, X is hidden + pre-rotated. */
+.audience-tip-icon-x {
+  opacity: 0;
+  transform: rotate(-45deg);
+}
+
+/* Open: D rotates 45° while fading out, X rotates back to 0 and
+   fades in. The cross then doubles as the close button — clicking
+   it toggles state back to collapsed via the existing handler. */
+.audience-tip[data-state="open"] .audience-tip-icon-d {
+  opacity: 0;
+  transform: rotate(45deg);
+}
+
+.audience-tip[data-state="open"] .audience-tip-icon-x {
+  opacity: 1;
+  transform: rotate(0);
 }
 
 .audience-tip-badge {

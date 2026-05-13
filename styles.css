@@ -621,46 +621,81 @@ html[lang="de"] .nav-cta .ghost {
   max-width: none;
 }
 
-/* Why-section: 4 editorial benefit statements in a 2x2 grid.
-   No icons, no comparison badges — just confident headlines and
-   short copy. The headline carries the contrast; the body
-   explains the "why" without resorting to ✗/✓ visual shorthand. */
+/* Why-section: 4 editorial benefit cards in a 2x2 grid. Each card
+   carries one distinct brand-palette accent (coral, sky, sun, mint)
+   drawn as a short "branch" mark below the heading — different
+   color per card so the section reads as a palette spread without
+   leaning on icons or templated badge graphics. */
 .why-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px 56px;
+  gap: 24px;
   margin-top: 36px;
+}
+
+.why-point {
+  padding: 32px 30px;
+  border-radius: 20px;
+  border: 1px solid var(--stroke);
+  background: var(--surface-strong);
+  box-shadow: var(--shadow-sm);
 }
 
 .why-point h3 {
   font-size: 22px;
+  font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  margin: 0 0 10px;
-  font-weight: 600;
+  margin: 0 0 16px;
+  padding-bottom: 16px;
+  position: relative;
+  color: var(--ink);
 }
 
+/* The branch mark — a short colored line below each heading. Color
+   comes from --accent-color, which we vary per card below. */
+.why-point h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent-color, var(--accent));
+}
+
+.why-point:nth-child(1) { --accent-color: #ff9c7f; }  /* coral  */
+.why-point:nth-child(2) { --accent-color: #9ebcff; }  /* sky    */
+.why-point:nth-child(3) { --accent-color: #ffc66b; }  /* sun    */
+.why-point:nth-child(4) { --accent-color: #9fe2d0; }  /* mint   */
+
 .why-point p {
-  font-size: 15px;
+  font-size: 14.5px;
   color: var(--muted);
-  line-height: 1.6;
+  line-height: 1.65;
   margin: 0;
-  max-width: 44ch;
+}
+
+.why-point p + p {
+  margin-top: 10px;
 }
 
 @media (max-width: 720px) {
   .why-grid {
     grid-template-columns: 1fr;
-    gap: 22px;
+    gap: 18px;
     margin-top: 28px;
+  }
+
+  .why-point {
+    padding: 26px 24px;
   }
 
   .why-point h3 {
     font-size: 19px;
-  }
-
-  .why-point p {
-    font-size: 14.5px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
   }
 }
 

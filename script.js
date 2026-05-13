@@ -395,7 +395,9 @@ document.addEventListener("click", (event) => {
       // Initial text color: white on every node (all three levels
       // now have colored backgrounds; this matches the CSS defaults).
       text: "#FFFFFF",
-      shape: "pill",
+      // Level-2 leaves carry multi-line copy and use a rounded
+      // rectangle by default; other levels use full pills.
+      shape: el.classList.contains("audience-node-l2") ? "rounded" : "pill",
       // Initial font size in px — read from computed style so we
       // start in sync with whatever the CSS rules set per level.
       fontSize: parseFloat(getComputedStyle(el).fontSize) || 14,

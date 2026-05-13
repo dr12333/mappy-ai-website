@@ -1595,7 +1595,7 @@ html[lang="de"] .nav-cta .ghost {
 .workflow-card-number {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 10px;
   background: var(--accent);
   color: #ffffff;
   font-weight: 700;

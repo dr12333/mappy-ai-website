@@ -1560,6 +1560,8 @@ html[lang="de"] .nav-cta .ghost {
   color: var(--ink);
   white-space: nowrap;
   box-shadow: var(--shadow-sm);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* All three levels are tinted with a sunset-palette color set via
@@ -1639,6 +1641,8 @@ html[lang="de"] .nav-cta .ghost {
   box-shadow: 0 12px 24px rgba(60, 60, 67, 0.16);
   z-index: 20;
   font-family: inherit;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .audience-toolbar[hidden] {

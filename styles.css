@@ -753,7 +753,6 @@ html[lang="de"] .nav-cta .ghost {
    squircle, muted heading + bullets + body. Reads as the
    "what you have now" option. */
 .why-card-traditional .why-card-icon {
-  border: 1.5px solid var(--stroke);
   color: var(--muted);
 }
 

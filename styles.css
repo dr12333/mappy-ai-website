@@ -1024,30 +1024,6 @@ html[lang="de"] .nav-cta .ghost {
   align-self: flex-end;
 }
 
-/* Soft-fade the top and bottom edges of the source showcases so
-   the SVG's internal gradient appears to dissolve into the canvas
-   instead of ending at a hard rectangle edge. (The SVGs' gradients
-   don't fade to alpha 0 at the artboard boundary — masking here is
-   a workaround until the SVGs themselves are exported with feathered
-   edges.) */
-.features-tab-canvas-image-left,
-.features-tab-canvas-image-right {
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    #000 12%,
-    #000 88%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    #000 12%,
-    #000 88%,
-    transparent 100%
-  );
-}
-
 .features-tab-copy {
   display: flex;
   flex-direction: column;

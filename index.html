@@ -230,23 +230,27 @@
                percentage-positioned HTML nodes overlaid on top. JS
                rewrites the path 'd' attribute on drag. -->
           <svg class="audience-canvas-edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <path data-edge="root,students" d="M 22 50 C 36 50, 36 22, 50 22" />
-            <path data-edge="root,researchers" d="M 22 50 L 50 50" />
-            <path data-edge="root,teams" d="M 22 50 C 36 50, 36 78, 50 78" />
-            <path data-edge="students,students-child" d="M 50 22 L 78 22" />
-            <path data-edge="researchers,researchers-child" d="M 50 50 L 78 50" />
-            <path data-edge="teams,teams-child" d="M 50 78 L 78 78" />
+            <path data-edge="root,students" d="M 22 50 C 36 50, 36 16, 50 16" />
+            <path data-edge="root,researchers" d="M 22 50 C 36 50, 36 39, 50 39" />
+            <path data-edge="root,teams" d="M 22 50 C 36 50, 36 61, 50 61" />
+            <path data-edge="root,summarizers" d="M 22 50 C 36 50, 36 84, 50 84" />
+            <path data-edge="students,students-child" d="M 50 16 L 78 16" />
+            <path data-edge="researchers,researchers-child" d="M 50 39 L 78 39" />
+            <path data-edge="teams,teams-child" d="M 50 61 L 78 61" />
+            <path data-edge="summarizers,summarizers-child" d="M 50 84 L 78 84" />
           </svg>
 
           <div class="audience-node audience-node-center" data-node-id="root" style="top: 50%; left: 22%; --node-color: #F19A48;">Who Mappy AI is for</div>
 
-          <div class="audience-node audience-node-l1" data-node-id="students" style="top: 22%; left: 50%; --node-color: #EB594F;">Students preparing for exams</div>
-          <div class="audience-node audience-node-l1" data-node-id="researchers" style="top: 50%; left: 50%; --node-color: #EB594F;">Researchers digesting papers</div>
-          <div class="audience-node audience-node-l1" data-node-id="teams" style="top: 78%; left: 50%; --node-color: #EB594F;">Teams planning together</div>
+          <div class="audience-node audience-node-l1" data-node-id="students" style="top: 16%; left: 50%; --node-color: #EB594F;">Students</div>
+          <div class="audience-node audience-node-l1" data-node-id="researchers" style="top: 39%; left: 50%; --node-color: #EB594F;">Researchers</div>
+          <div class="audience-node audience-node-l1" data-node-id="teams" style="top: 61%; left: 50%; --node-color: #EB594F;">Teams</div>
+          <div class="audience-node audience-node-l1" data-node-id="summarizers" style="top: 84%; left: 50%; --node-color: #EB594F;">Summarizers</div>
 
-          <div class="audience-node audience-node-l2" data-node-id="students-child" style="top: 22%; left: 78%; --node-color: #FC9893;">Lecture audio → revision-ready map</div>
-          <div class="audience-node audience-node-l2" data-node-id="researchers-child" style="top: 50%; left: 78%; --node-color: #FC9893;">Click any node, jump to its source</div>
-          <div class="audience-node audience-node-l2" data-node-id="teams-child" style="top: 78%; left: 78%; --node-color: #FC9893;">Real-time edits, exportable to PDF</div>
+          <div class="audience-node audience-node-l2" data-node-id="students-child" style="top: 16%; left: 78%; --node-color: #FC9893;">Lecture audio → revision-ready map</div>
+          <div class="audience-node audience-node-l2" data-node-id="researchers-child" style="top: 39%; left: 78%; --node-color: #FC9893;">Click any node, jump to its source</div>
+          <div class="audience-node audience-node-l2" data-node-id="teams-child" style="top: 61%; left: 78%; --node-color: #FC9893;">Real-time edits, exportable to PDF</div>
+          <div class="audience-node audience-node-l2" data-node-id="summarizers-child" style="top: 84%; left: 78%; --node-color: #FC9893;">Anything → structured mindmap</div>
 
           <!-- Floating toolbar — replicates the actual Mappy AI app's
                .node-menu styling (raised-cream background, 1.5px
@@ -302,6 +306,7 @@
             <li><strong>Students</strong> — drop in a lecture recording, get a revision-ready map back</li>
             <li><strong>Researchers</strong> — every node clicks back to the exact source page</li>
             <li><strong>Teams</strong> — live shared editing, exportable to PDF when it's time to present</li>
+            <li><strong>Summarizers</strong> — anyone turning long, unstructured material into a clear mindmap</li>
           </ul>
         </div>
       </section>

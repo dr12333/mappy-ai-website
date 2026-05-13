@@ -776,8 +776,13 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .why-card-mappy .why-card-icon {
-  background: var(--accent);
-  color: #ffffff;
+  color: var(--ink);
+}
+
+.why-card-mappy .why-card-icon img {
+  width: 36px;
+  height: 36px;
+  display: block;
 }
 
 .why-card-mappy .why-card-icon svg {

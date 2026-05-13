@@ -1628,7 +1628,7 @@ html[lang="de"] .nav-cta .ghost {
    Positioned next to the selected node by JS. */
 .audience-toolbar {
   position: absolute;
-  width: 172px;
+  width: 200px;
   padding: 10px;
   display: flex;
   flex-direction: column;

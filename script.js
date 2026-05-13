@@ -462,7 +462,7 @@ document.addEventListener("click", (event) => {
     // node position or canvas size.
     const canvasRect = canvas.getBoundingClientRect();
     const nodeRect = node.el.getBoundingClientRect();
-    const toolbarW = toolbar.offsetWidth || 172;
+    const toolbarW = toolbar.offsetWidth || 200;
     const toolbarH = toolbar.offsetHeight || 240;
     const padding = 8;  // gap from canvas edge
     const gap = 12;     // gap between node and toolbar

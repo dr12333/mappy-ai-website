@@ -1327,14 +1327,29 @@ html[lang="de"] .nav-cta .ghost {
   /* intentionally empty — uses .audience-card-icon base treatment */
 }
 
-.audience-card h3 {
-  font-size: 16px;
+.audience-card-kicker {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
   margin-bottom: 6px;
 }
 
+.audience-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+
 .audience-card p {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 14px;
 }
 
 .audience-card-cta {

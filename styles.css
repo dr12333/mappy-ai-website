@@ -1616,13 +1616,10 @@ html[lang="de"] .nav-cta .ghost {
      animation still applies to the whole tip (fade + slide-in). */
 }
 
-.audience-tip[data-state="open"] .audience-tip-trigger {
-  display: none;
-}
-
-.audience-tip[data-state="collapsed"] .audience-tip-bubble {
-  display: none;
-}
+/* Bubble visibility is now controlled by opacity + transform, not
+   display: none — so the open/close transition has frames to
+   render. pointer-events flip prevents stray clicks on the
+   invisible bubble. */
 
 /* Collapsed: the trigger avatar sits half-overlapping the canvas's
    top-right corner. Shakes every 5s to attract attention. Green
@@ -1681,21 +1678,36 @@ html[lang="de"] .nav-cta .ghost {
   97% { transform: rotate(6deg); }
 }
 
-/* Open: the message bubble. Just the message text + close button,
-   anchored inside the canvas top-right. Dark --ink border matches
-   the logo text. Looks like a real notification message — no
-   avatar, no sender label, just the content. */
+/* Open: message bubble appears ABOVE the trigger avatar like a
+   chat reply, growing out of the avatar's top edge. Anchored to
+   the same right edge as the avatar; translateY pushes the
+   bubble up by its own height + a small gap. Scale-from-0.85
+   gives a slight pop on open; transform-origin at bottom-right
+   anchors the growth to the avatar's position. */
 .audience-tip-bubble {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: -22px;
+  right: -22px;
   max-width: 280px;
-  padding: 14px 36px 14px 16px;
+  padding: 12px 16px;
   background: #FBFBFA;
   border: 1.5px solid var(--ink);
   border-radius: 14px;
   box-shadow: 0 12px 24px rgba(46, 52, 55, 0.18);
   z-index: 26;
+  transform-origin: 100% 100%;
+  transform: translateY(calc(-100% - 12px)) scale(0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.32s cubic-bezier(0.2, 0.9, 0.35, 1.25);
+}
+
+.audience-tip[data-state="open"] .audience-tip-bubble {
+  transform: translateY(calc(-100% - 12px)) scale(1);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .audience-tip-bubble p {
@@ -1705,33 +1717,11 @@ html[lang="de"] .nav-cta .ghost {
   color: var(--ink);
 }
 
-.audience-tip-close {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 22px;
-  height: 22px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: var(--ink);
-  border-radius: 6px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.55;
-  transition: opacity 0.15s ease, background 0.15s ease;
-}
-
-.audience-tip-close:hover {
-  opacity: 1;
-  background: rgba(46, 52, 55, 0.08);
-}
-
-.audience-tip-close svg {
-  width: 12px;
-  height: 12px;
+/* Active visual cue on the avatar when bubble is open — the
+   notification dot fades since the message is now visible. */
+.audience-tip[data-state="open"] .audience-tip-badge {
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
 .audience-tip.reveal {

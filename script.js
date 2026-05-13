@@ -686,19 +686,25 @@ document.addEventListener("click", (event) => {
 })();
 
 // ── Audience onboarding tip: collapsed ↔ open ─────────────────────
-// Tip starts collapsed (gradient avatar with green dot + 5s shake).
-// Clicking the avatar opens the message bubble; clicking the close
-// button collapses it again.
+// Click the avatar to toggle. Click anywhere outside the tip to
+// collapse. The actual show/hide is CSS-driven (transform + opacity
+// transitions); JS just flips the data-state attribute.
 (() => {
   const tip = document.querySelector(".audience-tip");
   if (!tip) return;
   const trigger = tip.querySelector(".audience-tip-trigger");
-  const closeBtn = tip.querySelector(".audience-tip-close");
-  if (!trigger || !closeBtn) return;
+  if (!trigger) return;
+
   trigger.addEventListener("click", () => {
-    tip.dataset.state = "open";
+    tip.dataset.state = tip.dataset.state === "open" ? "collapsed" : "open";
   });
-  closeBtn.addEventListener("click", () => {
+
+  // Click anywhere outside the tip → collapse. The trigger and
+  // bubble are both inside .audience-tip, so this listener won't
+  // fire-close on internal clicks.
+  document.addEventListener("click", (event) => {
+    if (tip.dataset.state !== "open") return;
+    if (event.target.closest(".audience-tip")) return;
     tip.dataset.state = "collapsed";
   });
 })();

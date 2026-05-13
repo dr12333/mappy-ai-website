@@ -1696,6 +1696,10 @@ html[lang="de"] .nav-cta .ghost {
   z-index: 30;
 }
 
+.audience-toolbar-color-popover[hidden] {
+  display: none;
+}
+
 .audience-toolbar-color-popover button {
   width: 20px;
   height: 20px;
@@ -1823,6 +1827,10 @@ html[lang="de"] .nav-cta .ghost {
   gap: 2px;
   box-shadow: 0 12px 24px rgba(60, 60, 67, 0.16);
   z-index: 30;
+}
+
+.audience-toolbar-shape-popover[hidden] {
+  display: none;
 }
 
 .audience-toolbar-shape-popover button {

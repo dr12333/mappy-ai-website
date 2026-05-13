@@ -1603,6 +1603,120 @@ html[lang="de"] .nav-cta .ghost {
   color: var(--muted);
 }
 
+/* Interactive states — applied by script.js when nodes are hydrated
+   into a draggable demo. */
+.audience-canvas[data-interactive-mindmap] .audience-node {
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  transition: box-shadow 0.18s ease, outline 0.18s ease;
+}
+
+.audience-canvas[data-interactive-mindmap] .audience-node.is-dragging {
+  cursor: grabbing;
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+}
+
+.audience-canvas[data-interactive-mindmap] .audience-node.is-selected {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  z-index: 5;
+}
+
+/* ── Floating toolbar ──────────────────────────────────────────────
+   Appears above the selected node. Uses transform: translate(-50%,
+   -100%) so the toolbar's bottom-center anchors at the node's
+   top-center (with the position math done in JS via top/left %). */
+.audience-toolbar {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--surface-strong);
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  z-index: 20;
+  white-space: nowrap;
+  margin-top: -10px; /* small gap between toolbar and node */
+}
+
+.audience-toolbar[hidden] {
+  display: none;
+}
+
+.audience-toolbar-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.audience-toolbar-sep {
+  width: 1px;
+  height: 18px;
+  background: var(--stroke);
+  margin: 0 2px;
+}
+
+.audience-toolbar-swatch,
+.audience-toolbar-text,
+.audience-toolbar-shape {
+  width: 22px;
+  height: 22px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  transition: border-color 0.15s ease, transform 0.12s ease;
+}
+
+.audience-toolbar-swatch {
+  background: var(--swatch, transparent);
+}
+
+.audience-toolbar-swatch-white {
+  background: #ffffff;
+  border-color: var(--stroke);
+}
+
+.audience-toolbar-swatch:hover,
+.audience-toolbar-text:hover,
+.audience-toolbar-shape:hover {
+  transform: scale(1.08);
+}
+
+.audience-toolbar-swatch.is-active,
+.audience-toolbar-text.is-active,
+.audience-toolbar-shape.is-active {
+  border-color: var(--accent);
+}
+
+.audience-toolbar-shape-icon {
+  width: 14px;
+  height: 9px;
+  background: var(--ink);
+  display: block;
+}
+
+.audience-toolbar-shape-icon-pill {
+  border-radius: 999px;
+}
+
+.audience-toolbar-shape-icon-rounded {
+  border-radius: 3px;
+}
+
 /* Mobile: the mindmap is too wide and dense to read on phones.
    Hide the canvas and show the 3-row text fallback instead. */
 .audience-mobile-list {

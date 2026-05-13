@@ -356,3 +356,237 @@ document.addEventListener("click", (event) => {
   });
 })();
 
+// ── Audience mindmap: interactive demo ─────────────────────────────
+// Hydrates the static mindmap illustration in the "Who Mappy AI is
+// for" section into a draggable, selectable mini-editor. Visitors
+// can grab any node to reposition it (edges update live), click a
+// node to select it, and use the floating toolbar to change its
+// background color, text color, or shape. Same palette and shape
+// model used by the actual editor in mindmap-tool.
+(() => {
+  const canvas = document.querySelector("[data-interactive-mindmap]");
+  if (!canvas) return;
+
+  // Skip on small viewports — the canvas itself is hidden via CSS
+  // below 720px in favor of a text list fallback.
+  const mobileMQ = window.matchMedia("(max-width: 720px)");
+  if (mobileMQ.matches) return;
+
+  const svg = canvas.querySelector(".audience-canvas-edges");
+  const toolbar = canvas.querySelector(".audience-toolbar");
+  const nodeEls = Array.from(canvas.querySelectorAll(".audience-node"));
+  if (!svg || !toolbar || !nodeEls.length) return;
+
+  // Build node + edge state from the DOM. Each node carries its
+  // current (x, y) in canvas-percent coords and its style state.
+  const nodes = new Map();
+  nodeEls.forEach((el) => {
+    const id = el.dataset.nodeId;
+    if (!id) return;
+    const x = parseFloat(el.style.left);
+    const y = parseFloat(el.style.top);
+    nodes.set(id, {
+      id,
+      el,
+      x,
+      y,
+      // Initial bg color: prefer --node-color custom property; fallback to white.
+      bg: el.style.getPropertyValue("--node-color").trim() || "#FFFFFF",
+      // Initial text color: matches the node's :text rule in CSS.
+      text: el.classList.contains("audience-node-l1") ? "#FFFFFF" : "#2E3437",
+      shape: "pill",
+    });
+  });
+
+  // Edge definitions: each path carries a "from,to" data attribute
+  // matching node IDs. The first 3 edges are curved (root → level 1);
+  // the last 3 are straight (level 1 → level 2).
+  const edges = Array.from(svg.querySelectorAll("path")).map((path) => {
+    const [from, to] = path.dataset.edge.split(",");
+    return { from, to, path, curved: ["students", "researchers", "teams"].includes(to) && to !== "researchers" };
+  });
+
+  // ── Edge geometry ──────────────────────────────────────────────
+  // For curved edges (root to top/bottom branches): cubic bezier
+  // with control points pulled horizontally toward the mid-x so the
+  // curve flows from parent right edge to child left edge without
+  // sharp kinks. For straight edges: a simple line.
+  const updateEdges = () => {
+    edges.forEach((edge) => {
+      const from = nodes.get(edge.from);
+      const to = nodes.get(edge.to);
+      if (!from || !to) return;
+      const dx = (to.x - from.x) * 0.5;
+      // Always use a soft cubic so the edges feel like editor links
+      // (even the "straight" ones get a gentle s-curve when nodes are
+      // dragged out of horizontal alignment).
+      const d = `M ${from.x} ${from.y} C ${from.x + dx} ${from.y}, ${to.x - dx} ${to.y}, ${to.x} ${to.y}`;
+      edge.path.setAttribute("d", d);
+    });
+  };
+
+  // ── Selection + toolbar ────────────────────────────────────────
+  let selectedId = null;
+
+  const select = (id) => {
+    selectedId = id;
+    nodeEls.forEach((el) => {
+      el.classList.toggle("is-selected", el.dataset.nodeId === id);
+    });
+    positionToolbar();
+    syncToolbarValues();
+    toolbar.hidden = false;
+  };
+
+  const deselect = () => {
+    selectedId = null;
+    nodeEls.forEach((el) => el.classList.remove("is-selected"));
+    toolbar.hidden = true;
+  };
+
+  const positionToolbar = () => {
+    if (!selectedId) return;
+    const node = nodes.get(selectedId);
+    if (!node) return;
+    // Place toolbar above the node. Clamp top to 0 so it doesn't
+    // disappear above the canvas when a top-row node is selected.
+    const top = Math.max(node.y - 14, 2);
+    toolbar.style.left = node.x + "%";
+    toolbar.style.top = top + "%";
+  };
+
+  const syncToolbarValues = () => {
+    if (!selectedId) return;
+    const node = nodes.get(selectedId);
+    if (!node) return;
+    toolbar.querySelectorAll(".audience-toolbar-swatch").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.dataset.bg.toLowerCase() === node.bg.toLowerCase());
+    });
+    toolbar.querySelectorAll(".audience-toolbar-text").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.dataset.text.toLowerCase() === node.text.toLowerCase());
+    });
+    toolbar.querySelectorAll(".audience-toolbar-shape").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.dataset.shape === node.shape);
+    });
+  };
+
+  // ── Toolbar event handlers ─────────────────────────────────────
+  toolbar.addEventListener("click", (event) => {
+    const swatchBtn = event.target.closest(".audience-toolbar-swatch");
+    const textBtn = event.target.closest(".audience-toolbar-text");
+    const shapeBtn = event.target.closest(".audience-toolbar-shape");
+    if (!selectedId) return;
+    const node = nodes.get(selectedId);
+    if (!node) return;
+
+    if (swatchBtn) {
+      node.bg = swatchBtn.dataset.bg;
+      applyNodeStyle(node);
+    } else if (textBtn) {
+      node.text = textBtn.dataset.text;
+      applyNodeStyle(node);
+    } else if (shapeBtn) {
+      node.shape = shapeBtn.dataset.shape;
+      applyNodeStyle(node);
+    } else {
+      return;
+    }
+    syncToolbarValues();
+  });
+
+  const applyNodeStyle = (node) => {
+    // Apply background, border (match the bg color for the colored
+    // nodes; stroke-color for white) and text color directly.
+    node.el.style.background = node.bg;
+    node.el.style.borderColor =
+      node.bg.toLowerCase() === "#ffffff" ? "" : node.bg;
+    node.el.style.color = node.text;
+    node.el.style.borderRadius = node.shape === "rounded" ? "12px" : "999px";
+  };
+
+  // ── Drag (pointer events; works for mouse + touch) ─────────────
+  let drag = null;
+  const DRAG_THRESHOLD = 4; // pixels before pointerdown becomes a drag
+
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+  nodeEls.forEach((el) => {
+    el.addEventListener("pointerdown", (event) => {
+      // Ignore clicks on the toolbar that bubble up; only react to
+      // direct pointerdowns on the node itself.
+      if (event.target.closest(".audience-toolbar")) return;
+      // Don't initiate drag with secondary buttons.
+      if (event.button !== 0 && event.button !== undefined) return;
+      const id = el.dataset.nodeId;
+      const node = nodes.get(id);
+      if (!node) return;
+      const rect = canvas.getBoundingClientRect();
+      drag = {
+        node,
+        el,
+        startX: event.clientX,
+        startY: event.clientY,
+        origX: node.x,
+        origY: node.y,
+        rect,
+        moved: false,
+        pointerId: event.pointerId,
+      };
+      el.setPointerCapture(event.pointerId);
+      el.classList.add("is-dragging");
+    });
+  });
+
+  document.addEventListener("pointermove", (event) => {
+    if (!drag) return;
+    const dx = event.clientX - drag.startX;
+    const dy = event.clientY - drag.startY;
+    if (!drag.moved) {
+      if (Math.abs(dx) < DRAG_THRESHOLD && Math.abs(dy) < DRAG_THRESHOLD) return;
+      drag.moved = true;
+    }
+    const dxPct = (dx / drag.rect.width) * 100;
+    const dyPct = (dy / drag.rect.height) * 100;
+    drag.node.x = clamp(drag.origX + dxPct, 4, 96);
+    drag.node.y = clamp(drag.origY + dyPct, 6, 94);
+    drag.el.style.left = drag.node.x + "%";
+    drag.el.style.top = drag.node.y + "%";
+    updateEdges();
+    if (selectedId === drag.node.id) positionToolbar();
+  });
+
+  document.addEventListener("pointerup", (event) => {
+    if (!drag) return;
+    const wasMoved = drag.moved;
+    drag.el.classList.remove("is-dragging");
+    if (!wasMoved) {
+      // No drag occurred — treat as a click to select.
+      select(drag.node.id);
+    }
+    drag = null;
+  });
+
+  document.addEventListener("pointercancel", () => {
+    if (!drag) return;
+    drag.el.classList.remove("is-dragging");
+    drag = null;
+  });
+
+  // Click outside the canvas (or on canvas chrome that isn't a node
+  // or the toolbar) deselects.
+  document.addEventListener("pointerdown", (event) => {
+    if (!selectedId) return;
+    if (event.target.closest(".audience-node")) return;
+    if (event.target.closest(".audience-toolbar")) return;
+    deselect();
+  });
+
+  // Recompute toolbar position if window resizes (canvas may resize).
+  window.addEventListener("resize", () => {
+    if (selectedId) positionToolbar();
+  });
+
+  // Initial: ensure SVG edges are in the right shape.
+  updateEdges();
+})();
+

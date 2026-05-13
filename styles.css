@@ -913,7 +913,6 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 999px;
   font-family: inherit;
   font-size: 13px;
-  font-weight: 500;
   color: var(--muted);
   cursor: pointer;
   white-space: nowrap;

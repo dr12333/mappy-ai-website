@@ -1669,7 +1669,7 @@ html[lang="de"] .nav-cta .ghost {
 .audience-toolbar-swatches button {
   width: 18px;
   height: 18px;
-  border-radius: 50%;
+  border-radius: 5px;
   border: 2px solid transparent;
   padding: 0;
   cursor: pointer;

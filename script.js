@@ -13,13 +13,16 @@ function getScrollOffset() {
   return nav ? nav.offsetHeight + 12 : 0;
 }
 
+// Helper: should this hash be treated as "actual top of page"?
+const isTopHash = (hash) => !hash || hash === "#" || hash === "#top";
+
 window.addEventListener("load", () => {
   const hash = window.location.hash;
   // "#top" is the brand-logo anchor — treat as "actual page top",
   // not as a hash-navigation target. (Otherwise refreshing after a
   // logo click lands at the hero section with sticky-nav offset,
   // hiding the audience-switch above the viewport.)
-  if (!hash || hash === "#" || hash === "#top") {
+  if (isTopHash(hash)) {
     window.scrollTo(0, 0);
     return;
   }
@@ -32,6 +35,26 @@ window.addEventListener("load", () => {
 
   const targetY = target.getBoundingClientRect().top + window.pageYOffset - getScrollOffset();
   window.scrollTo(0, targetY);
+});
+
+// pageshow fires both on first load and when the page is restored
+// from the back/forward cache (which preserves scroll position
+// regardless of scrollRestoration). Force top here so navigating
+// back from /schools/ (or any other page) lands at the actual top.
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted && isTopHash(window.location.hash)) {
+    window.scrollTo(0, 0);
+  }
+});
+
+// Save scroll position as 0 before unloading the page, so the
+// browser's restore-cache for the next load already has 0.
+// (Combined with scrollRestoration = "manual" set in <head>, this
+// makes the restored scroll position match what we want.)
+window.addEventListener("beforeunload", () => {
+  if (isTopHash(window.location.hash)) {
+    window.scrollTo(0, 0);
+  }
 });
 
 const reveals = document.querySelectorAll(".reveal");

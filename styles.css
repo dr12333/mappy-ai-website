@@ -372,7 +372,8 @@ html[lang="de"] .nav-cta .ghost {
   width: 100%;
 }
 
-.audience-switch-links a {
+.audience-switch-links a,
+.audience-switch-links span {
   flex: 1;
   text-align: center;
   white-space: nowrap;
@@ -390,7 +391,7 @@ html[lang="de"] .nav-cta .ghost {
   border-color: var(--stroke);
 }
 
-.audience-switch-links a.is-active {
+.audience-switch-links .is-active {
   color: var(--ink);
   font-weight: 600;
   background: #ffffff;

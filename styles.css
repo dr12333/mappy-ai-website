@@ -1604,29 +1604,65 @@ html[lang="de"] .nav-cta .ghost {
   text-align: center;
 }
 
-/* Onboarding tip — top-right of the canvas. Reveals when the
-   audience section scrolls into view (rides on the global
-   .reveal observer). Override the .reveal transform so the tip
-   slides in subtly from the upper-right instead of using the
-   global 48px translate. */
+/* Onboarding tip — message-style card pinned to the canvas's
+   top-right corner. The avatar carries the brand sunset gradient
+   (the pop of color) so the cream surface and ink text stay calm
+   and readable. Rides on the global .reveal IntersectionObserver,
+   with overridden transform so it slides in from the upper-right
+   on a 400ms delay after the canvas itself reveals. */
 .audience-tip {
   position: absolute;
   top: 16px;
   right: 16px;
-  max-width: 240px;
-  padding: 12px 16px;
+  max-width: 280px;
+  padding: 14px 16px;
   background: #FBFBFA;
   border: 1.5px solid #cfcfc9;
-  border-radius: 12px;
+  border-radius: 14px;
   box-shadow: 0 12px 24px rgba(60, 60, 67, 0.16);
   z-index: 25;
-  font-size: 13px;
-  line-height: 1.45;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.audience-tip-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: linear-gradient(135deg, #FFCA4E 0%, #F19A48 35%, #EB594F 70%, #FC9893 100%);
+  box-shadow: 0 6px 14px rgba(235, 89, 79, 0.22);
+}
+
+.audience-tip-avatar svg {
+  width: 18px;
+  height: 18px;
+}
+
+.audience-tip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.audience-tip-from {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   color: var(--ink);
 }
 
 .audience-tip p {
   margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
 }
 
 .audience-tip.reveal {

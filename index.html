@@ -252,12 +252,24 @@
           <div class="audience-node audience-node-l2" data-node-id="teams-child" style="top: 61%; left: 78%; --node-color: #FC9893;">Build maps together with live cursors. Export to PDF when it's time to present.</div>
           <div class="audience-node audience-node-l2" data-node-id="summarizers-child" style="top: 84%; left: 78%; --node-color: #FC9893;">Long-form docs, links, or recordings → a clear hierarchy you can navigate by shape.</div>
 
-          <!-- Onboarding tip — appears on scroll-reveal in the
-               top-right corner of the canvas. Stays present (no
-               dismiss) so visitors who scroll back up still see
-               the invitation to interact. -->
-          <div class="audience-tip reveal">
-            <p>Feel free to play around with this simplified version of Mappy AI.</p>
+          <!-- Onboarding tip — message-style card in the top-right of
+               the canvas. Avatar uses the brand sunset gradient for
+               a pop of color; surface stays cream so the message
+               itself reads cleanly. -->
+          <div class="audience-tip reveal" role="status">
+            <span class="audience-tip-avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="3.6"/>
+                <circle cx="5"  cy="6"  r="2"/>
+                <circle cx="19" cy="6"  r="2"/>
+                <circle cx="5"  cy="18" r="2"/>
+                <circle cx="19" cy="18" r="2"/>
+              </svg>
+            </span>
+            <div class="audience-tip-body">
+              <span class="audience-tip-from">Mappy AI</span>
+              <p>Feel free to play around with this simplified version of the editor.</p>
+            </div>
           </div>
 
           <!-- Floating toolbar — replicates the actual Mappy AI app's

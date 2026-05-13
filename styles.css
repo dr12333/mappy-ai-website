@@ -61,11 +61,11 @@ body {
     linear-gradient(180deg, rgba(251, 251, 250, 0) 0%, rgba(251, 251, 250, 1) 80%),
     linear-gradient(
       135deg,
-      rgba(255, 202, 78, 0.55) 0%,    /* #FFCA4E sun */
-      rgba(241, 154, 72, 0.55) 22%,   /* #F19A48 amber */
-      rgba(235, 89, 79, 0.52) 45%,    /* #EB594F coral */
-      rgba(252, 152, 147, 0.52) 65%,  /* #FC9893 blush */
-      rgba(101, 140, 255, 0.58) 85%   /* #658CFF cool blue */
+      rgba(255, 202, 78, 0.42) 0%,    /* #FFCA4E sun */
+      rgba(241, 154, 72, 0.42) 22%,   /* #F19A48 amber */
+      rgba(235, 89, 79, 0.40) 45%,    /* #EB594F coral */
+      rgba(252, 152, 147, 0.40) 65%,  /* #FC9893 blush */
+      rgba(101, 140, 255, 0.45) 85%   /* #658CFF cool blue */
     ),
     /* Bottom band: mirror — fade-to-surface goes opaque at top, transparent
        at bottom so the color band reads from the page bottom upward. */

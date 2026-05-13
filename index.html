@@ -4,18 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
-      // Run before any layout/paint so the browser doesn't render
-      // the page at its previously-restored scroll position before
-      // our main script.js (loaded at the end of <body>) has a
-      // chance to set scrollRestoration. Without this, refreshes
-      // briefly show the page offset by however far you were
-      // scrolled previously.
+      // Defeat the browser's scroll-restore on refresh. scrollRestoration
+      // = "manual" set this early should disable auto-restore for the
+      // current navigation in modern browsers, but the behavior is
+      // inconsistent — we also force scrollTo(0, 0) at every checkpoint
+      // before paint:
+      //   - inline (now): no-op if body isn't rendered yet, but signals
+      //     intent and catches whatever scroll state is in place.
+      //   - DOMContentLoaded: after HTML parses, before resources load.
+      //     This is where the browser would have applied its restored
+      //     scroll position; forcing here overrides it.
+      //   - script.js's load handler does its own scrollTo(0, 0) as a
+      //     final backstop once the video finishes loading.
+      // Hash navigations (#workflow etc.) are skipped — those are
+      // handled by script.js's load handler with the proper sticky-nav
+      // offset.
       if ("scrollRestoration" in history) {
         history.scrollRestoration = "manual";
       }
-      if (!window.location.hash || window.location.hash === "#") {
-        window.scrollTo(0, 0);
-      }
+      var forceTopIfNoHash = function () {
+        if (!window.location.hash || window.location.hash === "#") {
+          window.scrollTo(0, 0);
+        }
+      };
+      forceTopIfNoHash();
+      document.addEventListener("DOMContentLoaded", forceTopIfNoHash);
     </script>
     <title>Mappy AI | AI Mind Maps from Files, Links, and Notes</title>
     <meta

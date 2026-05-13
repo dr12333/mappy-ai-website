@@ -1725,17 +1725,18 @@ html[lang="de"] .nav-cta .ghost {
   border: 2px solid #ffffff;
 }
 
-/* Periodic shake — bigger amplitude (up to ±18deg) and faster
-   cycle (3s instead of 5s) so the avatar feels more "knocking" /
-   attention-grabbing. Still in the last ~15% of the cycle so it
-   reads as a punctuation burst, not constant motion. */
+/* Periodic shake — wider motion window (~30% of cycle) and bigger
+   amplitudes so it's actually visible. Still mostly idle, but
+   when it fires the burst lasts ~0.9s and rotates up to ±22deg. */
 @keyframes audience-tip-shake {
-  0%, 85%, 100% { transform: rotate(0); }
-  87% { transform: rotate(-18deg); }
-  90% { transform: rotate(18deg); }
-  93% { transform: rotate(-14deg); }
-  96% { transform: rotate(12deg); }
-  98% { transform: rotate(-6deg); }
+  0%, 70%, 100% { transform: rotate(0); }
+  74% { transform: rotate(-22deg); }
+  78% { transform: rotate(22deg); }
+  82% { transform: rotate(-18deg); }
+  86% { transform: rotate(16deg); }
+  90% { transform: rotate(-12deg); }
+  94% { transform: rotate(8deg); }
+  97% { transform: rotate(-4deg); }
 }
 
 /* Open: message bubble appears ABOVE the trigger avatar like a

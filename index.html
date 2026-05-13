@@ -386,59 +386,108 @@
       </section>
 
       <section class="workflow" id="workflow">
-        <div class="workflow-copy reveal">
-          <h2>How people use Mappy AI</h2>
-          <p>Start anywhere.</p>
-        </div>
-        <div class="workflow-steps">
-          <div class="workflow-step reveal">
-            <div class="workflow-step-number" aria-hidden="true">01</div>
+        <div class="workflow-mindmap reveal">
+          <svg class="workflow-connectors" aria-hidden="true"></svg>
+
+          <div class="workflow-center">
+            <h2>How people use Mappy AI</h2>
+            <p>Start anywhere.</p>
+          </div>
+
+          <article class="workflow-leaf" data-leaf="1">
+            <span class="workflow-leaf-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                <line x1="4" y1="10" x2="4" y2="14"/>
+                <line x1="8" y1="7" x2="8" y2="17"/>
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="16" y1="7" x2="16" y2="17"/>
+                <line x1="20" y1="10" x2="20" y2="14"/>
+              </svg>
+            </span>
             <h4>Lecture → mindmap</h4>
             <p>
               Drop in the audio or the lecture PDF — or both. Mappy AI transcribes the recording and embeds slide
               snapshots from the deck. A 60-minute class becomes a 2-minute scan.
             </p>
-          </div>
-          <div class="workflow-step reveal">
-            <div class="workflow-step-number" aria-hidden="true">02</div>
-            <h4>Research paper → sourced map</h4>
-            <p>
-              Upload the PDF. Mappy AI extracts methodology, results, and key references — and embeds figure snapshots
-              from the paper itself, every node linked to the source page.
-            </p>
-          </div>
-          <div class="workflow-step reveal">
-            <div class="workflow-step-number" aria-hidden="true">03</div>
+          </article>
+
+          <article class="workflow-leaf" data-leaf="2">
+            <span class="workflow-leaf-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 7 a2 2 0 0 1 2 -2 h12 a2 2 0 0 1 2 2 v8 a2 2 0 0 1 -2 2 h-6 l-4 4 v-4 H6 a2 2 0 0 1 -2 -2 z"/>
+                <circle cx="9" cy="11" r="1" fill="currentColor" stroke="none"/>
+                <circle cx="12" cy="11" r="1" fill="currentColor" stroke="none"/>
+                <circle cx="15" cy="11" r="1" fill="currentColor" stroke="none"/>
+              </svg>
+            </span>
             <h4>Question → explored map</h4>
             <p>
               No source needed. Type any question or topic and Mappy AI maps out what it knows. Keep chatting to
               expand branches, ask follow-ups, or zoom in on any node with @mentions.
             </p>
-          </div>
-          <div class="workflow-step reveal">
-            <div class="workflow-step-number" aria-hidden="true">04</div>
+          </article>
+
+          <article class="workflow-leaf" data-leaf="3">
+            <span class="workflow-leaf-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="6" width="18" height="12" rx="2.5"/>
+                <path d="M10.5 9.5 L15 12 L10.5 14.5 Z" fill="currentColor" stroke="none"/>
+              </svg>
+            </span>
+            <h4>YouTube / podcast → structured notes</h4>
+            <p>
+              Paste the link. Mappy AI pulls the transcript, structures it into a mindmap, and adds topic images so
+              you can skim the key points instead of going back through the whole thing.
+            </p>
+          </article>
+
+          <article class="workflow-leaf" data-leaf="4">
+            <span class="workflow-leaf-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 3 H6.5 a1.5 1.5 0 0 0 -1.5 1.5 V19.5 a1.5 1.5 0 0 0 1.5 1.5 H17.5 a1.5 1.5 0 0 0 1.5 -1.5 V8 Z"/>
+                <path d="M14 3 v5 h5"/>
+                <line x1="8.5" y1="13" x2="15.5" y2="13"/>
+                <line x1="8.5" y1="16.5" x2="14" y2="16.5"/>
+              </svg>
+            </span>
+            <h4>Research paper → sourced map</h4>
+            <p>
+              Upload the PDF. Mappy AI extracts methodology, results, and key references — and embeds figure snapshots
+              from the paper itself, every node linked to the source page.
+            </p>
+          </article>
+
+          <article class="workflow-leaf" data-leaf="5">
+            <span class="workflow-leaf-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                <circle cx="12" cy="12" r="8"/>
+                <ellipse cx="12" cy="12" rx="3.2" ry="8"/>
+                <line x1="4" y1="12" x2="20" y2="12"/>
+              </svg>
+            </span>
             <h4>Topic → sourced map</h4>
             <p>
               Type a subject and Mappy AI searches the live web for real sources. It pulls in relevant articles and
               references and builds a cited map — not from memory, from actual pages.
             </p>
-          </div>
-          <div class="workflow-step reveal">
-            <div class="workflow-step-number" aria-hidden="true">05</div>
-            <h4>YouTube video / podcast → structured notes</h4>
-            <p>
-              Paste the link. Mappy AI pulls the transcript, structures it into a mindmap, and adds topic images so
-              you can skim the key points instead of going back through the whole thing.
-            </p>
-          </div>
-          <div class="workflow-step reveal">
-            <div class="workflow-step-number" aria-hidden="true">06</div>
+          </article>
+
+          <article class="workflow-leaf" data-leaf="6">
+            <span class="workflow-leaf-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                <rect x="4" y="4" width="16" height="16" rx="2"/>
+                <line x1="4" y1="9.5" x2="20" y2="9.5"/>
+                <line x1="4" y1="14.5" x2="20" y2="14.5"/>
+                <line x1="9.5" y1="4" x2="9.5" y2="20"/>
+                <line x1="14.5" y1="4" x2="14.5" y2="20"/>
+              </svg>
+            </span>
             <h4>Blank canvas → freeform map</h4>
             <p>
               Start from scratch and build your own map by hand. Add nodes, connect ideas, and rearrange as your
               thinking evolves. Pull in AI to expand a branch or explore a tangent whenever you need it.
             </p>
-          </div>
+          </article>
         </div>
       </section>
 

@@ -1127,11 +1127,20 @@ html[lang="de"] .nav-cta .ghost {
     position: static;
     /* Smaller than full-width on mobile so each tile reads as an
        illustration sitting on the dotted canvas, not as a banner
-       filling the whole card. Centered via auto margins. */
+       filling the whole card. The two tiles are nudged in opposite
+       directions so they hint at the desktop "layered cards" effect
+       even when stacked vertically. */
     width: 78%;
     height: auto;
     max-width: 78%;
-    margin: 0 auto;
+  }
+  .features-tab-canvas-split .features-tab-canvas-image-left {
+    align-self: flex-start;
+    margin-left: 4%;
+  }
+  .features-tab-canvas-split .features-tab-canvas-image-right {
+    align-self: flex-end;
+    margin-right: 4%;
   }
 
   .features-tab-panels {

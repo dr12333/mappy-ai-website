@@ -2557,7 +2557,7 @@ html[lang="de"] .nav-cta .ghost {
   line-height: 1.15;
 }
 
-.plan-price span {
+.plan-price .plan-price-suffix {
   font-size: 14px;
   color: #6b6b6b;
   font-weight: 500;

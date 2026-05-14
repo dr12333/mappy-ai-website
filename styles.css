@@ -302,9 +302,9 @@ html[lang="de"] .nav-cta .ghost {
 
 .nav-toggle {
   display: none;
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
   border: 1.5px solid var(--stroke);
   background: #f7f7f5;
   align-items: center;
@@ -1051,9 +1051,35 @@ html[lang="de"] .nav-cta .ghost {
     -webkit-overflow-scrolling: touch;
     padding: 4px;
     justify-content: flex-start;
+    /* Fade mask on the right edge so users see that more tabs
+       exist past the visible area. */
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
   }
   .features-tabs-control::-webkit-scrollbar {
     display: none;
+  }
+  /* Bigger showcase image on mobile so the mindmap-like illustration
+     stays readable at narrow widths. */
+  .features-tab-canvas-image {
+    width: 92%;
+    height: 92%;
+  }
+  /* Split-canvas variant (Sources panel) collapses to a vertical
+     stack on mobile — two absolutely-positioned tiles at 44%/62%
+     get illegibly small otherwise. */
+  .features-tab-canvas-split {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+  }
+  .features-tab-canvas-split .features-tab-canvas-image {
+    position: static;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
   }
 
   .features-tab-panels {
@@ -2007,6 +2033,8 @@ html[lang="de"] .nav-cta .ghost {
     aspect-ratio: auto;
     background: none;
     box-shadow: none;
+    border: none;
+    border-radius: 0;
     margin-top: 24px;
     padding: 0;
   }
@@ -2271,7 +2299,7 @@ html[lang="de"] .nav-cta .ghost {
    language: frosted surface, white-tile active state. */
 .billing-toggle {
   width: min(320px, calc(100vw - 40px));
-  margin: 0 0 28px;
+  margin: 0 auto 28px;
   padding: 4px;
   border-radius: 999px;
   border: 1px solid rgba(214, 210, 200, 0.85);
@@ -3234,5 +3262,51 @@ html[lang="de"] .nav-cta .ghost {
 
   .audience-header p {
     white-space: nowrap;
+  }
+}
+
+/* ── Mobile breath + scale ────────────────────────────────────────
+   Section vertical rhythm on desktop is 110/40 — way too much for
+   a phone viewport (a single gap eats ~14% of an iPhone screen).
+   Section h2 sizes also stay at 30-32px on desktop and don't shrink.
+   These overrides tighten both at <=720px so the mobile page feels
+   like one coherent scroll instead of a string of huge empty bands. */
+@media (max-width: 720px) {
+  .why-section,
+  .audience-section,
+  .features-tabs,
+  .comparison,
+  .workflow,
+  .pricing,
+  .faq {
+    margin-top: 64px;
+    margin-bottom: 24px;
+  }
+
+  .why-section {
+    margin-bottom: 64px;
+  }
+
+  .cta {
+    margin: 56px 0 56px;
+  }
+
+  /* Section headings down a notch — from 30-32px to 24px — so they
+     don't dominate the small viewport. */
+  .why-head h2,
+  .audience-header h2,
+  .features-tabs-header h2,
+  .comparison-header h2,
+  .workflow-intro h2,
+  .pricing-head h2,
+  .faq-head h2,
+  .cta h2 {
+    font-size: 24px;
+  }
+
+  /* Hero gradient bands tightened on mobile — desktop's 65vh band
+     extended into the why-section on phones. */
+  body {
+    background-size: 100% 45vh, 100% 45vh, 100% 50vh, 100% 50vh;
   }
 }

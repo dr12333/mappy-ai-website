@@ -1796,15 +1796,13 @@ html[lang="de"] .nav-cta .ghost {
   font-family: inherit;
   font-size: 19px;
   font-weight: 700;
-  line-height: 1;
-  /* No letter-spacing — for a single glyph it pushes trailing space
-     in and makes the D appear off-axis from the circle center. */
+  /* Collapse the line-box to (roughly) cap-height so flexbox centers
+     the visible glyph area instead of the full em-square (which
+     includes the unused descender region — that's what was pushing
+     the D off-center). The glyph still renders at full size and
+     overflows the line-box, which is fine. */
+  line-height: 0.72;
   letter-spacing: 0;
-  /* Space Grotesk's D glyph sits a touch above the line-box center
-     because the descender-half of the line-height is unused by an
-     all-caps letter; nudge it down 1px so the visual centre of the
-     letter lines up with the centre of the circle. */
-  transform: translateY(1px);
 }
 
 .audience-tip-icon-x svg {
@@ -1824,11 +1822,10 @@ html[lang="de"] .nav-cta .ghost {
 
 /* Open: D rotates 45° while fading out, X rotates back to 0 and
    fades in. The cross then doubles as the close button — clicking
-   it toggles state back to collapsed via the existing handler.
-   Preserves the translateY nudge so the D doesn't jump 1px on rotate. */
+   it toggles state back to collapsed via the existing handler. */
 .audience-tip[data-state="open"] .audience-tip-icon-d {
   opacity: 0;
-  transform: translateY(1px) rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .audience-tip[data-state="open"] .audience-tip-icon-x {

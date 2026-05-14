@@ -1061,9 +1061,12 @@ html[lang="de"] .nav-cta .ghost {
   }
   /* Bigger showcase image on mobile so the mindmap-like illustration
      stays readable at narrow widths. */
+  .features-tab-canvas {
+    padding: 4px;
+  }
   .features-tab-canvas-image {
-    width: 92%;
-    height: 92%;
+    width: 100%;
+    height: 100%;
   }
   /* Split-canvas variant (Sources panel) collapses to a vertical
      stack on mobile — two absolutely-positioned tiles at 44%/62%

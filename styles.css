@@ -2235,8 +2235,11 @@ html[lang="de"] .nav-cta .ghost {
     height: 36px;
   }
 
-  /* Tip bubble stays inside viewport on narrow phones. */
+  /* Tip bubble stays inside viewport on narrow phones — pull the
+     right edge inward from the canvas right so the bubble doesn't
+     hug the screen edge. */
   .audience-tip-bubble {
+    right: 12px;
     max-width: 220px;
     padding: 10px 12px;
   }

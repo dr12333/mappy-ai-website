@@ -715,3 +715,78 @@ document.addEventListener("click", (event) => {
   });
 })();
 
+// ── Pricing: animated count between yearly / monthly ──────────────
+// Each .plan-price element with data-price-yearly + data-price-monthly
+// holds a single .plan-price-value child. On billing-toggle change
+// the value is animated from its current displayed number to the
+// new target via requestAnimationFrame (easeOutCubic, ~500ms).
+// Billing notes + CTA hrefs still swap via CSS — only the number
+// is animated here.
+(() => {
+  const yearlyInput = document.getElementById("billing-yearly");
+  const monthlyInput = document.getElementById("billing-monthly");
+  if (!yearlyInput || !monthlyInput) return;
+  const priceEls = Array.from(document.querySelectorAll(".plan-price[data-price-yearly]"));
+  if (!priceEls.length) return;
+
+  const DURATION = 500;
+
+  // Initialize displayed value: start at yearly (the default checked
+  // state). Per-element animation handle stored on the element.
+  priceEls.forEach((el) => {
+    el._currentValue = parseFloat(el.dataset.priceYearly);
+    el._animation = null;
+  });
+
+  // Format helpers: during animation, always show 2 decimals so the
+  // count reads smoothly. At rest, drop a trailing .00 so $6 reads
+  // as "$6" not "$6.00".
+  const fmtAnim = (v) => "$" + (Math.round(v * 100) / 100).toFixed(2);
+  const fmtRest = (v) => {
+    const r = Math.round(v * 100) / 100;
+    return "$" + (r % 1 === 0 ? r.toFixed(0) : r.toFixed(2));
+  };
+
+  const animateTo = (el, target) => {
+    const valueEl = el.querySelector(".plan-price-value");
+    if (!valueEl) return;
+    if (el._animation) cancelAnimationFrame(el._animation);
+    const from = el._currentValue;
+    if (from === target) {
+      valueEl.textContent = fmtRest(target);
+      return;
+    }
+    const startTime = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - startTime) / DURATION);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const value = from + (target - from) * eased;
+      el._currentValue = value;
+      valueEl.textContent = t < 1 ? fmtAnim(value) : fmtRest(target);
+      if (t < 1) {
+        el._animation = requestAnimationFrame(step);
+      } else {
+        el._animation = null;
+        el._currentValue = target;
+      }
+    };
+    el._animation = requestAnimationFrame(step);
+  };
+
+  const switchTo = (period) => {
+    priceEls.forEach((el) => {
+      const target = parseFloat(
+        period === "yearly" ? el.dataset.priceYearly : el.dataset.priceMonthly
+      );
+      animateTo(el, target);
+    });
+  };
+
+  yearlyInput.addEventListener("change", () => {
+    if (yearlyInput.checked) switchTo("yearly");
+  });
+  monthlyInput.addEventListener("change", () => {
+    if (monthlyInput.checked) switchTo("monthly");
+  });
+})();
+

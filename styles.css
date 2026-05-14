@@ -2369,24 +2369,20 @@ html[lang="de"] .nav-cta .ghost {
   border-color: var(--stroke);
 }
 
-/* Default (yearly checked): hide monthly variants. Selectors are
-   scoped to .plan-card to bump specificity above the .plan-cta base
-   rule, which would otherwise override `display: none` via source
-   order at the same specificity. */
-.plan-card .plan-price-monthly,
+/* Default (yearly checked): hide monthly variants for billing
+   notes and CTAs. Prices are no longer in this CSS-swap pattern —
+   they're a single element with a JS-animated value. */
 .plan-card .plan-billing-note-monthly,
 .plan-card .plan-cta-monthly {
   display: none;
 }
 
 /* When monthly is checked, swap. */
-#billing-monthly:checked ~ .pricing-grid .plan-price-yearly,
 #billing-monthly:checked ~ .pricing-grid .plan-billing-note-yearly,
 #billing-monthly:checked ~ .pricing-grid .plan-cta-yearly {
   display: none;
 }
 
-#billing-monthly:checked ~ .pricing-grid .plan-price-monthly,
 #billing-monthly:checked ~ .pricing-grid .plan-billing-note-monthly {
   display: block;
 }

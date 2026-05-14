@@ -2369,20 +2369,24 @@ html[lang="de"] .nav-cta .ghost {
   border-color: var(--stroke);
 }
 
-/* Default (yearly checked): hide monthly variants for billing
-   notes and CTAs. Prices are no longer in this CSS-swap pattern —
-   they're a single element with a JS-animated value. */
+/* Default (yearly checked): hide monthly variants. Selectors are
+   scoped to .plan-card to bump specificity above the .plan-cta base
+   rule, which would otherwise override `display: none` via source
+   order at the same specificity. */
+.plan-card .plan-price-monthly,
 .plan-card .plan-billing-note-monthly,
 .plan-card .plan-cta-monthly {
   display: none;
 }
 
 /* When monthly is checked, swap. */
+#billing-monthly:checked ~ .pricing-grid .plan-price-yearly,
 #billing-monthly:checked ~ .pricing-grid .plan-billing-note-yearly,
 #billing-monthly:checked ~ .pricing-grid .plan-cta-yearly {
   display: none;
 }
 
+#billing-monthly:checked ~ .pricing-grid .plan-price-monthly,
 #billing-monthly:checked ~ .pricing-grid .plan-billing-note-monthly {
   display: block;
 }
@@ -2557,40 +2561,11 @@ html[lang="de"] .nav-cta .ghost {
   line-height: 1.15;
 }
 
-.plan-price .plan-price-suffix {
+.plan-price span {
   font-size: 14px;
   color: #6b6b6b;
   font-weight: 500;
   margin-left: 4px;
-}
-
-/* Vertical-carousel price swap. The window clips to one line; the
-   track holds both values stacked vertically; on the monthly
-   radio being checked, the track translates up by one slot
-   height so the monthly value slides into view. Pure CSS — no JS.
-   vertical-align: top keeps the window aligned with the suffix
-   on the same baseline. */
-.plan-price-window {
-  display: inline-flex;
-  vertical-align: top;
-  overflow: hidden;
-  height: 1.15em;
-}
-
-.plan-price-track {
-  display: flex;
-  flex-direction: column;
-  transform: translateY(0);
-  transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-#billing-monthly:checked ~ .pricing-grid .plan-price-track {
-  transform: translateY(-1.15em);
-}
-
-.plan-price-value {
-  display: block;
-  line-height: 1.15;
 }
 
 .plan-price-alt {

@@ -2362,10 +2362,10 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .billing-save {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  padding: 1px 6px;
+  padding: 3px 8px;
   border-radius: 999px;
   background: var(--mint);
   color: #1a4a3e;

@@ -18,10 +18,10 @@ const isTopHash = (hash) => !hash || hash === "#" || hash === "#top";
 
 window.addEventListener("load", () => {
   const hash = window.location.hash;
-  // "#top" is the brand-logo anchor — treat as "actual page top",
-  // not as a hash-navigation target. (Otherwise refreshing after a
-  // logo click lands at the hero section with sticky-nav offset,
-  // hiding the audience-switch above the viewport.)
+  // "#top" is the brand-logo anchor — treat as "actual page top"
+  // (y=0), not as a hash-navigation target. Without this, refreshing
+  // after a logo click would land at the hero section minus the
+  // sticky-nav offset, leaving a visible scroll gap at the top.
   if (isTopHash(hash)) {
     window.scrollTo(0, 0);
     return;
@@ -259,9 +259,9 @@ document.addEventListener("click", (event) => {
 
   const href = link.getAttribute("href");
   // "#top" and "#" both mean "scroll to the actual top of the page"
-  // (y=0). Without the #top special-case the click would otherwise
-  // fall through to hash-navigation and scroll to the id=top element
-  // WITH the sticky-nav offset, hiding the audience-switch.
+  // (y=0). Without the #top special-case the click would fall
+  // through to hash-navigation and scroll to the id=top element
+  // minus the sticky-nav offset, leaving a visible gap at the top.
   if (!href || href === "#" || href === "#top") {
     event.preventDefault();
     if (prefersReducedMotion.matches) {
@@ -714,7 +714,4 @@ document.addEventListener("click", (event) => {
     tip.dataset.state = "collapsed";
   });
 })();
-
-// Pricing yearly/monthly swap is now a pure-CSS vertical carousel
-// — see .plan-price-window in styles.css. No JS needed here.
 

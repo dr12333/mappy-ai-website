@@ -352,51 +352,6 @@ html[lang="de"] .nav-cta .ghost {
   display: none;
 }
 
-.audience-switch {
-  width: min(520px, calc(100vw - 40px));
-  margin: 10px auto 0;
-  padding: 4px;
-  border-radius: 999px;
-  border: 1px solid rgba(214, 210, 200, 0.85);
-  background: rgba(255, 255, 255, 0.62);
-  backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.audience-switch-links {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  width: 100%;
-}
-
-.audience-switch-links a,
-.audience-switch-links span {
-  flex: 1;
-  text-align: center;
-  white-space: nowrap;
-  font-size: 12px;
-  color: var(--muted);
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
-}
-
-.audience-switch-links a:hover {
-  color: var(--ink);
-  background: #ffffff;
-  border-color: var(--stroke);
-}
-
-.audience-switch-links .is-active {
-  color: var(--ink);
-  font-weight: 600;
-  background: #ffffff;
-  border-color: var(--stroke);
-}
 
 .btn,
 .ghost {
@@ -889,10 +844,8 @@ html[lang="de"] .nav-cta .ghost {
   color: var(--muted);
 }
 
-/* Visual treatment matches .audience-switch at the top of the page
-   so the two "pick one of these" controls feel like one design
-   language: frosted-glass pill container, 1px translucent border, and
-   active items get a white tile with a stroke border (no shadow). */
+/* Frosted-glass pill container with 1px translucent border; the
+   active item gets a white tile with a stroke border (no shadow). */
 .features-tabs-control {
   display: flex;
   gap: 4px;
@@ -2312,8 +2265,8 @@ html[lang="de"] .nav-cta .ghost {
   pointer-events: none;
 }
 
-/* Billing toggle — visually identical to .audience-switch so the two
-   pill selectors on the page share one design language. */
+/* Billing toggle — pill selector matching the audience-card visual
+   language: frosted surface, white-tile active state. */
 .billing-toggle {
   width: min(320px, calc(100vw - 40px));
   margin: 0 0 28px;
@@ -3218,9 +3171,6 @@ html[lang="de"] .nav-cta .ghost {
     display: none;
   }
 
-  .audience-switch {
-    width: min(520px, calc(100vw - 24px));
-  }
 
   .features {
     grid-template-columns: repeat(2, minmax(0, 1fr));

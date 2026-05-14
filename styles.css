@@ -998,7 +998,7 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 16px;
   overflow: hidden;
   background: var(--accent-soft);
-  aspect-ratio: 16 / 11;
+  aspect-ratio: 16 / 13;
 }
 
 .features-tab-video {

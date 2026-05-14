@@ -1484,7 +1484,7 @@ html[lang="de"] .nav-cta .ghost {
   background-image: radial-gradient(circle, rgba(46, 52, 55, 0.16) 1.2px, transparent 1.4px);
   background-size: 18px 18px;
   border: 1px solid var(--stroke);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   /* Overflow visible so the tip-trigger avatar can sit half-overlapping
      the top-right corner. Nodes and toolbar are JS-clamped inside the
      canvas bounds, so they don't need overflow:hidden as a guard. */

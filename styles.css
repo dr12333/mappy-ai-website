@@ -701,7 +701,7 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 16px;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   margin-bottom: 24px;
   position: relative;
   z-index: 1;

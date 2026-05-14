@@ -1268,25 +1268,29 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 1px;
 }
 
-/* ── Mobile: Mappy-prominent layout with "Others" as a footnote ──
-   The previous mobile design stacked feature/Mappy/Other as three
-   equal-weight cards per row. That destroyed the side-by-side "vs"
-   comparison and gave competitor descriptions the same visual weight
-   as Mappy's, which is wrong for a marketing page.
-   New layout per feature:
-     1. Feature label as a proper section heading (not a tiny caption)
-     2. Mappy card — full-width, accent-bordered, dominant
-     3. "Others: <text>" as a one-line italic caption underneath
-   Comparison preserved, ~40% shorter section length, weight skewed to
-   Mappy where it should be. */
+/* ── Mobile: paired comparison cards ────────────────────────────────
+   The desktop 3-column grid collapses to a single column on mobile,
+   but instead of three loose cells per feature, the Mappy + Other
+   cells fuse visually into one two-row card: Mappy on top (white,
+   accent-outlined, the "this one") and Others on the bottom (muted
+   surface). A small inline tag at the start of each row ("Mappy AI" /
+   "Others") replaces the desktop column header so the comparison
+   reads without the hidden header row. Feature label sits above each
+   pair as a clear section heading. */
 @media (max-width: 720px) {
+  /* Tighter inner gap; the section-level margin is handled by the
+     global mobile section-rhythm block lower in this stylesheet. */
+  .comparison {
+    gap: 16px;
+  }
+
   .comparison-grid {
     grid-template-columns: 1fr;
-    padding: 0 16px;
-    /* Tight base gap; per-group spacing is done via per-cell margins
-       so the label/card/caption trio reads as one unit, separated
-       from the next trio. */
-    gap: 4px;
+    padding: 0;
+    /* Zero gap inside the grid — the visible separation comes from
+       the feature row's own top padding, while .mappy + .other sit
+       seamlessly stacked as one card. */
+    gap: 0;
   }
 
   .comparison-grid::before {
@@ -1294,7 +1298,7 @@ html[lang="de"] .nav-cta .ghost {
   }
 
   .comparison-grid-cell {
-    padding: 12px 16px;
+    padding: 12px 14px;
     border-bottom: none !important;
   }
 
@@ -1302,65 +1306,92 @@ html[lang="de"] .nav-cta .ghost {
     display: none;
   }
 
-  /* Feature label: real heading, not uppercase caption. Top padding
-     gives air between groups; bottom padding ties it to the card
-     below. Horizontal padding aligns its left edge with the Mappy
-     card's left edge. */
+  /* Feature label — proper section heading sitting above the pair
+     card. Generous top padding separates one feature group from the
+     next; bottom padding ties it visually to the Mappy card below. */
   .comparison-grid-cell.feature {
-    padding: 24px 0 8px;
+    padding: 20px 4px 10px;
     font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
     text-transform: none;
     letter-spacing: 0;
-    color: var(--ink);
-    background: transparent;
-    font-weight: 600;
-    /* First feature row sits right under the section header; trim
-       the extra top space so the spacing reads consistent. */
-  }
-  .comparison-grid-cell.feature:first-of-type {
-    padding-top: 8px;
-  }
-
-  /* Mappy: full-width prominent card. Same accent treatment as the
-     pricing-card pattern elsewhere on the site. */
-  .comparison-grid-cell.mappy {
-    background: var(--surface-strong);
-    border: 1.5px solid var(--accent);
-    border-radius: 14px;
-    box-shadow: var(--shadow-md);
-    margin: 0;
-    padding: 14px 16px;
-    font-weight: 500;
-  }
-
-  /* Others: a small italic caption underneath the Mappy card. No card
-     chrome — reads as a footnote, not a peer. The dash icon is
-     replaced with a literal "Others:" prefix to clarify the role. */
-  .comparison-grid-cell.other {
     background: transparent;
     border: none;
     border-radius: 0;
-    box-shadow: none;
     margin: 0;
-    padding: 8px 4px 0;
-    font-size: 13px;
-    font-style: italic;
-    color: var(--muted);
-    gap: 6px;
-    align-items: baseline;
+  }
+  .comparison-grid-cell.feature:first-of-type {
+    padding-top: 4px;
   }
 
-  .comparison-grid-cell.other .comparison-icon.dash {
-    display: none;
+  /* Mappy half — top of the pair card. White surface with the dark
+     ink-accent border + a mint check icon does the "this is the
+     recommended one" framing. The "Mappy AI" tag at the start
+     replaces the (hidden) column header so the user can tell which
+     side they're reading. */
+  .comparison-grid-cell.mappy {
+    background: var(--surface-strong);
+    border: 1.5px solid var(--accent);
+    border-radius: 12px 12px 0 0;
+    padding: 14px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0;
+    box-shadow: none;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.45;
   }
-
-  .comparison-grid-cell.other::before {
-    content: "Others:";
-    font-style: normal;
-    font-weight: 600;
+  .comparison-grid-cell.mappy::before {
+    content: "Mappy AI";
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     color: var(--muted);
-    margin-right: 2px;
     flex-shrink: 0;
+    /* Fixed-width tag column so the two row labels line up vertically
+       across the pair, making the comparison scannable. */
+    width: 52px;
+    /* Nudge the cap-height baseline closer to the icon/text on the
+       right; otherwise the small caps sit visibly higher. */
+    padding-top: 2px;
+  }
+
+  /* Others half — bottom of the pair card. Muted surface + stroke
+     border, no top border so the seam between Mappy and Others reads
+     as a single card with two rows. */
+  .comparison-grid-cell.other {
+    background: var(--surface);
+    border: 1.5px solid var(--stroke);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    padding: 14px 14px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--muted);
+    font-style: normal;
+    margin: 0;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.45;
+  }
+  .comparison-grid-cell.other::before {
+    content: "Others";
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-shrink: 0;
+    width: 52px;
+    padding-top: 2px;
+  }
+  /* Restore the dash icon (hidden by the previous footnote variant). */
+  .comparison-grid-cell.other .comparison-icon.dash {
+    display: inline-flex;
   }
 }
 

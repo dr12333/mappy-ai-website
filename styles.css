@@ -696,9 +696,9 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .why-card-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 16px;
+  width: 70px;
+  height: 70px;
+  border-radius: 18px;
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
@@ -708,8 +708,8 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .why-card-icon svg {
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
 }
 
 .why-card h3 {
@@ -780,8 +780,8 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .why-card-mappy .why-card-icon img {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   display: block;
 }
 

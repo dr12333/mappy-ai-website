@@ -2564,6 +2564,35 @@ html[lang="de"] .nav-cta .ghost {
   margin-left: 4px;
 }
 
+/* Vertical-carousel price swap. The window clips to one line; the
+   track holds both values stacked vertically; on the monthly
+   radio being checked, the track translates up by one slot
+   height so the monthly value slides into view. Pure CSS — no JS.
+   vertical-align: top keeps the window aligned with the suffix
+   on the same baseline. */
+.plan-price-window {
+  display: inline-flex;
+  vertical-align: top;
+  overflow: hidden;
+  height: 1.15em;
+}
+
+.plan-price-track {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0);
+  transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+#billing-monthly:checked ~ .pricing-grid .plan-price-track {
+  transform: translateY(-1.15em);
+}
+
+.plan-price-value {
+  display: block;
+  line-height: 1.15;
+}
+
 .plan-price-alt {
   margin-top: -4px;
   font-size: 14px;

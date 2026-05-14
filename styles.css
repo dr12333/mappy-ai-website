@@ -1584,7 +1584,7 @@ html[lang="de"] .nav-cta .ghost {
 .audience-tip-trigger {
   position: absolute;
   top: -22px;
-  right: -22px;
+  right: 0;
   width: 44px;
   height: 44px;
   background: transparent;
@@ -1705,7 +1705,7 @@ html[lang="de"] .nav-cta .ghost {
 .audience-tip-bubble {
   position: absolute;
   top: -22px;
-  right: -22px;
+  right: 0;
   max-width: 280px;
   padding: 12px 16px;
   background: #FBFBFA;

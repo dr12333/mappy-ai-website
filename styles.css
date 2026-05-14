@@ -1525,7 +1525,7 @@ html[lang="de"] .nav-cta .ghost {
   position: relative;
   margin-top: 32px;
   border-radius: 22px;
-  aspect-ratio: 16 / 11;
+  aspect-ratio: 16 / 8.5;
   width: 100%;
   background: #ffffff;
   background-image: radial-gradient(circle, rgba(46, 52, 55, 0.16) 1.2px, transparent 1.4px);

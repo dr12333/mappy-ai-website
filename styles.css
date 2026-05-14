@@ -1397,7 +1397,10 @@ html[lang="de"] .nav-cta .ghost {
 
   .comparison-grid-cell {
     padding: 12px 12px;
-    border-bottom: none !important;
+    /* Drop the desktop row-divider; on mobile each card carries its
+       own full border. (No !important — that was stripping the
+       bottom edge of the Mappy/Other card borders below.) */
+    border-bottom: none;
   }
 
   /* Feature label — spans both columns, sits above the Mappy/Other

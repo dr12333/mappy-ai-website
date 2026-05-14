@@ -1120,11 +1120,11 @@ html[lang="de"] .nav-cta .ghost {
     position: static;
     display: flex;
     flex-direction: column;
-    /* Nudge both tiles down inside the canvas so the pair sits
-       lower-center instead of being top-aligned. */
-    justify-content: flex-end;
+    /* Center vertically inside the canvas — the pair sits between
+       the top edge and the bottom edge rather than docked to either. */
+    justify-content: center;
     gap: 8px;
-    padding: 12px 12px 24px;
+    padding: 12px;
   }
   .features-tab-canvas-split .features-tab-canvas-image {
     position: static;

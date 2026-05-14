@@ -2120,7 +2120,10 @@ html[lang="de"] .nav-cta .ghost {
      Canvas flips to a tall portrait aspect ratio so the L2 row has
      room for the wrapping (shorter) mobile descriptions. */
   .audience-canvas {
-    aspect-ratio: 4 / 6;
+    /* Slightly squarer than the previous 4/6 so the mindmap fills
+       more of the canvas and the empty band beneath the L2 row
+       collapses — the tree now sits centered top-to-bottom. */
+    aspect-ratio: 4 / 5;
     margin-top: 24px;
   }
 

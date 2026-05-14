@@ -2362,10 +2362,10 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .billing-save {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  padding: 3px 8px;
+  padding: 1px 6px;
   border-radius: 999px;
   background: var(--mint);
   color: #1a4a3e;
@@ -2547,12 +2547,6 @@ html[lang="de"] .nav-cta .ghost {
     padding: 8px 12px;
     font-size: 13px;
     gap: 4px;
-  }
-  /* Keep the badge visible on mobile but slightly smaller so the
-     "Yearly" pill doesn't overflow at narrow widths. */
-  .billing-save {
-    font-size: 10px;
-    padding: 2px 6px;
   }
 }
 

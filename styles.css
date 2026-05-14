@@ -2483,7 +2483,10 @@ html[lang="de"] .nav-cta .ghost {
    language: frosted surface, white-tile active state. */
 .billing-toggle {
   width: min(320px, calc(100vw - 40px));
-  margin: 0 auto 28px;
+  /* Left-aligned on desktop so the toggle sits under the pricing
+     heading's left edge; centered on mobile (see media query below)
+     to read as a self-contained control above the stacked cards. */
+  margin: 0 0 28px;
   padding: 4px;
   border-radius: 999px;
   border: 1px solid rgba(214, 210, 200, 0.85);
@@ -2700,6 +2703,14 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 @media (max-width: 720px) {
+  /* Re-center the toggle on mobile — the section has no left-anchored
+     heading column on phones, so a left-aligned control reads as
+     orphaned at the edge. */
+  .billing-toggle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .billing-toggle-pill {
     padding: 8px 12px;
     font-size: 13px;

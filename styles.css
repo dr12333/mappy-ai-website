@@ -327,17 +327,51 @@ html[lang="de"] .nav-cta .ghost {
   box-shadow: var(--shadow-sm);
 }
 
+/* Hamburger ↔ X animation, sequenced.
+   Using the standalone `translate` and `rotate` properties (separate
+   from `transform`) so the two motions can transition independently
+   with their own delays. The result is a two-phase morph in each
+   direction:
+
+     Open:  outer bars converge to center + middle bar fades out,
+            THEN the converged outer bars rotate to form an X.
+     Close: rotation undoes first, THEN bars uncross + middle fades
+            back in.
+
+   The asymmetric sequencing (open delays the rotate; close delays
+   the translate) keeps each phase legible — you see "three bars
+   stacking → X" and "X → three bars unstacking" rather than a single
+   muddy concurrent motion. */
 .nav-toggle span {
   width: 18px;
   height: 2px;
   border-radius: 999px;
   background: var(--ink);
   display: block;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  /* Resting (closed) state baseline values. */
+  translate: 0 0;
+  rotate: 0deg;
+  /* Closing transition: rotate finishes first (delay 0), then the
+     translate eases back (delay 0.18s), with the middle bar's
+     opacity coming up in the second phase. */
+  transition:
+    rotate 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+    translate 0.22s cubic-bezier(0.4, 0, 0.2, 1) 0.18s,
+    opacity 0.16s ease 0.18s;
+}
+
+/* Opening transition: translate moves first (delay 0), then rotate
+   forms the X (delay 0.18s). Middle bar fades quickly in phase 1. */
+.nav.is-open .nav-toggle span {
+  transition:
+    translate 0.22s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+    rotate 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0.18s,
+    opacity 0.14s ease 0s;
 }
 
 .nav.is-open .nav-toggle span:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
+  translate: 0 6px;
+  rotate: 45deg;
 }
 
 .nav.is-open .nav-toggle span:nth-child(2) {
@@ -345,7 +379,17 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .nav.is-open .nav-toggle span:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
+  translate: 0 -6px;
+  rotate: -45deg;
+}
+
+/* Respect reduced-motion preferences: snap between states without
+   the two-phase animation. */
+@media (prefers-reduced-motion: reduce) {
+  .nav-toggle span,
+  .nav.is-open .nav-toggle span {
+    transition: none;
+  }
 }
 
 .nav-backdrop {

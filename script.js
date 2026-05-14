@@ -435,20 +435,30 @@ document.addEventListener("click", (event) => {
   });
 
   // ── Edge geometry ──────────────────────────────────────────────
-  // For curved edges (root to top/bottom branches): cubic bezier
-  // with control points pulled horizontally toward the mid-x so the
-  // curve flows from parent right edge to child left edge without
-  // sharp kinks. For straight edges: a simple line.
+  // Soft cubic bezier between each parent/child pair. Control points
+  // are biased along the layout's primary axis:
+  //   - Desktop: horizontal-flow mindmap → control points pulled
+  //     horizontally so curves emerge from parent right edge and
+  //     land at child left edge.
+  //   - Mobile: vertical-flow tree (root at top, L1 row, L2 row) →
+  //     control points pulled vertically so curves fan downward from
+  //     the parent's bottom and land at the child's top, even when
+  //     the parent/child have a big horizontal offset (root → outer
+  //     L1).
   const updateEdges = () => {
+    const vertical = mobileMQ.matches;
     edges.forEach((edge) => {
       const from = nodes.get(edge.from);
       const to = nodes.get(edge.to);
       if (!from || !to) return;
-      const dx = (to.x - from.x) * 0.5;
-      // Always use a soft cubic so the edges feel like editor links
-      // (even the "straight" ones get a gentle s-curve when nodes are
-      // dragged out of horizontal alignment).
-      const d = `M ${from.x} ${from.y} C ${from.x + dx} ${from.y}, ${to.x - dx} ${to.y}, ${to.x} ${to.y}`;
+      let d;
+      if (vertical) {
+        const cy = (to.y - from.y) * 0.5;
+        d = `M ${from.x} ${from.y} C ${from.x} ${from.y + cy}, ${to.x} ${to.y - cy}, ${to.x} ${to.y}`;
+      } else {
+        const cx = (to.x - from.x) * 0.5;
+        d = `M ${from.x} ${from.y} C ${from.x + cx} ${from.y}, ${to.x - cx} ${to.y}, ${to.x} ${to.y}`;
+      }
       edge.path.setAttribute("d", d);
     });
   };

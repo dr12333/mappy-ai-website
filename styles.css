@@ -2106,16 +2106,30 @@ html[lang="de"] .nav-cta .ghost {
   display: none;
 }
 
+/* Text-swap inside L2 nodes: the desktop sentence and the mobile
+   blurb both live in the markup; only one renders at a time. */
+.audience-text-mobile {
+  display: none;
+}
+
 @media (max-width: 720px) {
-  /* Mobile mindmap: same interactive graph as desktop, but the
-     canvas flips to portrait and the nodes use their data-mobile-*
-     coords (script.js applies them on init + on MQ change). Root
-     sits at the top, four L1 → L2 horizontal pairs stack below.
-     Connectors remain visible — script.js redraws the SVG paths
-     against the new coords. */
+  /* Mobile mindmap: three horizontal tiers, top → bottom.
+     Tier 1 root, tier 2 row of four L1 pills, tier 3 row of four
+     L2 leaf cards. Each L1/L2 pair shares the same x so the
+     parent/child column is obvious — connectors run straight down.
+     Canvas flips to a tall portrait aspect ratio so the L2 row has
+     room for the wrapping (shorter) mobile descriptions. */
   .audience-canvas {
     aspect-ratio: 4 / 6;
     margin-top: 24px;
+  }
+
+  /* Swap to the short mobile blurb inside each L2. */
+  .audience-text-desktop {
+    display: none;
+  }
+  .audience-text-mobile {
+    display: inline;
   }
 
   /* The text fallback list is redundant now that the canvas itself
@@ -2124,25 +2138,33 @@ html[lang="de"] .nav-cta .ghost {
     display: none;
   }
 
-  /* Smaller, tighter nodes so the four pairs fit comfortably in
-     portrait. The center root keeps its emphasis (still a touch
-     larger and bolder than L1). */
+  /* Smaller, tighter nodes so the three tiers fit. Root keeps its
+     emphasis (slightly larger + bolder than the L1 pills). */
   .audience-node-center {
     font-size: 13px;
-    padding: 9px 14px;
+    padding: 8px 14px;
   }
 
   .audience-node-l1 {
-    font-size: 12px;
-    padding: 7px 12px;
+    /* Each L1 pill has to fit inside a ~25%-wide column so the four
+       pills sit in a clean row without overlap. The widest labels
+       ("Researchers", "Summarizers") are 11 chars, so the font +
+       padding + letter-spacing are tuned to keep those pills under
+       the column width even on narrow phones. */
+    font-size: 10px;
+    padding: 5px 8px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
   }
 
   .audience-node-l2 {
-    font-size: 11px;
-    padding: 9px 11px;
-    /* Narrower leaf so it sits cleanly inside the canvas at 70% x. */
-    width: 50%;
+    font-size: 10.5px;
+    padding: 8px 9px;
+    /* One-quarter of the canvas per column; the inter-column gap
+       comes from each L2 being narrower than its column width. */
+    width: 22%;
     line-height: 1.35;
+    border-radius: 10px;
   }
 
   /* Onboarding tip avatar shrinks a touch and tucks closer to the

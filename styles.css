@@ -1329,50 +1329,84 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 1px;
 }
 
-/* ── Mobile: paired comparison cards ────────────────────────────────
-   The desktop 3-column grid collapses to a single column on mobile,
-   but instead of three loose cells per feature, the Mappy + Other
-   cells fuse visually into one two-row card: Mappy on top (white,
-   accent-outlined, the "this one") and Others on the bottom (muted
-   surface). A small inline tag at the start of each row ("Mappy AI" /
-   "Others") replaces the desktop column header so the comparison
-   reads without the hidden header row. Feature label sits above each
-   pair as a clear section heading. */
+/* ── Mobile: side-by-side comparison, scaled for narrow viewports ──
+   Same shape as desktop — Mappy column highlighted, Other column
+   muted, persistent column headers at the top — just rebuilt for
+   phone widths. The 3-column desktop grid drops the empty
+   feature-header cell and reflows to two columns, with the feature
+   label spanning both columns above each row pair. Mappy cells are
+   raised cards (accent border + subtle shadow); Other cells sit as
+   muted stroke-bordered cards in the right column. */
 @media (max-width: 720px) {
   /* Tighter inner gap; the section-level margin is handled by the
      global mobile section-rhythm block lower in this stylesheet. */
   .comparison {
-    gap: 16px;
+    gap: 12px;
   }
 
   .comparison-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 8px;
+    row-gap: 6px;
     padding: 0;
-    /* Zero gap inside the grid — the visible separation comes from
-       the feature row's own top padding, while .mappy + .other sit
-       seamlessly stacked as one card. */
-    gap: 0;
   }
 
+  /* Drop the desktop raised-column pseudo — at this width each
+     Mappy cell carries its own card chrome instead. */
   .comparison-grid::before {
     display: none;
   }
 
-  .comparison-grid-cell {
-    padding: 12px 14px;
-    border-bottom: none !important;
-  }
-
-  .comparison-grid-cell.head {
+  /* The empty top-left header cell has no purpose on mobile; the
+     two visible head cells become the column titles. */
+  .comparison-grid-cell.head-feature {
     display: none;
   }
 
-  /* Feature label — proper section heading sitting above the pair
-     card. Generous top padding separates one feature group from the
-     next; bottom padding ties it visually to the Mappy card below. */
+  /* Column headers — kept visible so the comparison reads as a real
+     side-by-side table. Mappy header is the dark accent pill; Other
+     header is a muted label that matches the cells below. */
+  .comparison-grid-cell.head-mappy {
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #ffffff;
+    background: var(--accent);
+    justify-content: center;
+    gap: 8px;
+  }
+  .comparison-grid-cell.head-mappy .comparison-mappy-logo {
+    width: 18px;
+    height: 18px;
+  }
+  .comparison-grid-cell.head-other {
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+    background: transparent;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .comparison-grid-cell {
+    padding: 12px 12px;
+    border-bottom: none !important;
+  }
+
+  /* Feature label — spans both columns, sits above the Mappy/Other
+     pair as a row heading. Top padding gives air between groups;
+     left padding aligns with the cards' left edges. */
   .comparison-grid-cell.feature {
-    padding: 20px 4px 10px;
-    font-size: 15px;
+    grid-column: 1 / -1;
+    padding: 16px 2px 4px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--ink);
     text-transform: none;
@@ -1383,76 +1417,65 @@ html[lang="de"] .nav-cta .ghost {
     margin: 0;
   }
   .comparison-grid-cell.feature:first-of-type {
-    padding-top: 4px;
+    padding-top: 10px;
   }
 
-  /* Mappy half — top of the pair card. White surface with the dark
-     ink-accent border + a mint check icon does the "this is the
-     recommended one" framing. The "Mappy AI" tag at the start
-     replaces the (hidden) column header so the user can tell which
-     side they're reading. */
+  /* Mappy cell — left column, raised white card with the dark
+     accent outline. Mirrors the desktop "raised pillar" treatment
+     at the row level. */
   .comparison-grid-cell.mappy {
     background: var(--surface-strong);
     border: 1.5px solid var(--accent);
-    border-radius: 12px 12px 0 0;
-    padding: 14px 14px;
-    font-size: 14px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    padding: 12px 11px;
+    font-size: 12.5px;
     font-weight: 500;
+    line-height: 1.45;
     color: var(--ink);
     margin: 0;
-    box-shadow: none;
     align-items: flex-start;
-    gap: 10px;
-    line-height: 1.45;
-  }
-  .comparison-grid-cell.mappy::before {
-    content: "Mappy AI";
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--muted);
-    flex-shrink: 0;
-    /* Fixed-width tag column so the two row labels line up vertically
-       across the pair, making the comparison scannable. */
-    width: 52px;
-    /* Nudge the cap-height baseline closer to the icon/text on the
-       right; otherwise the small caps sit visibly higher. */
-    padding-top: 2px;
+    gap: 8px;
   }
 
-  /* Others half — bottom of the pair card. Muted surface + stroke
-     border, no top border so the seam between Mappy and Others reads
-     as a single card with two rows. */
+  /* Other cell — right column, muted surface, stroke border, no
+     shadow. The visual hierarchy is identical to desktop: Mappy
+     pops, Other recedes. */
   .comparison-grid-cell.other {
     background: var(--surface);
     border: 1.5px solid var(--stroke);
-    border-top: none;
-    border-radius: 0 0 12px 12px;
-    padding: 14px 14px;
-    font-size: 13.5px;
+    border-radius: 12px;
+    box-shadow: none;
+    padding: 12px 11px;
+    font-size: 12.5px;
     font-weight: 500;
+    line-height: 1.45;
     color: var(--muted);
     font-style: normal;
     margin: 0;
     align-items: flex-start;
-    gap: 10px;
-    line-height: 1.45;
+    gap: 8px;
   }
+  /* Drop the desktop ::before that prefixed "Others:" — column
+     identity now comes from the persistent column header. */
   .comparison-grid-cell.other::before {
-    content: "Others";
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--muted);
-    flex-shrink: 0;
-    width: 52px;
-    padding-top: 2px;
+    content: none;
   }
-  /* Restore the dash icon (hidden by the previous footnote variant). */
-  .comparison-grid-cell.other .comparison-icon.dash {
-    display: inline-flex;
+
+  /* Compact icons so they leave more room for the wrapped text in
+     each card. align-self start + margin-top nudges the icon to
+     align with the cap-height of the first line. */
+  .comparison-grid-cell .comparison-icon {
+    width: 16px;
+    height: 16px;
+    margin-top: 1px;
+    align-self: flex-start;
+  }
+  .comparison-grid-cell .comparison-icon.check::after {
+    width: 7px;
+    height: 4px;
+    border-left-width: 1.5px;
+    border-bottom-width: 1.5px;
   }
 }
 

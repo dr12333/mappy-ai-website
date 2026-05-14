@@ -1125,9 +1125,13 @@ html[lang="de"] .nav-cta .ghost {
   }
   .features-tab-canvas-split .features-tab-canvas-image {
     position: static;
-    width: 100%;
+    /* Smaller than full-width on mobile so each tile reads as an
+       illustration sitting on the dotted canvas, not as a banner
+       filling the whole card. Centered via auto margins. */
+    width: 78%;
     height: auto;
-    max-width: 100%;
+    max-width: 78%;
+    margin: 0 auto;
   }
 
   .features-tab-panels {

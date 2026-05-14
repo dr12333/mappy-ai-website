@@ -729,7 +729,7 @@ document.addEventListener("click", (event) => {
   const priceEls = Array.from(document.querySelectorAll(".plan-price[data-price-yearly]"));
   if (!priceEls.length) return;
 
-  const DURATION = 500;
+  const DURATION = 900;
 
   // Initialize displayed value: start at yearly (the default checked
   // state). Per-element animation handle stored on the element.
@@ -757,9 +757,13 @@ document.addEventListener("click", (event) => {
       return;
     }
     const startTime = performance.now();
+    // easeInOutCubic — slow in, slow out, steady through the middle
+    // so the count reads as a deliberate transition instead of a
+    // quick snap.
+    const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
     const step = (now) => {
       const t = Math.min(1, (now - startTime) / DURATION);
-      const eased = 1 - Math.pow(1 - t, 3);
+      const eased = ease(t);
       const value = from + (target - from) * eased;
       el._currentValue = value;
       valueEl.textContent = t < 1 ? fmtAnim(value) : fmtRest(target);

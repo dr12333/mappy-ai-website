@@ -221,17 +221,28 @@
             <path data-edge="summarizers,summarizers-child" d="M 50 84 L 76 84" />
           </svg>
 
-          <div class="audience-node audience-node-center" data-node-id="root" style="top: 50%; left: 22%; --node-color: #F19A48;">Who Mappy AI is for</div>
+          <!--
+            Each node carries two coordinate sets: desktop coords in
+            the inline style (top/left) and mobile coords in
+            data-mobile-x / data-mobile-y. The script reads the mobile
+            set when the viewport matches the audience mobile MQ and
+            rewrites top/left + the SVG edge paths accordingly.
 
-          <div class="audience-node audience-node-l1" data-node-id="students" style="top: 16%; left: 50%; --node-color: #EB594F;">Students</div>
-          <div class="audience-node audience-node-l1" data-node-id="researchers" style="top: 39%; left: 50%; --node-color: #EB594F;">Researchers</div>
-          <div class="audience-node audience-node-l1" data-node-id="teams" style="top: 61%; left: 50%; --node-color: #EB594F;">Teams</div>
-          <div class="audience-node audience-node-l1" data-node-id="summarizers" style="top: 84%; left: 50%; --node-color: #EB594F;">Summarizers</div>
+            Mobile layout: portrait canvas with the root pill at the
+            top center, four L1 → L2 horizontal pairs stacked below.
+            Same parent → child structure as desktop, rotated 90°.
+          -->
+          <div class="audience-node audience-node-center" data-node-id="root" data-mobile-x="50" data-mobile-y="7" style="top: 50%; left: 22%; --node-color: #F19A48;">Who Mappy AI is for</div>
 
-          <div class="audience-node audience-node-l2" data-node-id="students-child" style="top: 16%; left: 76%; --node-color: #FC9893;">Drop in lecture audio or the textbook chapter — get back a revision-ready map with figures embedded.</div>
-          <div class="audience-node audience-node-l2" data-node-id="researchers-child" style="top: 39%; left: 76%; --node-color: #FC9893;">Upload PDFs; every node clicks back to its exact source page.</div>
-          <div class="audience-node audience-node-l2" data-node-id="teams-child" style="top: 61%; left: 76%; --node-color: #FC9893;">Build maps together with live cursors. Export to PDF when it's time to present.</div>
-          <div class="audience-node audience-node-l2" data-node-id="summarizers-child" style="top: 84%; left: 76%; --node-color: #FC9893;">Long-form docs, links, or recordings → a clear hierarchy you can navigate by shape.</div>
+          <div class="audience-node audience-node-l1" data-node-id="students" data-mobile-x="22" data-mobile-y="25" style="top: 16%; left: 50%; --node-color: #EB594F;">Students</div>
+          <div class="audience-node audience-node-l1" data-node-id="researchers" data-mobile-x="22" data-mobile-y="43" style="top: 39%; left: 50%; --node-color: #EB594F;">Researchers</div>
+          <div class="audience-node audience-node-l1" data-node-id="teams" data-mobile-x="22" data-mobile-y="61" style="top: 61%; left: 50%; --node-color: #EB594F;">Teams</div>
+          <div class="audience-node audience-node-l1" data-node-id="summarizers" data-mobile-x="22" data-mobile-y="79" style="top: 84%; left: 50%; --node-color: #EB594F;">Summarizers</div>
+
+          <div class="audience-node audience-node-l2" data-node-id="students-child" data-mobile-x="70" data-mobile-y="25" style="top: 16%; left: 76%; --node-color: #FC9893;">Drop in lecture audio or the textbook chapter — get back a revision-ready map with figures embedded.</div>
+          <div class="audience-node audience-node-l2" data-node-id="researchers-child" data-mobile-x="70" data-mobile-y="43" style="top: 39%; left: 76%; --node-color: #FC9893;">Upload PDFs; every node clicks back to its exact source page.</div>
+          <div class="audience-node audience-node-l2" data-node-id="teams-child" data-mobile-x="70" data-mobile-y="61" style="top: 61%; left: 76%; --node-color: #FC9893;">Build maps together with live cursors. Export to PDF when it's time to present.</div>
+          <div class="audience-node audience-node-l2" data-node-id="summarizers-child" data-mobile-x="70" data-mobile-y="79" style="top: 84%; left: 76%; --node-color: #FC9893;">Long-form docs, links, or recordings → a clear hierarchy you can navigate by shape.</div>
 
           <!-- Onboarding tip — two states. Collapsed: a gradient avatar
                button sitting half-overlapping the canvas top-right

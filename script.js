@@ -367,10 +367,11 @@ document.addEventListener("click", (event) => {
   const canvas = document.querySelector("[data-interactive-mindmap]");
   if (!canvas) return;
 
-  // Skip on small viewports — the canvas itself is hidden via CSS
-  // below 720px in favor of a text list fallback.
+  // Mobile MQ — drives layout switching. Same breakpoint the audience
+  // CSS uses; on mobile we replace each node's desktop coords with its
+  // data-mobile-* coords so the same interactive graph reflows into
+  // a portrait arrangement.
   const mobileMQ = window.matchMedia("(max-width: 720px)");
-  if (mobileMQ.matches) return;
 
   const svg = canvas.querySelector(".audience-canvas-edges");
   const toolbar = canvas.querySelector(".audience-toolbar");
@@ -379,17 +380,38 @@ document.addEventListener("click", (event) => {
 
   // Build node + edge state from the DOM. Each node carries its
   // current (x, y) in canvas-percent coords and its style state.
+  // Desktop coords come from inline style.top/left; mobile coords
+  // come from data-mobile-x / data-mobile-y. We retain both so a
+  // viewport change can swap layouts cleanly without losing the
+  // user's drag history (the swap resets to the layout defaults —
+  // arguably the desired behaviour when the canvas geometry changes).
   const nodes = new Map();
   nodeEls.forEach((el) => {
     const id = el.dataset.nodeId;
     if (!id) return;
-    const x = parseFloat(el.style.left);
-    const y = parseFloat(el.style.top);
+    const desktopX = parseFloat(el.style.left);
+    const desktopY = parseFloat(el.style.top);
+    const mobileX = parseFloat(el.dataset.mobileX);
+    const mobileY = parseFloat(el.dataset.mobileY);
+    const useMobile = mobileMQ.matches
+      && !Number.isNaN(mobileX) && !Number.isNaN(mobileY);
+    const x = useMobile ? mobileX : desktopX;
+    const y = useMobile ? mobileY : desktopY;
+    // Mirror initial coords into the inline style so the node renders
+    // at the mobile position from the first paint.
+    if (useMobile) {
+      el.style.left = x + "%";
+      el.style.top = y + "%";
+    }
     nodes.set(id, {
       id,
       el,
       x,
       y,
+      desktopX,
+      desktopY,
+      mobileX,
+      mobileY,
       // Initial bg color: prefer --node-color custom property; fallback to white.
       bg: el.style.getPropertyValue("--node-color").trim() || "#FFFFFF",
       // Initial text color: white on every node (all three levels
@@ -681,7 +703,36 @@ document.addEventListener("click", (event) => {
     if (selectedId) positionToolbar();
   });
 
-  // Initial: ensure SVG edges are in the right shape.
+  // Swap between desktop and mobile coord sets when the viewport
+  // crosses the 720px breakpoint. Drops the current selection so the
+  // toolbar doesn't end up positioned against a now-stale node rect.
+  const applyLayoutForViewport = (isMobile) => {
+    nodes.forEach((node) => {
+      const hasMobile = !Number.isNaN(node.mobileX) && !Number.isNaN(node.mobileY);
+      const targetX = isMobile && hasMobile ? node.mobileX : node.desktopX;
+      const targetY = isMobile && hasMobile ? node.mobileY : node.desktopY;
+      node.x = targetX;
+      node.y = targetY;
+      node.el.style.left = targetX + "%";
+      node.el.style.top = targetY + "%";
+    });
+    updateEdges();
+  };
+
+  // matchMedia in older Safari doesn't have addEventListener; fall
+  // back to addListener so the layout still swaps on rotation.
+  const onMQChange = (event) => {
+    deselect();
+    applyLayoutForViewport(event.matches);
+  };
+  if (typeof mobileMQ.addEventListener === "function") {
+    mobileMQ.addEventListener("change", onMQChange);
+  } else if (typeof mobileMQ.addListener === "function") {
+    mobileMQ.addListener(onMQChange);
+  }
+
+  // Initial: ensure SVG edges are in the right shape for whichever
+  // coord set is active.
   updateEdges();
 })();
 

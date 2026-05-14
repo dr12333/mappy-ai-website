@@ -2032,69 +2032,65 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 @media (max-width: 720px) {
+  /* Mobile mindmap: same interactive graph as desktop, but the
+     canvas flips to portrait and the nodes use their data-mobile-*
+     coords (script.js applies them on init + on MQ change). Root
+     sits at the top, four L1 → L2 horizontal pairs stack below.
+     Connectors remain visible — script.js redraws the SVG paths
+     against the new coords. */
   .audience-canvas {
-    /* Keep the dotted-canvas card identity, but let it grow
-       vertically to host the stacked node layout. */
-    aspect-ratio: auto;
+    aspect-ratio: 4 / 6;
     margin-top: 24px;
-    padding: 24px 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
   }
 
-  /* Interactive layers off — SVG edges don't make sense in a
-     vertical stack; the tip + drag/toolbar are JS-skipped on
-     mobile already. The text fallback list (.audience-mobile-list)
-     is now redundant with the visible nodes, hide it. */
-  .audience-canvas-edges,
-  .audience-tip,
+  /* The text fallback list is redundant now that the canvas itself
+     renders on mobile. */
   .audience-mobile-list {
     display: none;
   }
 
-  /* Drop the absolute positioning and the translate(-50%, -50%)
-     that the desktop CSS uses to center nodes on a coordinate.
-     Inline top/left attributes are ignored once position is
-     static, so the inline HTML stays untouched. */
-  .audience-node {
-    position: static;
-    transform: none;
-    flex-shrink: 0;
-  }
-
-  /* Order: interleave each branch with its leaf so they sit as
-     paired sections in the column instead of "all branches, then
-     all leaves". */
-  .audience-node[data-node-id="root"]              { order: 0; }
-  .audience-node[data-node-id="students"]          { order: 1; }
-  .audience-node[data-node-id="students-child"]    { order: 2; }
-  .audience-node[data-node-id="researchers"]       { order: 3; }
-  .audience-node[data-node-id="researchers-child"] { order: 4; }
-  .audience-node[data-node-id="teams"]             { order: 5; }
-  .audience-node[data-node-id="teams-child"]       { order: 6; }
-  .audience-node[data-node-id="summarizers"]       { order: 7; }
-  .audience-node[data-node-id="summarizers-child"] { order: 8; }
-
-  /* Root: amber pill centered at the top, slight separator below. */
+  /* Smaller, tighter nodes so the four pairs fit comfortably in
+     portrait. The center root keeps its emphasis (still a touch
+     larger and bolder than L1). */
   .audience-node-center {
-    align-self: center;
-    margin-bottom: 6px;
+    font-size: 13px;
+    padding: 9px 14px;
   }
 
-  /* Level 1: coral pills centered, breathing room above each so
-     adjacent branch/leaf pairs are visually distinct. */
   .audience-node-l1 {
-    align-self: center;
-    margin-top: 6px;
+    font-size: 12px;
+    padding: 7px 12px;
   }
 
-  /* Level 2: blush leaf cards span the canvas content width. */
   .audience-node-l2 {
-    align-self: stretch;
-    width: auto;
-    max-width: none;
+    font-size: 11px;
+    padding: 9px 11px;
+    /* Narrower leaf so it sits cleanly inside the canvas at 70% x. */
+    width: 50%;
+    line-height: 1.35;
+  }
+
+  /* Onboarding tip avatar shrinks a touch and tucks closer to the
+     canvas corner so it doesn't push past the section gutter. */
+  .audience-tip-trigger {
+    top: -16px;
+    right: -16px;
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Tip bubble stays inside viewport on narrow phones. */
+  .audience-tip-bubble {
+    max-width: 220px;
+    padding: 10px 12px;
+  }
+
+  /* Compact toolbar — at 188px it still fits the canvas, but tighter
+     swatches + smaller buttons keep it from dominating the view. */
+  .audience-toolbar {
+    width: 168px;
+    padding: 8px;
+    gap: 6px;
   }
 }
 

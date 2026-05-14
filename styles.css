@@ -1168,7 +1168,10 @@ html[lang="de"] .nav-cta .ghost {
 .comparison {
   margin: 110px 0 40px;
   display: grid;
-  gap: 24px;
+  /* Space between the header (heading + subtitle) and the comparison
+     grid below — bigger gap so the subtitle has room to breathe
+     before the column headers start. */
+  gap: 40px;
 }
 
 .comparison-header h2 {
@@ -1338,10 +1341,11 @@ html[lang="de"] .nav-cta .ghost {
    raised cards (accent border + subtle shadow); Other cells sit as
    muted stroke-bordered cards in the right column. */
 @media (max-width: 720px) {
-  /* Tighter inner gap; the section-level margin is handled by the
-     global mobile section-rhythm block lower in this stylesheet. */
+  /* Inner gap on mobile — same intent as desktop: clear separation
+     between the section header and the column-header row of the
+     comparison grid. */
   .comparison {
-    gap: 12px;
+    gap: 28px;
   }
 
   .comparison-grid {

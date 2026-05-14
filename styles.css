@@ -2544,11 +2544,15 @@ html[lang="de"] .nav-cta .ghost {
 
 @media (max-width: 720px) {
   .billing-toggle-pill {
-    padding: 8px 14px;
+    padding: 8px 12px;
     font-size: 13px;
+    gap: 4px;
   }
+  /* Keep the badge visible on mobile but slightly smaller so the
+     "Yearly" pill doesn't overflow at narrow widths. */
   .billing-save {
-    display: none;
+    font-size: 10px;
+    padding: 2px 6px;
   }
 }
 

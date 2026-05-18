@@ -4,29 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
-      // Defeat the browser's scroll-restore on refresh. scrollRestoration
-      // = "manual" set this early should disable auto-restore for the
-      // current navigation in modern browsers, but the behavior is
-      // inconsistent — we also force scrollTo(0, 0) at every checkpoint
-      // before paint:
-      //   - inline (now): no-op if body isn't rendered yet, but signals
-      //     intent and catches whatever scroll state is in place.
-      //   - DOMContentLoaded: after HTML parses, before resources load.
-      //     This is where the browser would have applied its restored
-      //     scroll position; forcing here overrides it.
-      //   - script.js's load handler does its own scrollTo(0, 0) as a
-      //     final backstop once the video finishes loading.
-      // Hash navigations (#workflow etc.) are skipped — those are
-      // handled by script.js's load handler with the proper sticky-nav
-      // offset.
+      // Disable the browser's scroll restoration and force the page
+      // back to y=0 on refresh. Hash navigations are skipped here and
+      // handled by script.js with the correct sticky-nav offset.
       if ("scrollRestoration" in history) {
         history.scrollRestoration = "manual";
       }
       var forceTopIfNoHash = function () {
         var hash = window.location.hash;
-        // "#top" is the brand-logo anchor — it should mean "actual
-        // top of page" (y=0), NOT "scroll to the id=top element
-        // with sticky-nav offset". Treat it as no-hash.
         if (!hash || hash === "#" || hash === "#top") {
           window.scrollTo(0, 0);
         }
@@ -206,10 +191,9 @@
         </div>
 
         <div class="audience-canvas reveal" data-interactive-mindmap>
-          <!-- SVG layer for the curved edges. viewBox 0..100 in both
-               axes so coordinates work as percentages, matching the
-               percentage-positioned HTML nodes overlaid on top. JS
-               rewrites the path 'd' attribute on drag. -->
+          <!-- SVG edge layer. viewBox 0..100 in both axes so node
+               coordinates can be expressed as percentages. JS
+               rewrites the 'd' attribute when nodes are dragged. -->
           <svg class="audience-canvas-edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
             <path data-edge="root,students" d="M 22 50 C 36 50, 36 16, 50 16" />
             <path data-edge="root,researchers" d="M 22 50 C 36 50, 36 39, 50 39" />
@@ -222,29 +206,11 @@
           </svg>
 
           <!--
-            Each node carries two coordinate sets: desktop coords in
-            the inline style (top/left) and mobile coords in
-            data-mobile-x / data-mobile-y. The script reads the mobile
-            set when the viewport matches the audience mobile MQ and
-            rewrites top/left + the SVG edge paths accordingly.
-
-            Mobile layout: portrait canvas with the root pill at the
-            top center, four L1 → L2 horizontal pairs stacked below.
-            Same parent → child structure as desktop, rotated 90°.
-          -->
-          <!--
-            Each node carries two coordinate sets: desktop coords in
-            the inline style (top/left) and mobile coords in
-            data-mobile-x / data-mobile-y. The script reads the mobile
-            set when the viewport matches the audience mobile MQ and
-            rewrites top/left + the SVG edge paths accordingly.
-
-            Mobile layout: three horizontal tiers, top-to-bottom.
-              Tier 1 (y ~6%):  root pill, centered.
-              Tier 2 (y ~22%): four L1 pills evenly across the canvas.
-              Tier 3 (y ~62%): four L2 leaves directly below their L1,
-                               each taking ~22% of the canvas width
-                               so the parent/child column is obvious.
+            Each node carries desktop coords in its inline style and
+            mobile coords in data-mobile-x / data-mobile-y. The script
+            swaps the active set on viewport change.
+            Mobile layout: root at the top, four L1 pills in a row,
+            four L2 leaves directly below their L1.
           -->
           <div class="audience-node audience-node-center" data-node-id="root" data-mobile-x="50" data-mobile-y="10" style="top: 50%; left: 22%; --node-color: #F19A48;">Who Mappy AI is for</div>
 
@@ -253,22 +219,16 @@
           <div class="audience-node audience-node-l1" data-node-id="teams" data-mobile-x="62.5" data-mobile-y="38" style="top: 61%; left: 50%; --node-color: #EB594F;">Teams</div>
           <div class="audience-node audience-node-l1" data-node-id="summarizers" data-mobile-x="87.5" data-mobile-y="38" style="top: 84%; left: 50%; --node-color: #EB594F;">Summarizers</div>
 
-          <!-- L2 leaves carry both a full desktop sentence and a short
-               mobile blurb. CSS swaps which span is visible based on
-               the viewport so the L2 row fits cleanly into the
-               narrower mobile columns. -->
+          <!-- L2 leaves carry both a full desktop sentence and a
+               shorter mobile blurb; CSS swaps which span renders. -->
           <div class="audience-node audience-node-l2" data-node-id="students-child" data-mobile-x="12.5" data-mobile-y="80" style="top: 16%; left: 76%; --node-color: #FC9893;"><span class="audience-text-desktop">Drop in lecture audio or the textbook chapter — get back a revision-ready map with figures embedded.</span><span class="audience-text-mobile">Lecture audio or a chapter → revision-ready map.</span></div>
           <div class="audience-node audience-node-l2" data-node-id="researchers-child" data-mobile-x="37.5" data-mobile-y="80" style="top: 39%; left: 76%; --node-color: #FC9893;"><span class="audience-text-desktop">Upload PDFs; every node clicks back to its exact source page.</span><span class="audience-text-mobile">PDFs in — every node links to its source page.</span></div>
           <div class="audience-node audience-node-l2" data-node-id="teams-child" data-mobile-x="62.5" data-mobile-y="80" style="top: 61%; left: 76%; --node-color: #FC9893;"><span class="audience-text-desktop">Build maps together with live cursors. Export to PDF when it's time to present.</span><span class="audience-text-mobile">Build maps live with your team. Export to PDF.</span></div>
           <div class="audience-node audience-node-l2" data-node-id="summarizers-child" data-mobile-x="87.5" data-mobile-y="80" style="top: 84%; left: 76%; --node-color: #FC9893;"><span class="audience-text-desktop">Long-form docs, links, or recordings → a clear hierarchy you can navigate by shape.</span><span class="audience-text-mobile">Long docs or recordings → a clear hierarchy.</span></div>
 
-          <!-- Onboarding tip — two states. Collapsed: a gradient avatar
-               button sitting half-overlapping the canvas top-right
-               corner, with a green notification dot and a 5s shake
-               animation to attract attention. Open: a message bubble
-               appears inside the canvas top-right with the same
-               avatar + message + close button. JS toggles the
-               data-state attribute. -->
+          <!-- Onboarding tip: collapsed avatar (with notification dot
+               and shake animation) opens a message bubble. JS toggles
+               the data-state attribute; styling is CSS-driven. -->
           <div class="audience-tip reveal" data-state="collapsed">
             <button class="audience-tip-trigger" type="button" aria-label="Toggle Mappy AI tip">
               <span class="audience-tip-icon audience-tip-icon-d" aria-hidden="true">D</span>
@@ -286,10 +246,7 @@
             </div>
           </div>
 
-          <!-- Floating toolbar — replicates the actual Mappy AI app's
-               .node-menu styling (raised-cream background, 1.5px
-               stronger border, 8px radius, 12px text-sm labels,
-               34px control-height buttons with hover lift). -->
+          <!-- Floating toolbar shown when a node is selected. -->
           <div class="audience-toolbar" hidden>
             <div class="audience-toolbar-section">
               <label>Node Color</label>
@@ -334,14 +291,6 @@
             </div>
           </div>
 
-          <!-- Mobile fallback: a simple three-line list shown when the
-               mindmap canvas is hidden (below 720px). -->
-          <ul class="audience-mobile-list">
-            <li><strong>Students</strong> — drop in a lecture recording, get a revision-ready map back</li>
-            <li><strong>Researchers</strong> — every node clicks back to the exact source page</li>
-            <li><strong>Teams</strong> — live shared editing, exportable to PDF when it's time to present</li>
-            <li><strong>Summarizers</strong> — anyone turning long, unstructured material into a clear mindmap</li>
-          </ul>
         </div>
       </section>
 
@@ -359,10 +308,9 @@
           <button class="features-tab" role="tab" aria-selected="false" data-target="collaborate" type="button">Collaborate live</button>
         </div>
 
-        <!-- All panels rendered in the DOM (rather than swapped via JS) so
-             crawlers see every feature's copy. Visibility flipped via CSS;
-             video play/pause controlled by the tab handler in script.js so
-             only the active panel's video actually plays. -->
+        <!-- All panels rendered in the DOM so crawlers see every
+             feature's copy; CSS flips visibility and script.js
+             pauses inactive videos. -->
         <div class="features-tab-panels">
           <div class="features-tab-panel is-active" data-panel="real-images" role="tabpanel">
             <div class="features-tab-media features-tab-media-canvas">
@@ -479,7 +427,6 @@
           <div class="comparison-grid-cell feature" role="rowheader">AI edit style</div>
           <div class="comparison-grid-cell mappy" role="cell"><span class="comparison-icon check"></span>Step-by-step edits; existing nodes stay</div>
           <div class="comparison-grid-cell other" role="cell"><span class="comparison-icon dash"></span>Wipes and regenerates from scratch</div>
-
 
           <div class="comparison-grid-cell feature" role="rowheader">Web research</div>
           <div class="comparison-grid-cell mappy" role="cell"><span class="comparison-icon check"></span>AI searches the web and adds cited sources to the map</div>

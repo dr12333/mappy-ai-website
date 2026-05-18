@@ -2,55 +2,41 @@ if ("scrollRestoration" in history) {
   history.scrollRestoration = "manual";
 }
 
+const isTopHash = (hash) => !hash || hash === "#" || hash === "#top";
+
 const getHashTarget = (hash = window.location.hash) => {
   if (!hash || hash === "#") return null;
-  const id = decodeURIComponent(hash.slice(1));
-  return document.getElementById(id);
+  return document.getElementById(decodeURIComponent(hash.slice(1)));
 };
 
-function getScrollOffset() {
+const getScrollOffset = () => {
   const nav = document.querySelector(".nav");
   return nav ? nav.offsetHeight + 12 : 0;
-}
-
-// Helper: should this hash be treated as "actual top of page"?
-const isTopHash = (hash) => !hash || hash === "#" || hash === "#top";
+};
 
 window.addEventListener("load", () => {
   const hash = window.location.hash;
-  // "#top" is the brand-logo anchor — treat as "actual page top"
-  // (y=0), not as a hash-navigation target. Without this, refreshing
-  // after a logo click would land at the hero section minus the
-  // sticky-nav offset, leaving a visible scroll gap at the top.
   if (isTopHash(hash)) {
     window.scrollTo(0, 0);
     return;
   }
-
   const target = getHashTarget();
   if (!target) {
     window.scrollTo(0, 0);
     return;
   }
-
-  const targetY = target.getBoundingClientRect().top + window.pageYOffset - getScrollOffset();
-  window.scrollTo(0, targetY);
+  const y = target.getBoundingClientRect().top + window.pageYOffset - getScrollOffset();
+  window.scrollTo(0, y);
 });
 
-// pageshow fires both on first load and when the page is restored
-// from the back/forward cache (which preserves scroll position
-// regardless of scrollRestoration). Force top here so navigating
-// back from /schools/ (or any other page) lands at the actual top.
+// pageshow fires when the page is restored from the bfcache, which
+// otherwise preserves the previous scroll position.
 window.addEventListener("pageshow", (event) => {
   if (event.persisted && isTopHash(window.location.hash)) {
     window.scrollTo(0, 0);
   }
 });
 
-// Save scroll position as 0 before unloading the page, so the
-// browser's restore-cache for the next load already has 0.
-// (Combined with scrollRestoration = "manual" set in <head>, this
-// makes the restored scroll position match what we want.)
 window.addEventListener("beforeunload", () => {
   if (isTopHash(window.location.hash)) {
     window.scrollTo(0, 0);
@@ -79,9 +65,7 @@ const closeMailtoModal = () => {
   if (!mailtoModal || mailtoModal.hidden) return;
   mailtoModal.hidden = true;
   document.body.classList.remove("modal-open");
-  if (mailtoStatus) {
-    mailtoStatus.textContent = "";
-  }
+  if (mailtoStatus) mailtoStatus.textContent = "";
 };
 
 const openMailtoModal = () => {
@@ -94,9 +78,7 @@ const setNavState = (isOpen) => {
   if (!nav) return;
   nav.classList.toggle("is-open", isOpen);
   document.body.classList.toggle("nav-open", isOpen);
-  if (!isOpen) {
-    closeLanguageMenus();
-  }
+  if (!isOpen) closeLanguageMenus();
   if (navToggle) {
     navToggle.setAttribute("aria-expanded", String(isOpen));
     navToggle.setAttribute("aria-label", isOpen ? navCloseLabel : navOpenLabel);
@@ -109,7 +91,6 @@ if (navToggle) {
     setNavState(isOpen);
   });
 }
-
 
 document.addEventListener("click", (event) => {
   if (!nav || !nav.classList.contains("is-open")) return;
@@ -155,24 +136,22 @@ if (mailtoCopyButton && mailtoEmail) {
   });
 }
 
+// If the OS has no mail handler, the mailto: navigation neither hides
+// the page nor blurs the window — we detect that and show a fallback
+// modal with the address to copy.
 const launchMailtoWithFallback = (mailtoHref) => {
   let pageHidden = false;
   let windowBlurred = false;
 
   const onVisibilityChange = () => {
-    if (document.visibilityState === "hidden") {
-      pageHidden = true;
-    }
+    if (document.visibilityState === "hidden") pageHidden = true;
   };
-
   const onPageHide = () => {
     pageHidden = true;
   };
-
   const onBlur = () => {
     windowBlurred = true;
   };
-
   const cleanup = () => {
     document.removeEventListener("visibilitychange", onVisibilityChange);
     window.removeEventListener("pagehide", onPageHide);
@@ -199,9 +178,7 @@ mailtoLinks.forEach((link) => {
     event.preventDefault();
     closeLanguageMenus();
     closeMailtoModal();
-    if (nav && nav.classList.contains("is-open")) {
-      setNavState(false);
-    }
+    if (nav && nav.classList.contains("is-open")) setNavState(false);
     launchMailtoWithFallback(link.href);
   });
 });
@@ -217,13 +194,13 @@ const revealObserver = new IntersectionObserver(
   },
   { threshold: 0.15 }
 );
-
 reveals.forEach((el) => revealObserver.observe(el));
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 let scrollRafId = null;
 
-const easeInOutQuint = (t) => (t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2);
+const easeInOutQuint = (t) =>
+  t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
 
 const smoothScrollTo = (targetY) => {
   if (scrollRafId) {
@@ -239,10 +216,8 @@ const smoothScrollTo = (targetY) => {
   const startTime = performance.now();
 
   const step = (now) => {
-    const elapsed = now - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    const eased = easeInOutQuint(progress);
-    window.scrollTo(0, startY + distance * eased);
+    const progress = Math.min((now - startTime) / duration, 1);
+    window.scrollTo(0, startY + distance * easeInOutQuint(progress));
     if (progress < 1) {
       scrollRafId = requestAnimationFrame(step);
     } else {
@@ -258,19 +233,10 @@ document.addEventListener("click", (event) => {
   if (!link) return;
 
   const href = link.getAttribute("href");
-  // "#top" and "#" both mean "scroll to the actual top of the page"
-  // (y=0). Without the #top special-case the click would fall
-  // through to hash-navigation and scroll to the id=top element
-  // minus the sticky-nav offset, leaving a visible gap at the top.
   if (!href || href === "#" || href === "#top") {
     event.preventDefault();
-    if (prefersReducedMotion.matches) {
-      window.scrollTo(0, 0);
-    } else {
-      smoothScrollTo(0);
-    }
-    // Clear the hash from the URL so a subsequent refresh lands at
-    // actual top, not at "#top".
+    if (prefersReducedMotion.matches) window.scrollTo(0, 0);
+    else smoothScrollTo(0);
     history.replaceState(null, "", window.location.pathname + window.location.search);
     return;
   }
@@ -283,47 +249,36 @@ document.addEventListener("click", (event) => {
     setNavState(false);
   }
 
-  const offset = getScrollOffset();
-  const targetY = target.getBoundingClientRect().top + window.pageYOffset - offset;
-
-  if (prefersReducedMotion.matches) {
-    window.scrollTo(0, targetY);
-  } else {
-    smoothScrollTo(targetY);
-  }
+  const targetY = target.getBoundingClientRect().top + window.pageYOffset - getScrollOffset();
+  if (prefersReducedMotion.matches) window.scrollTo(0, targetY);
+  else smoothScrollTo(targetY);
 
   history.pushState(null, "", href);
 });
 
-// ── Features tabs ───────────────────────────────────────────────────
-// Switches the active panel in the "What makes Mappy AI different"
-// section. All panels live in the DOM (SEO); CSS shows only the active
-// one. Videos are paused on inactive panels so only one is moving at
-// a time — that's the main reason we replaced the old 6-card grid.
+// Features-tabs: switch the active panel and pause the inactive
+// panels' videos so only the visible one is playing.
 (() => {
   const tabs = Array.from(document.querySelectorAll(".features-tab"));
   const panels = Array.from(document.querySelectorAll(".features-tab-panel"));
   if (!tabs.length || !panels.length) return;
+
+  const playSafely = (video) => {
+    const result = video.play();
+    if (result && typeof result.catch === "function") result.catch(() => {});
+  };
 
   const activate = (targetId) => {
     panels.forEach((panel) => {
       const isActive = panel.dataset.panel === targetId;
       panel.classList.toggle("is-active", isActive);
       const video = panel.querySelector("video");
-      if (video) {
-        if (isActive) {
-          video.currentTime = 0;
-          // Some browsers reject autoplay until a user interaction; the
-          // tab click IS the gesture so play() should succeed here, but
-          // swallow the promise rejection just in case (reduced-motion,
-          // battery saver, etc).
-          const playPromise = video.play();
-          if (playPromise && typeof playPromise.catch === "function") {
-            playPromise.catch(() => {});
-          }
-        } else {
-          video.pause();
-        }
+      if (!video) return;
+      if (isActive) {
+        video.currentTime = 0;
+        playSafely(video);
+      } else {
+        video.pause();
       }
     });
     tabs.forEach((tab) => {
@@ -337,54 +292,30 @@ document.addEventListener("click", (event) => {
     tab.addEventListener("click", () => activate(tab.dataset.target));
   });
 
-  // On load, only the initially-active panel's video should be playing.
-  // The other panels' <video> elements don't have autoplay set in HTML
-  // (only the active one does), but be defensive — pause anything
-  // outside the active panel so a stale browser cache or markup edit
-  // can't sneak past.
   panels.forEach((panel) => {
     const video = panel.querySelector("video");
     if (!video) return;
-    if (panel.classList.contains("is-active")) {
-      const playPromise = video.play();
-      if (playPromise && typeof playPromise.catch === "function") {
-        playPromise.catch(() => {});
-      }
-    } else {
-      video.pause();
-    }
+    if (panel.classList.contains("is-active")) playSafely(video);
+    else video.pause();
   });
 })();
 
-// ── Audience mindmap: interactive demo ─────────────────────────────
-// Hydrates the static mindmap illustration in the "Who Mappy AI is
-// for" section into a draggable, selectable mini-editor. Visitors
-// can grab any node to reposition it (edges update live), click a
-// node to select it, and use the floating toolbar to change its
-// background color, text color, or shape. Same palette and shape
-// model used by the actual editor in mindmap-tool.
+// Interactive mindmap demo in the "Who Mappy AI is for" section.
+// Hydrates the static markup into a draggable, selectable graph with
+// a floating toolbar. Each node carries desktop coords in its inline
+// top/left and mobile coords in data-mobile-x / data-mobile-y; the
+// active coord set swaps on viewport change.
 (() => {
   const canvas = document.querySelector("[data-interactive-mindmap]");
   if (!canvas) return;
-
-  // Mobile MQ — drives layout switching. Same breakpoint the audience
-  // CSS uses; on mobile we replace each node's desktop coords with its
-  // data-mobile-* coords so the same interactive graph reflows into
-  // a portrait arrangement.
-  const mobileMQ = window.matchMedia("(max-width: 720px)");
 
   const svg = canvas.querySelector(".audience-canvas-edges");
   const toolbar = canvas.querySelector(".audience-toolbar");
   const nodeEls = Array.from(canvas.querySelectorAll(".audience-node"));
   if (!svg || !toolbar || !nodeEls.length) return;
 
-  // Build node + edge state from the DOM. Each node carries its
-  // current (x, y) in canvas-percent coords and its style state.
-  // Desktop coords come from inline style.top/left; mobile coords
-  // come from data-mobile-x / data-mobile-y. We retain both so a
-  // viewport change can swap layouts cleanly without losing the
-  // user's drag history (the swap resets to the layout defaults —
-  // arguably the desired behaviour when the canvas geometry changes).
+  const mobileMQ = window.matchMedia("(max-width: 720px)");
+
   const nodes = new Map();
   nodeEls.forEach((el) => {
     const id = el.dataset.nodeId;
@@ -393,12 +324,9 @@ document.addEventListener("click", (event) => {
     const desktopY = parseFloat(el.style.top);
     const mobileX = parseFloat(el.dataset.mobileX);
     const mobileY = parseFloat(el.dataset.mobileY);
-    const useMobile = mobileMQ.matches
-      && !Number.isNaN(mobileX) && !Number.isNaN(mobileY);
+    const useMobile = mobileMQ.matches && !Number.isNaN(mobileX) && !Number.isNaN(mobileY);
     const x = useMobile ? mobileX : desktopX;
     const y = useMobile ? mobileY : desktopY;
-    // Mirror initial coords into the inline style so the node renders
-    // at the mobile position from the first paint.
     if (useMobile) {
       el.style.left = x + "%";
       el.style.top = y + "%";
@@ -412,58 +340,34 @@ document.addEventListener("click", (event) => {
       desktopY,
       mobileX,
       mobileY,
-      // Initial bg color: prefer --node-color custom property; fallback to white.
       bg: el.style.getPropertyValue("--node-color").trim() || "#FFFFFF",
-      // Initial text color: white on every node (all three levels
-      // now have colored backgrounds; this matches the CSS defaults).
       text: "#FFFFFF",
-      // Level-2 leaves carry multi-line copy and use a rounded
-      // rectangle by default; other levels use full pills.
       shape: el.classList.contains("audience-node-l2") ? "rounded" : "pill",
-      // Initial font size in px — read from computed style so we
-      // start in sync with whatever the CSS rules set per level.
       fontSize: parseFloat(getComputedStyle(el).fontSize) || 14,
     });
   });
 
-  // Edge definitions: each path carries a "from,to" data attribute
-  // matching node IDs. The first 3 edges are curved (root → level 1);
-  // the last 3 are straight (level 1 → level 2).
   const edges = Array.from(svg.querySelectorAll("path")).map((path) => {
     const [from, to] = path.dataset.edge.split(",");
-    return { from, to, path, curved: ["students", "researchers", "teams"].includes(to) && to !== "researchers" };
+    return { from, to, path };
   });
 
-  // ── Edge geometry ──────────────────────────────────────────────
-  // Soft cubic bezier between each parent/child pair. Control points
-  // are biased along the layout's primary axis:
-  //   - Desktop: horizontal-flow mindmap → control points pulled
-  //     horizontally so curves emerge from parent right edge and
-  //     land at child left edge.
-  //   - Mobile: vertical-flow tree (root at top, L1 row, L2 row) →
-  //     control points pulled vertically so curves fan downward from
-  //     the parent's bottom and land at the child's top, even when
-  //     the parent/child have a big horizontal offset (root → outer
-  //     L1).
+  // Cubic bezier between each parent/child. Control points biased
+  // along the layout's primary axis (horizontal on desktop, vertical
+  // on mobile) so curves emerge from the parent and land at the child.
   const updateEdges = () => {
     const vertical = mobileMQ.matches;
-    edges.forEach((edge) => {
-      const from = nodes.get(edge.from);
-      const to = nodes.get(edge.to);
-      if (!from || !to) return;
-      let d;
-      if (vertical) {
-        const cy = (to.y - from.y) * 0.5;
-        d = `M ${from.x} ${from.y} C ${from.x} ${from.y + cy}, ${to.x} ${to.y - cy}, ${to.x} ${to.y}`;
-      } else {
-        const cx = (to.x - from.x) * 0.5;
-        d = `M ${from.x} ${from.y} C ${from.x + cx} ${from.y}, ${to.x - cx} ${to.y}, ${to.x} ${to.y}`;
-      }
-      edge.path.setAttribute("d", d);
+    edges.forEach(({ from, to, path }) => {
+      const a = nodes.get(from);
+      const b = nodes.get(to);
+      if (!a || !b) return;
+      const d = vertical
+        ? `M ${a.x} ${a.y} C ${a.x} ${(a.y + b.y) / 2}, ${b.x} ${(a.y + b.y) / 2}, ${b.x} ${b.y}`
+        : `M ${a.x} ${a.y} C ${(a.x + b.x) / 2} ${a.y}, ${(a.x + b.x) / 2} ${b.y}, ${b.x} ${b.y}`;
+      path.setAttribute("d", d);
     });
   };
 
-  // ── Selection + toolbar ────────────────────────────────────────
   let selectedId = null;
 
   const select = (id) => {
@@ -471,9 +375,6 @@ document.addEventListener("click", (event) => {
     nodeEls.forEach((el) => {
       el.classList.toggle("is-selected", el.dataset.nodeId === id);
     });
-    // Show the toolbar before measuring its size so offsetWidth/
-    // offsetHeight in positionToolbar return the real values
-    // instead of 0 (hidden elements report 0 dimensions).
     toolbar.hidden = false;
     positionToolbar();
     syncToolbarValues();
@@ -486,40 +387,35 @@ document.addEventListener("click", (event) => {
     toolbar.hidden = true;
   };
 
+  // Position the toolbar next to the selected node — prefer the right
+  // side, fall back to the left, then dock to the canvas edge if
+  // neither fits.
   const positionToolbar = () => {
     if (!selectedId) return;
     const node = nodes.get(selectedId);
     if (!node) return;
-    // Compute toolbar position in pixels, clamp to the canvas
-    // box, then convert back to percentages. This guarantees the
-    // toolbar always stays fully inside the canvas regardless of
-    // node position or canvas size.
     const canvasRect = canvas.getBoundingClientRect();
     const nodeRect = node.el.getBoundingClientRect();
     const toolbarW = toolbar.offsetWidth || 188;
     const toolbarH = toolbar.offsetHeight || 240;
-    const padding = 8;  // gap from canvas edge
-    const gap = 12;     // gap between node and toolbar
+    const PAD = 8;
+    const GAP = 12;
 
-    // Node bounds in canvas-local pixels.
     const nodeLeft = nodeRect.left - canvasRect.left;
     const nodeRight = nodeRect.right - canvasRect.left;
     const nodeCenterY = (nodeRect.top + nodeRect.bottom) / 2 - canvasRect.top;
 
-    // Prefer right side; flip to left if it would clip; if neither
-    // fits, dock against the right edge of the canvas.
     let toolbarLeft;
-    if (nodeRight + gap + toolbarW <= canvasRect.width - padding) {
-      toolbarLeft = nodeRight + gap;
-    } else if (nodeLeft - gap - toolbarW >= padding) {
-      toolbarLeft = nodeLeft - gap - toolbarW;
+    if (nodeRight + GAP + toolbarW <= canvasRect.width - PAD) {
+      toolbarLeft = nodeRight + GAP;
+    } else if (nodeLeft - GAP - toolbarW >= PAD) {
+      toolbarLeft = nodeLeft - GAP - toolbarW;
     } else {
-      toolbarLeft = canvasRect.width - toolbarW - padding;
+      toolbarLeft = canvasRect.width - toolbarW - PAD;
     }
 
-    // Center vertically on node, clamp inside canvas.
     let toolbarTop = nodeCenterY - toolbarH / 2;
-    toolbarTop = Math.max(padding, Math.min(canvasRect.height - toolbarH - padding, toolbarTop));
+    toolbarTop = Math.max(PAD, Math.min(canvasRect.height - toolbarH - PAD, toolbarTop));
 
     toolbar.style.left = (toolbarLeft / canvasRect.width * 100) + "%";
     toolbar.style.top = (toolbarTop / canvasRect.height * 100) + "%";
@@ -529,6 +425,7 @@ document.addEventListener("click", (event) => {
 
   const FONT_MIN = 10;
   const FONT_MAX = 28;
+  const FONT_STEP = 2;
   const SHAPE_LABELS = { pill: "Pill", rounded: "Rounded" };
 
   const closeAllPopovers = () => {
@@ -541,31 +438,34 @@ document.addEventListener("click", (event) => {
     if (!selectedId) return;
     const node = nodes.get(selectedId);
     if (!node) return;
-    // Mark active inline swatch.
     toolbar.querySelectorAll(".audience-toolbar-swatches button[data-bg]").forEach((btn) => {
       btn.classList.toggle("is-active", btn.dataset.bg.toLowerCase() === node.bg.toLowerCase());
     });
     toolbar.querySelectorAll(".audience-toolbar-swatches button[data-text]").forEach((btn) => {
       btn.classList.toggle("is-active", btn.dataset.text.toLowerCase() === node.text.toLowerCase());
     });
-    // Shape trigger label + popover active state.
     const shapeValue = toolbar.querySelector(".audience-toolbar-shape-value");
     if (shapeValue) shapeValue.textContent = SHAPE_LABELS[node.shape] || node.shape;
     toolbar.querySelectorAll(".audience-toolbar-shape-popover button").forEach((btn) => {
       btn.classList.toggle("is-active", btn.dataset.shape === node.shape);
     });
-    // Font size display.
     const fontValue = toolbar.querySelector(".audience-toolbar-font-value");
     if (fontValue) fontValue.textContent = Math.round(node.fontSize);
   };
 
-  // ── Toolbar event handlers ─────────────────────────────────────
+  const applyNodeStyle = (node) => {
+    node.el.style.background = node.bg;
+    node.el.style.borderColor = node.bg.toLowerCase() === "#ffffff" ? "" : node.bg;
+    node.el.style.color = node.text;
+    node.el.style.borderRadius = node.shape === "rounded" ? "12px" : "999px";
+    node.el.style.fontSize = node.fontSize + "px";
+  };
+
   toolbar.addEventListener("click", (event) => {
     if (!selectedId) return;
     const node = nodes.get(selectedId);
     if (!node) return;
 
-    // Shape trigger toggles its popover.
     const shapeTrigger = event.target.closest(".audience-toolbar-shape-trigger");
     if (shapeTrigger) {
       const popover = shapeTrigger.parentElement.querySelector(".audience-toolbar-shape-popover");
@@ -573,7 +473,6 @@ document.addEventListener("click", (event) => {
       return;
     }
 
-    // Direct control clicks (inline swatches + font + shape option).
     const bgBtn = event.target.closest("button[data-bg]");
     const textBtn = event.target.closest("button[data-text]");
     const shapeBtn = event.target.closest(".audience-toolbar-shape-popover button[data-shape]");
@@ -587,12 +486,9 @@ document.addEventListener("click", (event) => {
       node.shape = shapeBtn.dataset.shape;
       closeAllPopovers();
     } else if (fontBtn) {
-      const step = 2;
-      if (fontBtn.dataset.font === "inc") {
-        node.fontSize = Math.min(FONT_MAX, node.fontSize + step);
-      } else {
-        node.fontSize = Math.max(FONT_MIN, node.fontSize - step);
-      }
+      node.fontSize = fontBtn.dataset.font === "inc"
+        ? Math.min(FONT_MAX, node.fontSize + FONT_STEP)
+        : Math.max(FONT_MIN, node.fontSize - FONT_STEP);
     } else {
       return;
     }
@@ -600,9 +496,6 @@ document.addEventListener("click", (event) => {
     syncToolbarValues();
   });
 
-  // Click inside the toolbar but outside the shape popover/trigger
-  // closes the shape popover (e.g. clicking a swatch should close
-  // any open popover too).
   document.addEventListener("pointerdown", (event) => {
     if (!toolbar.contains(event.target)) return;
     if (event.target.closest(".audience-toolbar-shape-popover")) return;
@@ -610,40 +503,18 @@ document.addEventListener("click", (event) => {
     closeAllPopovers();
   });
 
-  const applyNodeStyle = (node) => {
-    // Apply background, border (match the bg color for the colored
-    // nodes; stroke-color for white), text color, shape, font size.
-    node.el.style.background = node.bg;
-    node.el.style.borderColor =
-      node.bg.toLowerCase() === "#ffffff" ? "" : node.bg;
-    node.el.style.color = node.text;
-    node.el.style.borderRadius = node.shape === "rounded" ? "12px" : "999px";
-    node.el.style.fontSize = node.fontSize + "px";
-  };
-
-  // ── Drag (pointer events; works for mouse + touch) ─────────────
-  let drag = null;
-  const DRAG_THRESHOLD = 4; // pixels before pointerdown becomes a drag
-
+  const DRAG_THRESHOLD = 4;
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+  let drag = null;
 
   nodeEls.forEach((el) => {
     el.addEventListener("pointerdown", (event) => {
-      // Ignore clicks on the toolbar that bubble up; only react to
-      // direct pointerdowns on the node itself.
       if (event.target.closest(".audience-toolbar")) return;
-      // Don't initiate drag with secondary buttons.
       if (event.button !== 0 && event.button !== undefined) return;
-      const id = el.dataset.nodeId;
-      const node = nodes.get(id);
+      const node = nodes.get(el.dataset.nodeId);
       if (!node) return;
       const rect = canvas.getBoundingClientRect();
       const nodeRect = el.getBoundingClientRect();
-      // Half the node's own dimensions as canvas-percent values, so
-      // the drag clamp keeps the WHOLE node inside the canvas
-      // bounds (not just its center point).
-      const halfWidthPct = (nodeRect.width / 2 / rect.width) * 100;
-      const halfHeightPct = (nodeRect.height / 2 / rect.height) * 100;
       drag = {
         node,
         el,
@@ -652,10 +523,9 @@ document.addEventListener("click", (event) => {
         origX: node.x,
         origY: node.y,
         rect,
-        halfWidthPct,
-        halfHeightPct,
+        halfWidthPct: (nodeRect.width / 2 / rect.width) * 100,
+        halfHeightPct: (nodeRect.height / 2 / rect.height) * 100,
         moved: false,
-        pointerId: event.pointerId,
       };
       el.setPointerCapture(event.pointerId);
       el.classList.add("is-dragging");
@@ -672,8 +542,6 @@ document.addEventListener("click", (event) => {
     }
     const dxPct = (dx / drag.rect.width) * 100;
     const dyPct = (dy / drag.rect.height) * 100;
-    // Clamp by node's own bounding-box dimensions so the whole
-    // node stays inside the canvas, not just its center.
     drag.node.x = clamp(drag.origX + dxPct, drag.halfWidthPct, 100 - drag.halfWidthPct);
     drag.node.y = clamp(drag.origY + dyPct, drag.halfHeightPct, 100 - drag.halfHeightPct);
     drag.el.style.left = drag.node.x + "%";
@@ -682,14 +550,11 @@ document.addEventListener("click", (event) => {
     if (selectedId === drag.node.id) positionToolbar();
   });
 
-  document.addEventListener("pointerup", (event) => {
+  document.addEventListener("pointerup", () => {
     if (!drag) return;
     const wasMoved = drag.moved;
     drag.el.classList.remove("is-dragging");
-    if (!wasMoved) {
-      // No drag occurred — treat as a click to select.
-      select(drag.node.id);
-    }
+    if (!wasMoved) select(drag.node.id);
     drag = null;
   });
 
@@ -699,8 +564,6 @@ document.addEventListener("click", (event) => {
     drag = null;
   });
 
-  // Click outside the canvas (or on canvas chrome that isn't a node
-  // or the toolbar) deselects.
   document.addEventListener("pointerdown", (event) => {
     if (!selectedId) return;
     if (event.target.closest(".audience-node")) return;
@@ -708,29 +571,23 @@ document.addEventListener("click", (event) => {
     deselect();
   });
 
-  // Recompute toolbar position if window resizes (canvas may resize).
   window.addEventListener("resize", () => {
     if (selectedId) positionToolbar();
   });
 
-  // Swap between desktop and mobile coord sets when the viewport
-  // crosses the 720px breakpoint. Drops the current selection so the
-  // toolbar doesn't end up positioned against a now-stale node rect.
   const applyLayoutForViewport = (isMobile) => {
     nodes.forEach((node) => {
       const hasMobile = !Number.isNaN(node.mobileX) && !Number.isNaN(node.mobileY);
-      const targetX = isMobile && hasMobile ? node.mobileX : node.desktopX;
-      const targetY = isMobile && hasMobile ? node.mobileY : node.desktopY;
-      node.x = targetX;
-      node.y = targetY;
-      node.el.style.left = targetX + "%";
-      node.el.style.top = targetY + "%";
+      const x = isMobile && hasMobile ? node.mobileX : node.desktopX;
+      const y = isMobile && hasMobile ? node.mobileY : node.desktopY;
+      node.x = x;
+      node.y = y;
+      node.el.style.left = x + "%";
+      node.el.style.top = y + "%";
     });
     updateEdges();
   };
 
-  // matchMedia in older Safari doesn't have addEventListener; fall
-  // back to addListener so the layout still swaps on rotation.
   const onMQChange = (event) => {
     deselect();
     applyLayoutForViewport(event.matches);
@@ -741,20 +598,12 @@ document.addEventListener("click", (event) => {
     mobileMQ.addListener(onMQChange);
   }
 
-  // Initial: ensure SVG edges are in the right shape for whichever
-  // coord set is active.
   updateEdges();
 })();
 
-// ── Audience onboarding tip: collapsed ↔ open ─────────────────────
-// Click the avatar to toggle. Click anywhere outside the tip to
-// collapse. The actual show/hide is CSS-driven (transform + opacity
-// transitions); JS just flips the data-state attribute.
-//
-// data-seen tracks whether the user has opened the tip during the
-// current session. Once set, the green dot + shake animation stop
-// (CSS keys off the attribute). State is in-memory only — a
-// refresh starts the user over with the dot + shake again.
+// Audience onboarding tip: tap the avatar to toggle the message
+// bubble; tap outside to collapse. data-seen kills the shake and the
+// notification dot after the first open (CSS-driven).
 (() => {
   const tip = document.querySelector(".audience-tip");
   if (!tip) return;
@@ -766,13 +615,9 @@ document.addEventListener("click", (event) => {
     tip.dataset.state = tip.dataset.state === "open" ? "collapsed" : "open";
   });
 
-  // Click anywhere outside the tip → collapse. The trigger and
-  // bubble are both inside .audience-tip, so this listener won't
-  // fire-close on internal clicks.
   document.addEventListener("click", (event) => {
     if (tip.dataset.state !== "open") return;
     if (event.target.closest(".audience-tip")) return;
     tip.dataset.state = "collapsed";
   });
 })();
-

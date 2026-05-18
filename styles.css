@@ -7,21 +7,12 @@
   --accent: #2f3437;
   --accent-soft: #f1e9de;
   --sun: #ffc66b;
-  --coral: #ff9c7f;
   --mint: #9fe2d0;
-  --sky: #9ebcff;
-  /* Three-step shadow scale. Replaces 30+ one-off box-shadow values
-     scattered through the file. Every shadow in the codebase should
-     map to one of these — sm for hover lifts and small chrome, md
-     for cards / nav / dropdowns (the default), lg for featured
-     elements that should visually float (pillar comparison column,
-     pricing-card hover). */
+  /* Shadow scale: sm for small chrome, md for cards (default),
+     lg for elements that should visually float. */
   --shadow-sm: 0 6px 14px rgba(32, 40, 45, 0.08);
   --shadow-md: 0 14px 28px rgba(32, 40, 45, 0.10);
   --shadow-lg: 0 24px 48px rgba(32, 40, 45, 0.14);
-  /* Legacy alias kept temporarily for any rule that still references
-     --shadow directly. New code should use --shadow-md. */
-  --shadow: var(--shadow-md);
   --page-width: 1240px;
   --logo-size: 36px;
   --logo-font-size: 18px;
@@ -44,31 +35,19 @@
 body {
   font-family: "Space Grotesk", sans-serif;
   background-color: var(--surface);
-  /* Brand gradient — warm sunset (yellow → orange → red → pink) flowing
-     into a cool blue terminator. Sits as a soft wash at the top and
-     bottom of the page, with a fade-to-surface overlay masking the
-     middle 30% so content always reads against the calm cream
-     background.
-     Alpha is held under 0.36 so the wash reads as ambient color, not
-     a banner. 135° diagonal gives the gradient a clear directional
-     sweep without being so steep it feels like a corner-to-corner
-     stripe. Both bands share the same angle for visual consistency. */
+  /* Brand gradient: warm sunset washes at the top and bottom of the
+     page with fade-to-surface overlays masking the middle so content
+     reads against the calm cream background. */
   background-image:
-    /* Top band: fade-to-surface overlay (transparent at top, surface
-       at 80% down — masks the color band below it). The top band
-       runs hotter than the bottom (alphas ~0.55 vs 0.34) so the
-       hero reads as the page's most saturated zone. */
     linear-gradient(180deg, rgba(251, 251, 250, 0) 0%, rgba(251, 251, 250, 1) 80%),
     linear-gradient(
       135deg,
-      rgba(255, 202, 78, 0.42) 0%,    /* #FFCA4E sun */
-      rgba(241, 154, 72, 0.42) 22%,   /* #F19A48 amber */
-      rgba(235, 89, 79, 0.40) 45%,    /* #EB594F coral */
-      rgba(252, 152, 147, 0.40) 65%,  /* #FC9893 blush */
-      rgba(101, 140, 255, 0.45) 85%   /* #658CFF cool blue */
+      rgba(255, 202, 78, 0.42) 0%,
+      rgba(241, 154, 72, 0.42) 22%,
+      rgba(235, 89, 79, 0.40) 45%,
+      rgba(252, 152, 147, 0.40) 65%,
+      rgba(101, 140, 255, 0.45) 85%
     ),
-    /* Bottom band: mirror — fade-to-surface goes opaque at top, transparent
-       at bottom so the color band reads from the page bottom upward. */
     linear-gradient(0deg, rgba(251, 251, 250, 0) 0%, rgba(251, 251, 250, 1) 70%),
     linear-gradient(
       135deg,
@@ -327,41 +306,23 @@ html[lang="de"] .nav-cta .ghost {
   box-shadow: var(--shadow-sm);
 }
 
-/* Hamburger ↔ X animation, sequenced.
-   Using the standalone `translate` and `rotate` properties (separate
-   from `transform`) so the two motions can transition independently
-   with their own delays. The result is a two-phase morph in each
-   direction:
-
-     Open:  outer bars converge to center + middle bar fades out,
-            THEN the converged outer bars rotate to form an X.
-     Close: rotation undoes first, THEN bars uncross + middle fades
-            back in.
-
-   The asymmetric sequencing (open delays the rotate; close delays
-   the translate) keeps each phase legible — you see "three bars
-   stacking → X" and "X → three bars unstacking" rather than a single
-   muddy concurrent motion. */
+/* Hamburger ↔ X morph in two phases: bars converge then rotate on
+   open; rotate undoes then bars uncross on close. Uses the standalone
+   translate/rotate properties so each motion can have its own delay. */
 .nav-toggle span {
   width: 18px;
   height: 2px;
   border-radius: 999px;
   background: var(--ink);
   display: block;
-  /* Resting (closed) state baseline values. */
   translate: 0 0;
   rotate: 0deg;
-  /* Closing transition: rotate finishes first (delay 0), then the
-     translate eases back (delay 0.18s), with the middle bar's
-     opacity coming up in the second phase. */
   transition:
     rotate 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s,
     translate 0.22s cubic-bezier(0.4, 0, 0.2, 1) 0.18s,
     opacity 0.16s ease 0.18s;
 }
 
-/* Opening transition: translate moves first (delay 0), then rotate
-   forms the X (delay 0.18s). Middle bar fades quickly in phase 1. */
 .nav.is-open .nav-toggle span {
   transition:
     translate 0.22s cubic-bezier(0.4, 0, 0.2, 1) 0s,
@@ -383,8 +344,6 @@ html[lang="de"] .nav-cta .ghost {
   rotate: -45deg;
 }
 
-/* Respect reduced-motion preferences: snap between states without
-   the two-phase animation. */
 @media (prefers-reduced-motion: reduce) {
   .nav-toggle span,
   .nav.is-open .nav-toggle span {
@@ -473,18 +432,9 @@ html[lang="de"] .nav-cta .ghost {
   margin-top: 36px;
 }
 
-/* Hero opening choreography — auto-playing CSS @keyframes instead
-   of an IntersectionObserver-triggered .reveal. The observer-based
-   pattern leaves the elements visibly offset (heading 48px down,
-   video 80px down) until JS finishes loading and the observer
-   callback fires. For above-the-fold content this is enough of a
-   delay that the user perceives the offset as "the page loaded
-   wrong" rather than as an animation. CSS animations start on
-   first paint, so the from-state is shown for at most one frame.
-
-   The copy lifts up first; the video card follows ~200ms later
-   with a stronger rise + scale-up so it feels like it's blooming
-   into place rather than just sliding in. */
+/* Hero opening: CSS animations (not .reveal) so above-the-fold
+   content isn't visibly offset while JS loads. Copy lifts up first;
+   the video card follows ~200ms later. */
 .hero > .hero-copy {
   animation: hero-copy-in 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -592,64 +542,6 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 
-.features-section {
-  margin: 50px 0;
-}
-
-.section-title {
-  font-size: 32px;
-  text-align: left;
-  margin-bottom: 22px;
-}
-
-.features {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
-}
-
-.feature-card {
-  padding: 20px;
-  border-radius: 18px;
-  background: var(--surface-strong);
-  border: 1px solid var(--stroke);
-  box-shadow: var(--shadow-md);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.feature-card h3 {
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-
-.feature-card p {
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.feature-card.reverse .feature-media,
-.feature-card.reverse .feature-copy {
-  order: 0;
-}
-
-.feature-media {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-}
-
-.feature-video {
-  width: 100%;
-  aspect-ratio: 960 / 493;
-  border-radius: 14px;
-  border: 1.5px solid rgba(214, 210, 200, 0.9);
-  object-fit: cover;
-  object-position: 50% 100%;
-  display: block;
-}
-
 .workflow {
   display: flex;
   flex-direction: column;
@@ -671,13 +563,6 @@ html[lang="de"] .nav-cta .ghost {
   max-width: none;
 }
 
-/* Why-section: two side-by-side cards with distinct visual
-   identities. The left card carries a quiet, paper-notebook feel
-   (cool muted surface, soft ruled-line texture, gray text and
-   bullets). The right card is the brighter Mappy answer (warm
-   corner wash, coral dot bullets, ink text, larger shadow). The
-   visual contrast tells the comparison story — no badges or
-   strikethrough needed. */
 .why-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -748,9 +633,7 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 50%;
 }
 
-/* Traditional-notes card — quieter treatment. Outlined icon
-   squircle, muted heading + bullets + body. Reads as the
-   "what you have now" option. */
+/* Traditional-notes card: muted "what you have now" treatment. */
 .why-card-traditional .why-card-icon {
   color: var(--muted);
 }
@@ -767,9 +650,7 @@ html[lang="de"] .nav-cta .ghost {
   background: rgba(94, 101, 105, 0.45);
 }
 
-/* Mappy AI card — same surface, slightly lifted. Icon is the dark
-   accent fill (matching the workflow number badges elsewhere on
-   the page). Heading + bullets stay neutral ink. */
+/* Mappy AI card: slightly lifted, dark accent icon. */
 .why-card-mappy {
   box-shadow: var(--shadow-md);
 }
@@ -785,8 +666,6 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 .why-card-mappy .why-card-icon svg {
-  /* Mindmap icon uses a larger native viewBox (140) so it needs a
-     little more visual room inside the same 46px squircle. */
   width: 28px;
   height: 28px;
 }
@@ -862,12 +741,10 @@ html[lang="de"] .nav-cta .ghost {
   margin-bottom: 24px;
 }
 
-/* ── Features tabs (consolidates the old "different" + "features" sections)
-   Pattern: pill-style horizontal tab bar centered above one large panel
-   showing the active feature's video + copy. All five panels are
-   rendered in the DOM (SEO) but only the active one is displayed;
-   videos for inactive panels are paused via script.js to keep only one
-   moving thing on screen. */
+/* ── Features tabs ───────────────────────────────────────────────
+   Pill-style horizontal tab bar above one panel that shows the
+   active feature's media + copy. All panels are rendered in the DOM
+   for SEO; CSS displays only the active one. */
 .features-tabs {
   margin: 110px 0 40px;
   display: grid;
@@ -890,8 +767,7 @@ html[lang="de"] .nav-cta .ghost {
   color: var(--muted);
 }
 
-/* Frosted-glass pill container with 1px translucent border; the
-   active item gets a white tile with a stroke border (no shadow). */
+/* Frosted-glass pill container; active item is a white tile. */
 .features-tabs-control {
   display: flex;
   gap: 4px;
@@ -904,8 +780,6 @@ html[lang="de"] .nav-cta .ghost {
   width: fit-content;
   max-width: 100%;
   margin: 0 auto;
-  /* Horizontal scroll fallback when the bar doesn't fit; mobile media
-     query below hides the scrollbar chrome. */
   overflow-x: auto;
 }
 
@@ -950,11 +824,6 @@ html[lang="de"] .nav-cta .ghost {
 
 .features-tab-panel.is-active {
   display: grid;
-  /* Tab swap — the panel container fades in without any vertical
-     motion (so the canvas card stays put and reads as the stable
-     surface). The showcase image inside has its own bigger rise
-     animation, so the image is the only thing that visibly moves
-     when tabs switch. */
   animation: features-tab-fade 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -963,16 +832,10 @@ html[lang="de"] .nav-cta .ghost {
   to   { opacity: 1; }
 }
 
-/* Showcase image rises up and scales in onto the (already-fading-in)
-   canvas card. The translate doesn't compound with the panel anymore
-   since the panel itself has no transform — the image is the sole
-   element that moves vertically. */
 .features-tab-panel.is-active .features-tab-canvas-image {
   animation: features-canvas-image-rise 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
 }
 
-/* Copy text gets its own longer fade so the heading + paragraph
-   ease in more gradually than the canvas card itself. */
 .features-tab-panel.is-active .features-tab-copy {
   animation: features-tab-copy-fade 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
 }
@@ -1007,11 +870,7 @@ html[lang="de"] .nav-cta .ghost {
   object-fit: cover;
 }
 
-/* Mindmap-canvas treatment for showcase illustrations — same dotted
-   grid Mappy uses as its editor canvas background, so the static
-   showcase SVG reads as "this is a real Mappy map" rather than an
-   ad-hoc graphic. Background-color is a slightly cooler cream than
-   --accent-soft to read as the editor surface. */
+/* Dotted-grid canvas backdrop — matches Mappy's editor surface. */
 .features-tab-media-canvas {
   background: #ffffff;
   background-image: radial-gradient(circle, rgba(46, 52, 55, 0.16) 1.2px, transparent 1.4px);
@@ -1036,12 +895,8 @@ html[lang="de"] .nav-cta .ghost {
   filter: drop-shadow(0 6px 14px rgba(32, 40, 45, 0.08));
 }
 
-/* Split-canvas variant — used by the 'Sources' panel. Both
-   illustrations are positioned absolutely in opposite corners of
-   the canvas so they overlap diagonally: 2.1 in the upper-left
-   sits in front, 2.2 in the lower-right tucks behind it. The
-   overlap reads as a layered "click → see the underlying page"
-   relationship between the two showcases. */
+/* Split-canvas variant (Sources panel): two illustrations
+   overlap diagonally — 2.1 upper-left in front, 2.2 lower-right. */
 .features-tab-canvas-split {
   position: relative;
   justify-content: initial;
@@ -1095,17 +950,13 @@ html[lang="de"] .nav-cta .ghost {
     -webkit-overflow-scrolling: touch;
     padding: 4px;
     justify-content: flex-start;
-    /* Fade mask on the right edge so users see that more tabs
-       exist past the visible area. */
+    /* Fade mask hints at more tabs past the visible area. */
     -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
     mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
   }
   .features-tabs-control::-webkit-scrollbar {
     display: none;
   }
-  /* Showcase image: large enough to read at narrow widths, but
-     scaled back from 100% so it doesn't crowd the dotted canvas
-     edges. */
   .features-tab-canvas {
     padding: 10px;
   }
@@ -1113,26 +964,17 @@ html[lang="de"] .nav-cta .ghost {
     width: 84%;
     height: 84%;
   }
-  /* Split-canvas variant (Sources panel) collapses to a vertical
-     stack on mobile — two absolutely-positioned tiles at 44%/62%
-     get illegibly small otherwise. */
+  /* Sources split-canvas: stack vertically on mobile. */
   .features-tab-canvas-split {
     position: static;
     display: flex;
     flex-direction: column;
-    /* Center vertically inside the canvas — the pair sits between
-       the top edge and the bottom edge rather than docked to either. */
     justify-content: center;
     gap: 8px;
     padding: 12px;
   }
   .features-tab-canvas-split .features-tab-canvas-image {
     position: static;
-    /* Smaller than full-width on mobile so each tile reads as an
-       illustration sitting on the dotted canvas, not as a banner
-       filling the whole card. The two tiles are nudged in opposite
-       directions so they hint at the desktop "layered cards" effect
-       even when stacked vertically. */
     width: 78%;
     height: auto;
     max-width: 78%;
@@ -1168,9 +1010,6 @@ html[lang="de"] .nav-cta .ghost {
 .comparison {
   margin: 110px 0 40px;
   display: grid;
-  /* Space between the header (heading + subtitle) and the comparison
-     grid below — bigger gap so the subtitle has room to breathe
-     before the column headers start. */
   gap: 40px;
 }
 
@@ -1191,10 +1030,7 @@ html[lang="de"] .nav-cta .ghost {
   padding: 0 6px 16px;
 }
 
-/* Floating Mappy column — a raised white pillar that extends above and
-   below the row baseline, drawn behind the cells via ::before so the
-   cells themselves stay simple. Mirrors the featured pricing-card
-   treatment: white surface, dark accent border, deeper shadow. */
+/* Raised Mappy column drawn behind the cells via ::before. */
 .comparison-grid::before {
   content: "";
   position: absolute;
@@ -1204,10 +1040,6 @@ html[lang="de"] .nav-cta .ghost {
   width: calc((100% - 12px) * (1.35 / 3.45));
   background: var(--surface-strong);
   border-radius: 18px;
-  /* No hard border — the dark header on top, horizontal row dividers,
-     and the deep shadow are enough to make the column read as a
-     raised card. A real border created sub-pixel mismatch at the
-     header's rounded corners against the card's outer curve. */
   box-shadow: var(--shadow-lg);
   z-index: 0;
 }
@@ -1224,9 +1056,6 @@ html[lang="de"] .nav-cta .ghost {
   gap: 10px;
 }
 
-/* Horizontal dividers between body rows. Inset on the outer columns
-   (left/right padding inside the divider) so their endpoints don't
-   peek out past the Mappy card's rounded corners. */
 .comparison-grid-cell.feature,
 .comparison-grid-cell.other,
 .comparison-grid-cell.mappy {
@@ -1332,18 +1161,9 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 1px;
 }
 
-/* ── Mobile: side-by-side comparison, scaled for narrow viewports ──
-   Same shape as desktop — Mappy column highlighted, Other column
-   muted, persistent column headers at the top — just rebuilt for
-   phone widths. The 3-column desktop grid drops the empty
-   feature-header cell and reflows to two columns, with the feature
-   label spanning both columns above each row pair. Mappy cells are
-   raised cards (accent border + subtle shadow); Other cells sit as
-   muted stroke-bordered cards in the right column. */
+/* ── Mobile: 2-column comparison, Mappy left, Other right ────────
+   Feature label spans both columns above each row pair. */
 @media (max-width: 720px) {
-  /* Inner gap on mobile — same intent as desktop: clear separation
-     between the section header and the column-header row of the
-     comparison grid. */
   .comparison {
     gap: 28px;
   }
@@ -1361,15 +1181,10 @@ html[lang="de"] .nav-cta .ghost {
     display: none;
   }
 
-  /* The empty top-left header cell has no purpose on mobile; the
-     two visible head cells become the column titles. */
   .comparison-grid-cell.head-feature {
     display: none;
   }
 
-  /* Column headers — kept visible so the comparison reads as a real
-     side-by-side table. Mappy header is the dark accent pill; Other
-     header is a muted label that matches the cells below. */
   .comparison-grid-cell.head-mappy {
     border-radius: 12px;
     padding: 10px 12px;
@@ -1401,15 +1216,10 @@ html[lang="de"] .nav-cta .ghost {
 
   .comparison-grid-cell {
     padding: 12px 12px;
-    /* Drop the desktop row-divider; on mobile each card carries its
-       own full border. (No !important — that was stripping the
-       bottom edge of the Mappy/Other card borders below.) */
     border-bottom: none;
   }
 
-  /* Feature label — spans both columns, sits above the Mappy/Other
-     pair as a row heading. Top padding gives air between groups;
-     left padding aligns with the cards' left edges. */
+  /* Feature label spans both columns above each row pair. */
   .comparison-grid-cell.feature {
     grid-column: 1 / -1;
     padding: 16px 2px 4px;
@@ -1427,9 +1237,7 @@ html[lang="de"] .nav-cta .ghost {
     padding-top: 10px;
   }
 
-  /* Mappy cell — left column, raised white card with the dark
-     accent outline. Mirrors the desktop "raised pillar" treatment
-     at the row level. */
+  /* Mappy cell: raised white card, accent border. */
   .comparison-grid-cell.mappy {
     background: var(--surface-strong);
     border: 1.5px solid var(--accent);
@@ -1445,9 +1253,7 @@ html[lang="de"] .nav-cta .ghost {
     gap: 8px;
   }
 
-  /* Other cell — right column, muted surface, stroke border, no
-     shadow. The visual hierarchy is identical to desktop: Mappy
-     pops, Other recedes. */
+  /* Other cell: muted surface, stroke border. */
   .comparison-grid-cell.other {
     background: var(--surface);
     border: 1.5px solid var(--stroke);
@@ -1463,15 +1269,10 @@ html[lang="de"] .nav-cta .ghost {
     align-items: flex-start;
     gap: 8px;
   }
-  /* Drop the desktop ::before that prefixed "Others:" — column
-     identity now comes from the persistent column header. */
   .comparison-grid-cell.other::before {
     content: none;
   }
 
-  /* Compact icons so they leave more room for the wrapped text in
-     each card. align-self start + margin-top nudges the icon to
-     align with the cap-height of the first line. */
   .comparison-grid-cell .comparison-icon {
     width: 16px;
     height: 16px;
@@ -1496,137 +1297,9 @@ html[lang="de"] .nav-cta .ghost {
   max-width: 640px;
 }
 
-.audience-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.audience-card {
-  padding: 24px;
-  border-radius: 14px;
-  border: 1px solid var(--stroke);
-  background: #ffffff;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-}
-
-#different .audience-card {
-  border: 0;
-}
-
-/* Media wrapper for the differentiator cards. The per-card classes keep
-   a fallback gradient behind the embedded video or image. */
-.audience-card-media {
-  aspect-ratio: 480 / 247;
-  border-radius: 14px;
-  margin-bottom: 12px;
-  overflow: hidden;
-  background-color: var(--accent-soft);
-}
-
-.audience-card-media video,
-.audience-card-media img {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 480 / 247;
-  border: 1.5px solid rgba(214, 210, 200, 0.9);
-  box-sizing: border-box;
-  border-radius: inherit;
-  object-fit: contain;
-  object-position: 50% 100%;
-  display: block;
-}
-
-.audience-card-media-1,
-.audience-card-media-2,
-.audience-card-media-3,
-.audience-card-media-4,
-.audience-card-media-5,
-.audience-card-media-6 {
-  background-image: none;
-  background-color: #f7f5f1;
-}
-
-/* Icon treatment: was a 48px filled-dark-square with a white SVG inside,
-   which read as a templated Webflow-era pattern. Now an outlined square
-   with a monochrome ink-colored icon — quieter, more premium-feeling,
-   consistent across all five variants without color-coding each one. */
-.audience-card-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  border: 1.5px solid var(--stroke);
-  background: var(--surface-strong);
-  color: var(--ink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-  flex-shrink: 0;
-}
-
-.audience-card-icon svg {
-  width: 22px;
-  height: 22px;
-}
-
-/* The legacy per-variant background rule. Kept empty (no background
-   override) so the outlined treatment above wins — all three icon
-   variants now share one neutral look. */
-.audience-card-icon-students,
-.audience-card-icon-researchers,
-.audience-card-icon-teams {
-  /* intentionally empty — uses .audience-card-icon base treatment */
-}
-
-.audience-card-kicker {
-  display: block;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--muted);
-  margin-bottom: 6px;
-}
-
-.audience-card h3 {
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
-  margin-bottom: 10px;
-}
-
-.audience-card p {
-  font-size: 13.5px;
-  color: var(--muted);
-  line-height: 1.55;
-  margin-bottom: 14px;
-}
-
-.audience-card-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 14px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.audience-card-cta::after {
-  content: "→";
-}
-
-/* ── Audience canvas: mindmap-illustration treatment ───────────────
-   Single dotted-canvas card replaces the old 3-card persona grid.
-   Shows a small Mappy-style mindmap with the center node "Mappy AI"
-   branching to Students / Researchers / Teams, each with one
-   example use-case child node. Edges are SVG paths; nodes are
-   HTML elements positioned with percentage top/left so they share
-   the same coordinate system as the SVG viewBox (0–100). */
+/* ── Audience canvas: dotted-grid card hosting the interactive
+   mindmap. Nodes are HTML elements positioned by percentage top/left
+   over an SVG edge layer that shares a 0..100 coordinate space. */
 .audience-canvas {
   position: relative;
   margin-top: 32px;
@@ -1638,9 +1311,6 @@ html[lang="de"] .nav-cta .ghost {
   background-size: 18px 18px;
   border: 1px solid var(--stroke);
   box-shadow: var(--shadow-sm);
-  /* Overflow visible so the tip-trigger avatar can sit half-overlapping
-     the top-right corner. Nodes and toolbar are JS-clamped inside the
-     canvas bounds, so they don't need overflow:hidden as a guard. */
 }
 
 .audience-canvas-edges {
@@ -1676,13 +1346,7 @@ html[lang="de"] .nav-cta .ghost {
   user-select: none;
 }
 
-/* All three levels are tinted with a sunset-palette color set via
-   the --node-color custom property inline on each node:
-     Level 0 (center) → #F19A48 amber
-     Level 1          → #EB594F coral
-     Level 2          → #FC9893 blush
-   White text on all so the colored nodes read as a cohesive
-   gradient across the mindmap. */
+/* Tier color comes from --node-color set inline on each node. */
 .audience-node-l1,
 .audience-node-l2,
 .audience-node-center {
@@ -1706,9 +1370,7 @@ html[lang="de"] .nav-cta .ghost {
   font-size: 12.5px;
   font-weight: 500;
   padding: 12px 16px;
-  /* Level-2 leaves carry several sentences of detail, so they need
-     to wrap and use a rounded-rectangle shape rather than the full
-     pill the level-1 branches use. */
+  /* L2 leaves wrap to multi-line copy, hence rounded rect not pill. */
   white-space: normal;
   width: 240px;
   border-radius: 14px;
@@ -1716,24 +1378,14 @@ html[lang="de"] .nav-cta .ghost {
   text-align: center;
 }
 
-/* Onboarding tip — two states. Logical wrapper holds both the
-   trigger and the bubble; data-state on the wrapper controls
-   which is visible. Trigger sits half-overlapping the canvas
-   top-right corner; bubble appears inside the canvas top-right
-   when opened. */
+/* Onboarding tip: wrapper hosts both the trigger and the bubble;
+   data-state on the wrapper controls which is visible. */
 .audience-tip {
-  /* No own layout — children position themselves. The .reveal
-     animation still applies to the whole tip (fade + slide-in). */
+  /* No own layout — children position themselves. */
 }
 
-/* Bubble visibility is now controlled by opacity + transform, not
-   display: none — so the open/close transition has frames to
-   render. pointer-events flip prevents stray clicks on the
-   invisible bubble. */
 
-/* Collapsed: the trigger avatar sits half-overlapping the canvas's
-   top-right corner. Shakes every 5s to attract attention. Green
-   notification dot signals "there's a message". */
+/* Trigger avatar sits half-overlapping the canvas's top-right corner. */
 .audience-tip-trigger {
   position: absolute;
   top: -22px;
@@ -1751,9 +1403,7 @@ html[lang="de"] .nav-cta .ghost {
   z-index: 25;
 }
 
-/* The actual shaking circle is a ::before pseudo, so the letter
-   and the badge (real children) stay still in the foreground
-   while only the circle background + border rotate. */
+/* The shaking circle is a ::before so the letter and badge stay still. */
 .audience-tip-trigger::before {
   content: "";
   position: absolute;
@@ -1769,16 +1419,12 @@ html[lang="de"] .nav-cta .ghost {
   animation-play-state: paused;
 }
 
-/* Once the user has opened the tip at least once (data-seen),
-   the shake stops permanently — they've engaged, no need to
-   keep knocking. */
+/* Stop the shake permanently once the user has opened the tip. */
 .audience-tip[data-seen="true"] .audience-tip-trigger::before {
   animation: none;
 }
 
-/* Two icons inside the trigger, crossfade-rotated based on
-   data-state. Closed: D visible. Open: D fades + rotates 45°
-   into a cross icon that doubles as the close button. */
+/* D and X icons crossfade-rotate based on data-state. */
 .audience-tip-icon {
   position: absolute;
   inset: 0;
@@ -1796,11 +1442,8 @@ html[lang="de"] .nav-cta .ghost {
   font-family: inherit;
   font-size: 19px;
   font-weight: 700;
-  /* Collapse the line-box to (roughly) cap-height so flexbox centers
-     the visible glyph area instead of the full em-square (which
-     includes the unused descender region — that's what was pushing
-     the D off-center). The glyph still renders at full size and
-     overflows the line-box, which is fine. */
+  /* Tight line-height ≈ cap-height so flexbox centers the visible
+     glyph area, not the full em-square. */
   line-height: 0.72;
   letter-spacing: 0;
 }
@@ -1808,21 +1451,14 @@ html[lang="de"] .nav-cta .ghost {
 .audience-tip-icon-x svg {
   width: 16px;
   height: 16px;
-  /* Match the same 1px nudge so the cross icon (which also uses
-     centered glyphs/strokes) sits on the same optical center as
-     the D it replaces. */
   display: block;
 }
 
-/* Default (collapsed): D is visible, X is hidden + pre-rotated. */
 .audience-tip-icon-x {
   opacity: 0;
   transform: rotate(-45deg);
 }
 
-/* Open: D rotates 45° while fading out, X rotates back to 0 and
-   fades in. The cross then doubles as the close button — clicking
-   it toggles state back to collapsed via the existing handler. */
 .audience-tip[data-state="open"] .audience-tip-icon-d {
   opacity: 0;
   transform: rotate(45deg);
@@ -1844,9 +1480,6 @@ html[lang="de"] .nav-cta .ghost {
   border: 2px solid #ffffff;
 }
 
-/* Periodic shake — wider motion window (~30% of cycle) and bigger
-   amplitudes so it's actually visible. Still mostly idle, but
-   when it fires the burst lasts ~0.9s and rotates up to ±22deg. */
 @keyframes audience-tip-shake {
   0%, 70%, 100% { transform: rotate(0); }
   74% { transform: rotate(-22deg); }
@@ -1858,12 +1491,7 @@ html[lang="de"] .nav-cta .ghost {
   97% { transform: rotate(-4deg); }
 }
 
-/* Open: message bubble appears ABOVE the trigger avatar like a
-   chat reply, growing out of the avatar's top edge. Anchored to
-   the same right edge as the avatar; translateY pushes the
-   bubble up by its own height + a small gap. Scale-from-0.85
-   gives a slight pop on open; transform-origin at bottom-right
-   anchors the growth to the avatar's position. */
+/* Message bubble grows out of the avatar's top-right corner. */
 .audience-tip-bubble {
   position: absolute;
   top: -22px;
@@ -1897,20 +1525,14 @@ html[lang="de"] .nav-cta .ghost {
   color: var(--ink);
 }
 
-/* Force the OS emoji font for the sign-off ✌️ so it doesn't pick
-   up a sub-par fallback glyph from Space Grotesk's cascade. Bumps
-   size slightly — color emoji renders cleaner at 16-18px than at
-   the 13px body size. */
+/* Force OS color-emoji font so ✌️ doesn't fall back to Space Grotesk. */
 .audience-tip-emoji {
   font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", emoji, sans-serif;
   font-size: 17px;
   vertical-align: -2px;
 }
 
-/* Notification dot disappears permanently the first time the
-   user opens the tip — they've seen the message, no need to keep
-   nudging. State is held via data-seen on the tip and persisted
-   to localStorage so it survives refreshes. */
+/* Notification dot disappears after the first open. */
 .audience-tip-badge {
   transition: opacity 0.25s ease;
 }
@@ -1931,8 +1553,7 @@ html[lang="de"] .nav-cta .ghost {
   transform: translate(0, 0) scale(1);
 }
 
-/* Interactive states — applied by script.js when nodes are hydrated
-   into a draggable demo. */
+/* Interactive states added by script.js when nodes are hydrated. */
 .audience-canvas[data-interactive-mindmap] .audience-node {
   cursor: grab;
   user-select: none;
@@ -1952,17 +1573,7 @@ html[lang="de"] .nav-cta .ghost {
   z-index: 5;
 }
 
-/* ── Floating toolbar ──────────────────────────────────────────────
-   Replicates the actual Mappy AI app's .node-menu styling so the
-   demo feels like the same product:
-     - --color-bg-raised (#f7f7f5) background
-     - 1.5px --border-color-strong (#cfcfc9) border, 8px radius
-     - 10px padding, 8px gap between sections
-     - --shadow-popup (0 12px 24px rgba(60,60,67,0.16))
-     - 172px wide
-     - 34px control-height for buttons
-     - 12px text-sm labels in --color-text-secondary (#6b6b6b)
-   Positioned next to the selected node by JS. */
+/* Floating toolbar shown next to the selected node. */
 .audience-toolbar {
   position: absolute;
   width: 188px;
@@ -1996,9 +1607,7 @@ html[lang="de"] .nav-cta .ghost {
   color: #6b6b6b;
 }
 
-/* Inline color swatches — row of palette swatches shown directly
-   in each color section. Same circle+ring styling as the app's
-   .color-preset-row, just inline rather than inside a popover. */
+/* Inline color swatches in each color section. */
 .audience-toolbar-swatches {
   display: flex;
   flex-wrap: wrap;
@@ -2076,8 +1685,7 @@ html[lang="de"] .nav-cta .ghost {
   background: #ffffff;
 }
 
-/* Shape — custom-select dropdown trigger (matches .custom-select
-   .select-trigger in the app). */
+/* Shape: custom-select dropdown trigger. */
 .audience-toolbar-shape-select {
   position: relative;
 }
@@ -2156,34 +1764,20 @@ html[lang="de"] .nav-cta .ghost {
   background: rgba(0, 0, 0, 0.06);
 }
 
-/* Mobile: the mindmap is too wide and dense to read on phones.
-   Hide the canvas and show the 3-row text fallback instead. */
-.audience-mobile-list {
-  display: none;
-}
-
 /* Text-swap inside L2 nodes: the desktop sentence and the mobile
    blurb both live in the markup; only one renders at a time. */
 .audience-text-mobile {
   display: none;
 }
 
+/* Mobile: three horizontal tiers, root at top, L1 row, L2 row.
+   Each L1/L2 pair shares an x so the parent/child column is clear. */
 @media (max-width: 720px) {
-  /* Mobile mindmap: three horizontal tiers, top → bottom.
-     Tier 1 root, tier 2 row of four L1 pills, tier 3 row of four
-     L2 leaf cards. Each L1/L2 pair shares the same x so the
-     parent/child column is obvious — connectors run straight down.
-     Canvas flips to a tall portrait aspect ratio so the L2 row has
-     room for the wrapping (shorter) mobile descriptions. */
   .audience-canvas {
-    /* 20% taller than the previous 4/4.6 so the three-tier mindmap
-       has room to sit centered with equal padding above the root
-       and below the L2 row. */
     aspect-ratio: 4 / 5.5;
     margin-top: 24px;
   }
 
-  /* Swap to the short mobile blurb inside each L2. */
   .audience-text-desktop {
     display: none;
   }
@@ -2191,25 +1785,12 @@ html[lang="de"] .nav-cta .ghost {
     display: inline;
   }
 
-  /* The text fallback list is redundant now that the canvas itself
-     renders on mobile. */
-  .audience-mobile-list {
-    display: none;
-  }
-
-  /* Smaller, tighter nodes so the three tiers fit. Root keeps its
-     emphasis (slightly larger + bolder than the L1 pills). */
   .audience-node-center {
     font-size: 13px;
     padding: 8px 14px;
   }
 
   .audience-node-l1 {
-    /* Each L1 pill has to fit inside a ~25%-wide column so the four
-       pills sit in a clean row without overlap. The widest labels
-       ("Researchers", "Summarizers") are 11 chars, so the font +
-       padding + letter-spacing are tuned to keep those pills under
-       the column width even on narrow phones. */
     font-size: 10px;
     padding: 5px 8px;
     letter-spacing: -0.01em;
@@ -2219,15 +1800,11 @@ html[lang="de"] .nav-cta .ghost {
   .audience-node-l2 {
     font-size: 10.5px;
     padding: 8px 9px;
-    /* One-quarter of the canvas per column; the inter-column gap
-       comes from each L2 being narrower than its column width. */
     width: 22%;
     line-height: 1.35;
     border-radius: 10px;
   }
 
-  /* Onboarding tip avatar shrinks a touch and tucks closer to the
-     canvas corner so it doesn't push past the section gutter. */
   .audience-tip-trigger {
     top: -16px;
     right: -16px;
@@ -2235,17 +1812,12 @@ html[lang="de"] .nav-cta .ghost {
     height: 36px;
   }
 
-  /* Tip bubble stays inside viewport on narrow phones — pull the
-     right edge inward from the canvas right so the bubble doesn't
-     hug the screen edge. */
   .audience-tip-bubble {
     right: 12px;
     max-width: 220px;
     padding: 10px 12px;
   }
 
-  /* Compact toolbar — at 188px it still fits the canvas, but tighter
-     swatches + smaller buttons keep it from dominating the view. */
   .audience-toolbar {
     width: 168px;
     padding: 8px;
@@ -2253,68 +1825,7 @@ html[lang="de"] .nav-cta .ghost {
   }
 }
 
-.audience-grid-links {
-  align-items: stretch;
-}
-
-.audience-grid-2x2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.audience-link-card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-height: 100%;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-}
-
-.audience-link-card::after {
-  content: "Explore page";
-  margin-top: auto;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.audience-link-card:hover,
-.audience-link-card:focus-visible {
-  transform: translateY(-4px);
-  border-color: var(--accent);
-  box-shadow: var(--shadow-md);
-}
-
-.evidence-card {
-  padding: 18px;
-  border-radius: 16px;
-  border: 1px dashed rgba(214, 210, 200, 0.9);
-  background: #fbfbfa;
-}
-
-.evidence-card h3 {
-  font-size: 16px;
-  margin-bottom: 6px;
-}
-
-.evidence-card p {
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
-
-.evidence-note {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #8c8f90;
-}
-
-/* ── Workflow: sticky intro + scrolling card stack ───────────────
-   Two-column layout. The left column (heading + tagline + CTA)
-   sticks to the top of the viewport as the right column scrolls
-   past it. The user reads the section's pitch once while the
-   six use-case cards animate in beside it. */
+/* ── Workflow: sticky intro + scrolling card stack ──────────── */
 .workflow-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
@@ -2324,8 +1835,7 @@ html[lang="de"] .nav-cta .ghost {
 
 .workflow-intro {
   position: sticky;
-  /* Top offset clears the sticky nav (~70px including its own top
-     offset) plus a comfortable breathing gap. */
+  /* Clears the sticky nav plus a comfortable breathing gap. */
   top: 120px;
   align-self: start;
   padding-top: 24px;
@@ -2353,9 +1863,6 @@ html[lang="de"] .nav-cta .ghost {
   gap: 16px;
 }
 
-/* Workflow cards follow the same surface/stroke/shadow recipe as
-   .why-card and .audience-card — keeps every card on the page
-   reading as part of the same family. */
 .workflow-card {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -2480,13 +1987,10 @@ html[lang="de"] .nav-cta .ghost {
   pointer-events: none;
 }
 
-/* Billing toggle — pill selector matching the audience-card visual
-   language: frosted surface, white-tile active state. */
+/* Billing toggle: frosted pill selector with a white-tile active state.
+   Left-aligned on desktop; re-centered on mobile in the media query. */
 .billing-toggle {
   width: min(320px, calc(100vw - 40px));
-  /* Left-aligned on desktop so the toggle sits under the pricing
-     heading's left edge; centered on mobile (see media query below)
-     to read as a self-contained control above the stacked cards. */
   margin: 0 0 28px;
   padding: 4px;
   border-radius: 999px;
@@ -2540,10 +2044,7 @@ html[lang="de"] .nav-cta .ghost {
   border-color: var(--stroke);
 }
 
-/* Default (yearly checked): hide monthly variants. Selectors are
-   scoped to .plan-card to bump specificity above the .plan-cta base
-   rule, which would otherwise override `display: none` via source
-   order at the same specificity. */
+/* Yearly is the default — hide the monthly variants. */
 .plan-card .plan-price-monthly,
 .plan-card .plan-billing-note-monthly,
 .plan-card .plan-cta-monthly {
@@ -2619,12 +2120,8 @@ html[lang="de"] .nav-cta .ghost {
   margin-top: 4px;
 }
 
-/* Plan list items — bullet icon is rendered by an inline
-   <span class="comparison-icon check|dash">, so this list shares
-   the exact same icon code as the "How Mappy compares" section.
-   We just need to suppress the legacy `+` / `-` bullet from
-   .plan-list li::before (further down the file) and align the
-   icon vertically with the text. */
+/* Plan list items reuse the check/dash icons from the comparison
+   section; .plan-list li::before is suppressed for these items. */
 .plan-card .plan-list-checks {
   gap: 14px;
 }
@@ -2648,13 +2145,10 @@ html[lang="de"] .nav-cta .ghost {
   color: var(--muted);
 }
 
-/* Nudge the icon down a couple of px so its vertical centre lines
-   up with the first row of text rather than the cap height. */
 .plan-card .plan-list-checks .comparison-icon {
   margin-top: 1px;
 }
 
-/* "Best for:" footer line — sits between the feature list and CTA. */
 .plan-best {
   font-size: 13px;
   color: var(--muted);
@@ -2704,9 +2198,7 @@ html[lang="de"] .nav-cta .ghost {
 }
 
 @media (max-width: 720px) {
-  /* Re-center the toggle on mobile — the section has no left-anchored
-     heading column on phones, so a left-aligned control reads as
-     orphaned at the edge. */
+  /* Re-center on mobile — no left-anchored heading column to align to. */
   .billing-toggle {
     margin-left: auto;
     margin-right: auto;
@@ -2900,9 +2392,7 @@ html[lang="de"] .nav-cta .ghost {
   display: none;
 }
 
-/* Plus → cross marker. Two crossbars drawn as two linear-gradient
-   layers on a single ::after; rotating the whole pseudo 45deg when
-   the card is open turns the plus into an ×. Pure CSS, no SVG. */
+/* Plus → cross marker: SVG-masked pseudo, rotates 45deg when open. */
 .faq-list summary::after {
   content: "";
   flex: none;
@@ -2930,10 +2420,8 @@ html[lang="de"] .nav-cta .ghost {
   margin-top: 8px;
 }
 
-/* Smooth open/close. Uses the modern ::details-content pseudo plus
-   interpolate-size so block-size can transition from 0 to auto.
-   Non-supporting browsers fall through to the default instant
-   toggle — no JS needed. */
+/* Smooth FAQ open/close via interpolate-size + ::details-content.
+   Non-supporting browsers fall through to the default instant toggle. */
 @supports (interpolate-size: allow-keywords) {
   html {
     interpolate-size: allow-keywords;
@@ -3158,20 +2646,9 @@ html[lang="de"] .nav-cta .ghost {
   margin-top: 0;
 }
 
-/* Base reveal — fades up with visible scale-in so it reads as
-   "settling into place" rather than just "moving up." Bigger movement
-   (48px / scale 0.94) than the conservative first pass so the motion
-   actually registers.
-
-   Two different easings on purpose:
-     - transform uses cubic-bezier(0.22, 1, 0.36, 1) (ease-out-quart)
-       so the element snaps into position with a satisfying settle.
-     - opacity uses plain `ease` (symmetric) so the fade rises evenly
-       throughout the duration. With the same ease-out-quart applied
-       to opacity, the alpha hits ~85% in the first 30% of the
-       duration, which the eye reads as "instantly visible" — the
-       fade becomes invisible and the entrance feels like a pure
-       slide-in. Decoupling fixes that. */
+/* Base scroll-reveal. Transform uses ease-out-quart for a settled
+   landing; opacity uses plain ease so the fade is visible throughout
+   the duration (matching easings make the fade read as instant). */
 .reveal {
   opacity: 0;
   transform: translateY(48px) scale(0.94);
@@ -3186,15 +2663,7 @@ html[lang="de"] .nav-cta .ghost {
   transform: translateY(0) scale(1);
 }
 
-/* Stagger child reveals when their parent has .reveal-stagger. Each
-   direct child gets an extra 120ms delay so they appear in sequence
-   instead of all at once — a more pronounced cascade than the first
-   pass (80ms), now visible enough that the eye tracks each card
-   landing rather than perceiving them as a single group.
-
-   Capped at the 7th child so longer lists (workflow has 6) still get
-   the full cascade, but anything beyond a typical section length
-   doesn't leave the bottom items waiting on the user. */
+/* Stagger child reveals under .reveal-stagger; capped at child 7. */
 .reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
 .reveal-stagger > .reveal:nth-child(2) { transition-delay: 120ms; }
 .reveal-stagger > .reveal:nth-child(3) { transition-delay: 240ms; }
@@ -3204,10 +2673,7 @@ html[lang="de"] .nav-cta .ghost {
 .reveal-stagger > .reveal:nth-child(7) { transition-delay: 720ms; }
 .reveal-stagger > .reveal:nth-child(n+8) { transition-delay: 720ms; }
 
-/* Direction variants — slide horizontally instead of vertically. Used
-   on the few two-column layouts where a left/right entrance reinforces
-   the column relationship. Apply with .reveal.from-left or
-   .reveal.from-right in HTML. */
+/* Horizontal-entry variants for two-column layouts. */
 .reveal.from-left {
   transform: translateX(-36px) scale(0.985);
 }
@@ -3219,26 +2685,8 @@ html[lang="de"] .nav-cta .ghost {
   transform: translateX(0) scale(1);
 }
 
-/* ── Interactive motion ───────────────────────────────────────────
-   Scroll-reveal is one-shot motion. To make the page feel ALIVE while
-   the user is on it (not just on first encounter), add subtle hover
-   lifts on the main cards + a gentle continuous float on the active
-   feature-tab eyebrow pill. Each piece is small on its own; together
-   they make hover feel responsive and the static page feel less static. */
-
-/* No whole-card hover lifts. The card containers (why-card,
-   audience-card, plan-card, workflow-card, feature-card) are
-   purely informational <div>/<article> elements — they aren't
-   themselves links or buttons. Hover effects on them would
-   misleadingly signal interactivity. The actual interactive
-   elements inside (CTAs, links, buttons) keep their own hover
-   states. */
-
-/* Reduced-motion users: skip the slide-in and shrink, keep a quick
-   fade so the page doesn't feel broken (full disable would leave
-   long pre-reveal opacity:0 frames during scroll). Hover lifts are
-   also disabled — they qualify as decorative motion under
-   prefers-reduced-motion. */
+/* Reduced motion: skip the slide-in but keep a short fade so the
+   page doesn't appear to hang behind opacity:0 elements. */
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .reveal.from-left,
@@ -3396,14 +2844,6 @@ html[lang="de"] .nav-cta .ghost {
   }
 
 
-  .features {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .audience-grid {
-    grid-template-columns: 1fr;
-  }
-
   .pricing-grid {
     grid-template-columns: 1fr;
   }
@@ -3427,21 +2867,8 @@ html[lang="de"] .nav-cta .ghost {
     font-size: 13px;
   }
 
-  .features {
-    grid-template-columns: 1fr;
-  }
-
   .hero h1 {
     font-size: 34px;
-  }
-
-  .feature-card {
-    grid-template-columns: 1fr;
-  }
-
-  .feature-card.reverse .feature-media,
-  .feature-card.reverse .feature-copy {
-    order: initial;
   }
 
   .footer-links {
@@ -3459,12 +2886,7 @@ html[lang="de"] .nav-cta .ghost {
   }
 }
 
-/* ── Mobile breath + scale ────────────────────────────────────────
-   Section vertical rhythm on desktop is 110/40 — way too much for
-   a phone viewport (a single gap eats ~14% of an iPhone screen).
-   Section h2 sizes also stay at 30-32px on desktop and don't shrink.
-   These overrides tighten both at <=720px so the mobile page feels
-   like one coherent scroll instead of a string of huge empty bands. */
+/* ── Mobile breath + scale: tighter section margins, smaller h2s ── */
 @media (max-width: 720px) {
   .why-section,
   .audience-section,
@@ -3485,8 +2907,7 @@ html[lang="de"] .nav-cta .ghost {
     margin: 56px 0 56px;
   }
 
-  /* Section headings down a notch — from 30-32px to 24px — so they
-     don't dominate the small viewport. */
+  /* Section headings shrunk on phones. */
   .why-head h2,
   .audience-header h2,
   .features-tabs-header h2,
@@ -3498,8 +2919,7 @@ html[lang="de"] .nav-cta .ghost {
     font-size: 24px;
   }
 
-  /* Hero gradient bands tightened on mobile — desktop's 65vh band
-     extended into the why-section on phones. */
+  /* Hero gradient bands tightened so they don't bleed past the hero. */
   body {
     background-size: 100% 45vh, 100% 45vh, 100% 50vh, 100% 50vh;
   }

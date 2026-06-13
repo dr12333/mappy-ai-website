@@ -633,21 +633,23 @@ html[lang="de"] .nav-cta .ghost {
   border-radius: 50%;
 }
 
-/* Traditional-notes card: muted "what you have now" treatment. */
+/* Traditional-notes card: same ink color as the Mappy card so the
+   two cards read with matching weight. (The previous muted gray
+   picked up a perceptible cool/blue cast at that lightness.) */
 .why-card-traditional .why-card-icon {
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .why-card-traditional h3 {
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .why-card-traditional li {
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .why-card-traditional li::before {
-  background: rgba(94, 101, 105, 0.45);
+  background: var(--ink);
 }
 
 /* Mappy AI card: slightly lifted, dark accent icon. */

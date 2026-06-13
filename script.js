@@ -14,17 +14,20 @@ const getScrollOffset = () => {
   return nav ? nav.offsetHeight + 12 : 0;
 };
 
+// The `load` event only fires after every resource (including the
+// 60 MB hero video) finishes downloading, which can take 2-3 seconds.
+// If we unconditionally scrollTo here we yank the user back to the
+// top after they've already started scrolling. So:
+//   - no-hash case: the inline head script already handled it on
+//     parse / DOMContentLoaded — nothing to do here.
+//   - hash case: only re-snap to the anchor if the user is still
+//     parked at the top, i.e. they haven't begun scrolling themselves.
 window.addEventListener("load", () => {
   const hash = window.location.hash;
-  if (isTopHash(hash)) {
-    window.scrollTo(0, 0);
-    return;
-  }
+  if (isTopHash(hash)) return;
   const target = getHashTarget();
-  if (!target) {
-    window.scrollTo(0, 0);
-    return;
-  }
+  if (!target) return;
+  if (window.pageYOffset > 4) return;
   const y = target.getBoundingClientRect().top + window.pageYOffset - getScrollOffset();
   window.scrollTo(0, y);
 });
